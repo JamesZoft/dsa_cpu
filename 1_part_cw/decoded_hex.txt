@@ -1,0 +1,75 @@
+0 00000000	-------- -------- --------	IUC
+1 00000001	-------- -------- --------	HUC
+2 00000010	<------- address- ------->	BUC
+3 00000011	<------- address- ------->	BIC
+4 00000100	<-port-> <-and--> <-xor-->	SETO
+5 00000101	<-port-> <-and--> <-xor-->	TSTI
+
+	
+
+
+SET0|port:00|anded with:00|or'd with:00			||Specify port 00, AND with 00, OR with 00
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000001																	||Increment or branch conditionally to address00000
+TSTI|port:00|anded with:F0|or'd with:00			||Test input port 00, AND with F0, OR with 00
+BIC|000006																	||Increment or branch conditionally to address00000
+BUC|000023																	||Branch unconditionally to address00002
+SET0|port:00|anded with:FF|or'd with:80			||Specify port 00, AND with FF, OR with 80
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000007																	||Increment or branch conditionally to address00000
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000009																	||Increment or branch conditionally to address00000
+TSTI|port:00|anded with:F0|or'd with:70			||Test input port 00, AND with F0, OR with 70
+BIC|00000E																	||Increment or branch conditionally to address00000
+BUC|000028																	||Branch unconditionally to address00002
+SET0|port:00|anded with:FF|or'd with:40			||Specify port 00, AND with FF, OR with 40
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|00000F																	||Increment or branch conditionally to address00000
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000011																	||Increment or branch conditionally to address00001
+TSTI|port:00|anded with:F0|or'd with:00			||Test input port 00, AND with F0, OR with 00
+BIC|000016																	||Increment or branch conditionally to address00001
+BUC|00002D																	||Branch unconditionally to address00002
+SET0|port:00|anded with:FF|or'd with:20			||Specify port 00, AND with FF, OR with 20
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000017																	||Increment or branch conditionally to address00001
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000019																	||Increment or branch conditionally to address00001
+TSTI|port:00|anded with:F0|or'd with:20			||Test input port 00, AND with F0, OR with 20
+BIC|00001E																	||Increment or branch conditionally to address00001
+BUC|000032																	||Branch unconditionally to address00003
+SET0|port:00|anded with:FF|or'd with:10			||Specify port 00, AND with FF, OR with 10
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|00001F																	||Increment or branch conditionally to address00001
+SET0|port:00|anded with:FF|or'd with:01			||Specify port 00, AND with FF, OR with 01
+BUC|000036																	||Branch unconditionally to address00003
+SET0|port:00|anded with:FF|or'd with:80			||Specify port 00, AND with FF, OR with 80
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000024																	||Increment or branch conditionally to address00002
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000026																	||Increment or branch conditionally to address00002
+SET0|port:00|anded with:FF|or'd with:40			||Specify port 00, AND with FF, OR with 40
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000029																	||Increment or branch conditionally to address00002
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|00002B																	||Increment or branch conditionally to address00002
+SET0|port:00|anded with:FF|or'd with:20			||Specify port 00, AND with FF, OR with 20
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|00002E																	||Increment or branch conditionally to address00002
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000030																	||Increment or branch conditionally to address00003
+SET0|port:00|anded with:FF|or'd with:10			||Specify port 00, AND with FF, OR with 10
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000033																	||Increment or branch conditionally to address00003
+SET0|port:00|anded with:FF|or'd with:02			||Specify port 00, AND with FF, OR with 02
+TSTI|port:01|anded with:40|or'd with:00			||Test input port 01, AND with 40, OR with 00
+BIC|000036																	||Increment or branch conditionally to address00003
+TSTI|port:01|anded with:40|or'd with:40			||Test input port 01, AND with 40, OR with 40
+BIC|000038																	||Increment or branch conditionally to address00003
+BUC|000000																	||Branch unconditionally to address00000
+IUC																					||Increment unconditionally
+IUC																					||Increment unconditionally
+IUC																					||Increment unconditionally
+IUC																					||Increment unconditionally
+IUC																					||Increment unconditionally
+

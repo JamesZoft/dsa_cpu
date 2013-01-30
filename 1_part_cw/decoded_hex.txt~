@@ -1,0 +1,75 @@
+0 00000000	-------- -------- --------	IUC
+1 00000001	-------- -------- --------	HUC
+2 00000010	<------- address- ------->	BUC
+3 00000011	<------- address- ------->	BIC
+4 00000100	<-port-> <-and--> <-xor-->	SETO
+5 00000101	<-port-> <-and--> <-xor-->	TSTI
+
+Specify port 00, AND contents of input port with 00, XOR with 00
+Test input port 1| take contents of input port, AND with 20, OR with 00
+
+SET0|port:00|anded with:00|or'd with:00	
+TSTI|port:01|anded with:20|or'd with:00	
+BIC|000001
+TSTI|port:00|anded with:F0|or'd with:00
+BIC|000006
+BUC|000023
+SET0|port:00|anded with:FF|or'd with:80
+TSTI|port:01|anded with:20|or'd with:20
+BIC|000007
+TSTI|port:01|anded with:20|or'd with:00
+BIC|000009
+TSTI|port:00|anded with:F0|or'd with:70
+BIC|00000E
+BUC|000028
+SET0|port:00|anded with:FF|or'd with:40
+TSTI|port:01|anded with:20|or'd with:20
+BIC|00000F
+TSTI|port:01|anded with:20|or'd with:00
+BIC|000011
+TSTI|port:00|anded with:F0|or'd with:00
+BIC|000016
+BUC|00002D
+SET0|port:00|anded with:FF|or'd with:20
+TSTI|port:01|anded with:20|or'd with:20
+BIC|000017
+TSTI|port:01|anded with:20|or'd with:00
+BIC|000019
+TSTI|port:00|anded with:F0|or'd with:20
+BIC|00001E
+BUC|000032
+SET0|port:00|anded with:FF|or'd with:10
+TSTI|port:01|anded with:20|or'd with:20
+BIC|00001F
+SET0|port:00|anded with:FF|or'd with:01
+BUC|000036
+SET0|port:00|anded with:FF|or'd with:80
+TSTI|port:01|anded with:20|or'd with:20
+BIC|000024
+TSTI|port:01|anded with:20|or'd with:00
+BIC|000026
+SET0|port:00|anded with:FF|or'd with:40
+TSTI|port:01|anded with:20|or'd with:20
+BIC|000029
+TSTI|port:01|anded with:20|or'd with:00
+BIC|00002B
+SET0|port:00|anded with:FF|or'd with:20
+TSTI|port:01|anded with:20|or'd with:20
+BIC|00002E
+TSTI|port:01|anded with:20|or'd with:00
+BIC|000030
+SET0|port:00|anded with:FF|or'd with:10
+TSTI|port:01|anded with:20|or'd with:20
+BIC|000033
+SET0|port:00|anded with:FF|or'd with:02
+TSTI|port:01|anded with:40|or'd with:00
+BIC|000036
+TSTI|port:01|anded with:40|or'd with:40
+BIC|000038
+BUC|000000
+IUC
+IUC
+IUC
+IUC
+IUC
+
