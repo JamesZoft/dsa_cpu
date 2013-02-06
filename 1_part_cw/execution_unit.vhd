@@ -43,8 +43,9 @@ architecture syn of execution_unit is
   signal curr_rom_en: std_logic	:= 'X';
   signal next_rom_en: std_logic := 'X';
   
-  signal curr_io_out: byte_vector((ports_out - 1) downto 0) := (others => byte_null);
-  signal next_io_out: byte_vector((ports_out - 1) downto 0) := (others => byte_null);
+  signal curr_sample_io_out: byte_vector((ports_out - 1) downto 0)  := (others => byte_null);
+  signal next_sample_io_out: byte_vector((ports_out - 1) downto 0)  := (others => byte_null);
+  signal internal_io_out : byte_vector((ports_out - 1) downto 0) := (others => byte_null);
   
   signal internal_opcode: std_logic_vector(7 downto 0) := (others => 'X');
   signal next_test_opcode: std_logic_vector(7 downto 0) := (others => 'X');
@@ -71,6 +72,17 @@ architecture syn of execution_unit is
   signal delay: std_logic := '1';
   signal next_delay: std_logic := '1';
   
+  type states is (inhibit_a, inhibit_b);
+  
+  signal current_state:		states 																 := inhibit_a;
+  signal next_state:			states 																 := inhibit_a;
+  
+  signal inhibitor: std_logic := '1';
+  signal next_inhibitor: std_logic := '1';
+  
+  signal inhibit_flag: std_logic := '0';
+  signal next_inhibit_flag: std_logic := '0';
+  
   
   --signal lhs: std_logic_vector(7 downto 0);
   
@@ -79,8 +91,9 @@ architecture syn of execution_unit is
   
   
 begin
+
 rom_en <= '1';
-io_out <= curr_io_out;	
+io_out <= internal_io_out;	
 rom_addr <= std_logic_vector(next_test_pc);
 test_pc <= (unsigned(curr_test_pc)	);
 test_opcode <= internal_opcode;
@@ -99,21 +112,27 @@ test_ins_data <= internal_test_ins_data;
   	if (rst = '1') then -- If reset
   	
   		--curr_rom_en <= 'X';
-  		curr_io_out <= (others => byte_null);
+  		curr_sample_io_out <= (others => byte_null);
   		curr_test_pc <= (others => '0');
   		--first_inst <= '1';
   		test_flag <= 'X';
   		delay <= '1';
+  		current_state <= inhibit_a;
+  		inhibitor <= '1';
+  		--inhibit_flag <= '0';
   	
 		elsif clk'event and (clk = '1') then	--On clock ri
 		
 			--curr_rom_en <= next_rom_en;
-			curr_io_out <= next_io_out;
+			curr_sample_io_out <= next_sample_io_out;
 			curr_test_pc <= next_test_pc;
+			current_state <= next_state;
 			--first_inst <= next_first_inst;
 			--rom_en <= '1';
 			test_flag <= next_test_flag;
 			delay <= next_delay;
+			inhibitor <= next_inhibitor;
+			
 			
 			if(delay = '1') then
 			
@@ -127,14 +146,30 @@ test_ins_data <= internal_test_ins_data;
 		end if;
   
   end process;
+  
+  process(internal_io_out, inhibit_flag, curr_sample_io_out)
+  begin
+  
+  	if(inhibit_flag = '1') then
+  	
+  		next_sample_io_out <= curr_sample_io_out;
+  		
+  	else
+  	
+  		next_sample_io_out <= internal_io_out;
+  		
+  	end if;	
+  	
+  end process;
   		
 
   
-  process(delay, rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
+  process(delay, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
   begin
   
 			next_test_pc <= curr_test_pc;
-			next_io_out <= curr_io_out;
+			--next_io_out <= curr_io_out;
+			inhibit_flag <= '0';
 			next_test_flag <= test_flag;
 		
 			if (internal_opcode = "00000000") then --IUC
@@ -158,11 +193,13 @@ test_ins_data <= internal_test_ins_data;
 				
 				end if;
 			
-				next_test_flag <= 'X';
+				--next_test_flag <= 'X';
 				
 			elsif (internal_opcode = "00000100") then --SETO
-				next_io_out(to_integer(unsigned(io_out_port))) <= std_logic_vector((curr_io_out(to_integer(unsigned(io_out_port)))) and and_argument) xor xor_argument;
-			  next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);  	  
+				internal_io_out(to_integer(unsigned(io_out_port))) <= std_logic_vector((curr_sample_io_out(to_integer(unsigned(io_out_port)))) and and_argument) xor xor_argument;
+			  next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+			  
+			  inhibit_flag <= '1';			    	  
 				
 			elsif (internal_opcode = "00000101") then --TSTI
 			
