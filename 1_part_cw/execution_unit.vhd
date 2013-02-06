@@ -130,7 +130,7 @@ test_ins_data <= internal_test_ins_data;
   		
 
   
-  process(rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_p, internal_opcode)
+  process(rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
   begin
   
 			next_test_pc <= curr_test_pc;
