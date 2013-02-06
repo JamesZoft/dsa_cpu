@@ -154,12 +154,6 @@ begin
             read(data_line, test_ins_data_var);
             read(data_line, ld_var);
             read(data_line, t_var);
-            
-            exp_test_pc_var <= test_pc_var;
-            exp_test_opcode_var <= test_opcode_var;
-            exp_test_ins_data_var <= test_ins_data_var;
-            exp_ld_var <= ld_var;
-            exp_t_var <= t_var;
 
             if (t_var > now) then
                 wait for t_var - now;

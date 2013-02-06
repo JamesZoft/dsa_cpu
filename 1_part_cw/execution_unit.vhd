@@ -60,8 +60,8 @@ architecture syn of execution_unit is
   
   signal somesig: std_logic := '0';
   
-  signal first_inst: std_logic := '1';
-  signal next_first_inst: std_logic := '1';
+ -- signal first_inst: std_logic := '1';
+  --signal next_first_inst: std_logic := '1';
   
   signal internal_test_ins_data: std_logic_vector(word_size - 9 downto 0) := (others => 'X');
   
@@ -101,7 +101,7 @@ test_ins_data <= internal_test_ins_data;
   		--curr_rom_en <= 'X';
   		curr_io_out <= (others => byte_null);
   		curr_test_pc <= (others => '0');
-  		first_inst <= '1';
+  		--first_inst <= '1';
   		test_flag <= 'X';
   		delay <= '1';
   	
@@ -110,7 +110,7 @@ test_ins_data <= internal_test_ins_data;
 			--curr_rom_en <= next_rom_en;
 			curr_io_out <= next_io_out;
 			curr_test_pc <= next_test_pc;
-			first_inst <= next_first_inst;
+			--first_inst <= next_first_inst;
 			--rom_en <= '1';
 			test_flag <= next_test_flag;
 			delay <= next_delay;
@@ -130,7 +130,7 @@ test_ins_data <= internal_test_ins_data;
   		
 
   
-  process(rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc)
+  process(rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_p, internal_opcode)
   begin
   
 			next_test_pc <= curr_test_pc;
@@ -144,7 +144,7 @@ test_ins_data <= internal_test_ins_data;
 				--stuff
 				
 			elsif (internal_opcode = "00000010") then --BUC
-				--stuff
+				next_test_pc <= std_logic_vector(internal_test_ins_data((n_bits(rom_size) - 1) downto 0));
 				
 			elsif (internal_opcode = "00000011") then --BIC
 			
