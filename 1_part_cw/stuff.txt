@@ -8,8 +8,6 @@ ghdl -a test_bench.vhd
 ghdl -e test_bench
 ghdl -r test_bench --wave=test_bench.ghw 
 ../../../src/ieee/numeric_std-body.v93:2098:7:@0ms:(assertion warning): NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-test_bench.vhd:171:13:@4500ns:(assertion error): test_opcode = 00000101, but should be 00000100
-test_bench.vhd:174:13:@4500ns:(assertion error): test_ins_data = 000000010010000000000000, but should be 000000000000000000000000
 test_bench.vhd:177:13:@128500ns:(assertion error): ld = 00000000, but should be 10000000
 test_bench.vhd:177:13:@225500ns:(assertion error): ld = 10000000, but should be 11000000
 test_bench.vhd:168:13:@244500ns:(assertion error): test_pc = 101001, but should be 101011

@@ -117,7 +117,7 @@ test_ins_data <= internal_test_ins_data;
 			
 			if(delay = '1') then
 			
-				curr_test_pc <= "000000";
+				curr_test_pc <= (others => '0');
 				next_delay <= '0';
 				
   		end if;
@@ -130,7 +130,7 @@ test_ins_data <= internal_test_ins_data;
   		
 
   
-  process(rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
+  process(delay, rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
   begin
   
 			next_test_pc <= curr_test_pc;
@@ -160,7 +160,7 @@ test_ins_data <= internal_test_ins_data;
 			
 				next_test_flag <= 'X';
 				
-			elsif (internal_opcode = "00000100") then --SET0
+			elsif (internal_opcode = "00000100") then --SETO
 				next_io_out(to_integer(unsigned(io_out_port))) <= std_logic_vector((curr_io_out(to_integer(unsigned(io_out_port)))) and and_argument) xor xor_argument;
 			  next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);  	  
 				
@@ -180,8 +180,8 @@ test_ins_data <= internal_test_ins_data;
 				
 			end if;
 			
-			if(rst = '1') then
-				next_test_pc <= "000000";
+			if(rst = '1' or delay = '1') then
+				next_test_pc <= (others => '0');
 			end if;
 			
   end process;
