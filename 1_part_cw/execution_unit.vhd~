@@ -115,12 +115,14 @@ test_ins_data <= internal_test_ins_data;
 			test_flag <= next_test_flag;
 			delay <= next_delay;
 			
-			if(delay = '1') then
+			--if(delay = '1') then
 			
-				curr_test_pc <= "000000";
-				next_delay <= '0';
+			--	curr_test_pc <= "000000";
+			--	next_delay <= '0';
 				
-  		end if;
+  		--end if;
+  		
+  	
 			
 		end if;
   
@@ -128,7 +130,7 @@ test_ins_data <= internal_test_ins_data;
   		
 
   
-  process(test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc)
+  process(rst, test_flag, internal_test_ins_data, curr_io_out, io_out_port, and_argument, xor_argument, curr_test_pc)
   begin
   
 			next_test_pc <= curr_test_pc;
@@ -178,9 +180,9 @@ test_ins_data <= internal_test_ins_data;
 				
 			end if;
 			
-			if(rst = '1') then
-				next_test_pc <= "000000";
-			end 
+		--	if(rst = '1') then
+			--	next_test_pc <= "000000";
+		--	end if;
 			
   end process;
   

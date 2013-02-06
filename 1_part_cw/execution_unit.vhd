@@ -121,6 +121,8 @@ test_ins_data <= internal_test_ins_data;
 				next_delay <= '0';
 				
   		end if;
+  		
+  	
 			
 		end if;
   
@@ -180,7 +182,7 @@ test_ins_data <= internal_test_ins_data;
 			
 			if(rst = '1') then
 				next_test_pc <= "000000";
-			end 
+			end if;
 			
   end process;
   
