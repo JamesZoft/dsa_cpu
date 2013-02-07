@@ -83,6 +83,14 @@ architecture syn of execution_unit is
   signal inhibit_flag: std_logic := '0';
   signal next_inhibit_flag: std_logic := '0';
   
+ --signal io_out_testing_sig: std_logic_vector(byte_vector((ports_in - 1) downto 0) downto 0) := (others => '0');
+  signal and_arg_testing_sig: std_logic_vector(7 downto 0) := (others => 'X');
+  signal xor_arg_testing_sig: std_logic_vector(7 downto 0) := (others => 'X');
+  
+  signal b1: std_logic_vector(7 downto 0) := "00100100";
+  signal b2: std_logic_vector(7 downto 0) := "00100000";
+  signal b3: std_logic_vector(7 downto 0) := "00100000";
+  
   
   --signal lhs: std_logic_vector(7 downto 0);
   
@@ -164,8 +172,15 @@ test_ins_data <= internal_test_ins_data;
   		
 
   
-  process(delay, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
+  process(delay, io_in, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode)
   begin
+  
+  	--if(std_logic_vector((b1 and b2) xor b3) = "00000000") then
+  	--	test_one <= '1';
+  	--else
+ 		--	test_one <= '0';
+  --	end if;
+  		
   
 			next_test_pc <= curr_test_pc;
 			--next_io_out <= curr_io_out;
@@ -205,12 +220,18 @@ test_ins_data <= internal_test_ins_data;
 			
 				next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 
+				and_arg_testing_sig <= and_argument;
+				xor_arg_testing_sig <= xor_argument;
+								
+
+
+
 				if ((std_logic_vector((io_in(to_integer(unsigned(io_out_port))) and and_argument) xor xor_argument)) = "00000000") then --It is zero, branch
 			
 					next_test_flag <= '1';
 				
 				else --Don't branch
-			
+				
 					next_test_flag <= '0';
 			
 				end if;

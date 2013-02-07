@@ -8,29 +8,3 @@ ghdl -a test_bench.vhd
 ghdl -e test_bench
 ghdl -r test_bench --wave=test_bench.ghw 
 ../../../src/ieee/numeric_std-body.v93:2098:7:@0ms:(assertion warning): NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
-test_bench.vhd:168:13:@244500ns:(assertion error): test_pc = 101001, but should be 101011
-test_bench.vhd:174:13:@244500ns:(assertion error): test_ins_data = 000000010010000000100000, but should be 000000010010000000000000
-test_bench.vhd:168:13:@245500ns:(assertion error): test_pc = 101010, but should be 101100
-test_bench.vhd:174:13:@245500ns:(assertion error): test_ins_data = 000000000000000000101001, but should be 000000000000000000101011
-test_bench.vhd:168:13:@324500ns:(assertion error): test_pc = 101011, but should be 101101
-test_bench.vhd:171:13:@324500ns:(assertion error): test_opcode = 00000101, but should be 00000100
-test_bench.vhd:174:13:@324500ns:(assertion error): test_ins_data = 000000010010000000000000, but should be 000000001111111100100000
-test_bench.vhd:177:13:@324500ns:(assertion error): ld = 11000000, but should be 11100000
-test_bench.vhd:168:13:@325500ns:(assertion error): test_pc = 101100, but should be 101110
-test_bench.vhd:171:13:@325500ns:(assertion error): test_opcode = 00000011, but should be 00000101
-test_bench.vhd:174:13:@325500ns:(assertion error): test_ins_data = 000000000000000000101011, but should be 000000010010000000100000
-test_bench.vhd:177:13:@325500ns:(assertion error): ld = 11000000, but should be 11100000
-test_bench.vhd:168:13:@326500ns:(assertion error): test_pc = 101101, but should be 101111
-test_bench.vhd:171:13:@326500ns:(assertion error): test_opcode = 00000100, but should be 00000011
-test_bench.vhd:174:13:@326500ns:(assertion error): test_ins_data = 000000001111111100100000, but should be 000000000000000000101110
-test_bench.vhd:168:13:@444500ns:(assertion error): test_pc = 110011, but should be 110101
-test_bench.vhd:171:13:@444500ns:(assertion error): test_opcode = 00000101, but should be 00000100
-test_bench.vhd:174:13:@444500ns:(assertion error): test_ins_data = 000000010010000000100000, but should be 000000001111111100000010
-test_bench.vhd:177:13:@444500ns:(assertion error): ld = 11110000, but should be 11110010
-test_bench.vhd:168:13:@445500ns:(assertion error): test_pc = 110100, but should be 110110
-test_bench.vhd:171:13:@445500ns:(assertion error): test_opcode = 00000011, but should be 00000101
-test_bench.vhd:174:13:@445500ns:(assertion error): test_ins_data = 000000000000000000110011, but should be 000000010100000000000000
-test_bench.vhd:177:13:@445500ns:(assertion error): ld = 11110000, but should be 11110010
-test_bench.vhd:168:13:@446500ns:(assertion error): test_pc = 110101, but should be 110111
-test_bench.vhd:171:13:@446500ns:(assertion error): test_opcode = 00000100, but should be 00000011
-test_bench.vhd:174:13:@446500ns:(assertion error): test_ins_data = 000000001111111100000010, but should be 000000000000000000110110
