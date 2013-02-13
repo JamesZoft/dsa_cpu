@@ -128,7 +128,7 @@ test_ins_data <= internal_test_ins_data;
   
   end process;
   
-  process(internal_io_out, inhibit_flag, curr_sample_io_out)
+  process(internal_io_out, inhibit_flag, curr_sample_io_out) --Sampling process for io_out with an inhibitor for when we want to change the value
   begin
   
   	if(inhibit_flag = '1') then
@@ -149,7 +149,6 @@ test_ins_data <= internal_test_ins_data;
   begin
   
 			next_test_pc <= curr_test_pc;
-			--next_io_out <= curr_io_out;
 			inhibit_flag <= '0';
 			next_test_flag <= test_flag;
 		

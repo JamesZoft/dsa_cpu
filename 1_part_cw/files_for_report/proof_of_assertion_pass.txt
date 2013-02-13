@@ -1,0 +1,12 @@
+james@james-VirtualBox:~/EE3DSA/1_part_cw$ make simulation
+ghdl -a std_logic_textio.vhd
+ghdl -a util.vhd
+ghdl -a rom.vhd
+ghdl -a trigger.vhd
+ghdl -a execution_unit.vhd
+ghdl -a top_level.vhd
+ghdl -a test_bench.vhd
+ghdl -e test_bench
+ghdl -r test_bench --wave=test_bench.ghw 
+../../../src/ieee/numeric_std-body.v93:2098:7:@0ms:(assertion warning): NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+

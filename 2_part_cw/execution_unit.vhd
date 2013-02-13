@@ -11,6 +11,8 @@ entity execution_unit is
         gate_delay: time;     -- delay per gate for simulation only
         word_size:  positive; -- width of data bus in bits
         rom_size:   positive; -- size of ROM in words
+        ram_size:   positive; -- size of RAM in words
+        intr_size:  positive; -- number of interrupt lines
         ports_in:   positive; -- number of 8 bit wide input ports
         ports_out:  positive  -- number of 8 bit wide output ports
     );
@@ -25,11 +27,24 @@ entity execution_unit is
         test_pc:       out unsigned((n_bits(rom_size) - 1) downto 0)             := (others => 'X'); -- program counter
         test_opcode:   out std_logic_vector(7 downto 0)                          := (others => 'X'); -- instruction opcode
         test_ins_data: out std_logic_vector(word_size - 9 downto 0)              := (others => 'X'); -- instruction data
+        
+        test_sp:       out unsigned(        (n_bits(ram_size) - 1) downto 0) := (others => '0');          -- stack pointer
+        test_sr:       out std_logic_vector((       word_size - 1) downto 0) := (others => '0');          -- status register
 --synopsys synthesis_on
 
         rom_en:        out std_logic                                             	:=            'X';  -- ROM enable (set high when wanting to read)
         rom_addr:      out std_logic_vector((n_bits(rom_size - 1) - 1) downto 0) := (others => 'X'); -- ROM address to read
         rom_data:      in  std_logic_vector((word_size - 1) downto 0)            := (others => 'Z'); -- ROM data (the 8 digit hex word)
+        
+        ram_wr:        out std_logic                                         :=            '0';           -- RAM write
+        ram_waddr:     out std_logic_vector((n_bits(ram_size) - 1) downto 0) := (others => '0');          -- RAM address to write
+        ram_wdata:     out std_logic_vector((       word_size - 1) downto 0) := (others => '0');          -- RAM data to write
+        ram_rd:        out std_logic                                         :=            '0';           -- RAM read
+        ram_raddr:     out std_logic_vector((n_bits(ram_size) - 1) downto 0) := (others => '0');          -- RAM address to read
+        ram_rdata:     in  std_logic_vector((       word_size - 1) downto 0) := (others => 'X');          -- RAM data to read
+
+        intr:          in  std_logic_vector((       intr_size - 1) downto 0) := (others => 'X');          -- Interrupt lines
+
 
         io_in:         in  byte_vector((ports_in - 1) downto 0)                  := (others => byte_unknown); -- 8 bit wide input ports (buttons/switches/dcf/msf/rx)
         io_out:        out byte_vector((ports_out - 1) downto 0)                 := (others => byte_null)     -- 8 bit wide output ports
@@ -39,6 +54,10 @@ entity execution_unit is
 end execution_unit;
 
 architecture syn of execution_unit is
+
+	signal highestPossibleStackAddress: integer := ((n_bits(ram_size) - 1)/2);
+	signal curr_stack_pointer: std_logic_vector(((n_bits(ram_size) - 1)/2) downto 0) := std_logic_vector(to_unsigned(highestPossibleStackAddress)); -- this is "1000000"
+
 
   signal curr_rom_en: std_logic	:= 'X';
   signal next_rom_en: std_logic := 'X';
@@ -56,8 +75,8 @@ architecture syn of execution_unit is
   signal and_argument: std_logic_vector(7 downto 0) := (others => 'X');
   signal xor_argument: std_logic_vector(7 downto 0) := (others => 'X');
   
-  signal curr_test_pc: std_logic_vector((n_bits(rom_size) - 1) downto 0) := (others => 'X');
-  signal next_test_pc: std_logic_vector((n_bits(rom_size) - 1) downto 0) := (others => 'X');
+  signal curr_test_pc: std_logic_vector((n_bits(rom_size) - 1) downto 0) := "001000";
+  signal next_test_pc: std_logic_vector((n_bits(rom_size) - 1) downto 0) := "001000";
   
   signal internal_test_ins_data: std_logic_vector(word_size - 9 downto 0) := (others => 'X');
   
@@ -99,7 +118,7 @@ test_ins_data <= internal_test_ins_data;
   	if (rst = '1') then -- If reset
   	
   		curr_sample_io_out <= (others => byte_null);
-  		curr_test_pc <= (others => '0');
+  		curr_test_pc <= "001000";
   		test_flag <= 'X';
   		delay <= '1';
   		current_state <= inhibit_a;
@@ -117,7 +136,7 @@ test_ins_data <= internal_test_ins_data;
 			
 			if(delay = '1') then
 			
-				curr_test_pc <= (others => '0');
+				curr_test_pc <= "001000";
 				next_delay <= '0';
 				
   		end if;
@@ -153,7 +172,7 @@ test_ins_data <= internal_test_ins_data;
 			next_test_flag <= test_flag;
 		
 			if (internal_opcode = "00000000") then --IUC
-				--stuff
+				next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 				
 			elsif (internal_opcode = "00000001") then --HUC
 				--stuff
@@ -186,19 +205,48 @@ test_ins_data <= internal_test_ins_data;
 				if ((std_logic_vector((io_in(to_integer(unsigned(io_out_port))) and and_argument) xor xor_argument)) = "00000000") then --It is zero, branch
 			
 					next_test_flag <= '1';
+					test_sr(1) <= '1';
 				
 				else --Don't branch
 				
 					next_test_flag <= '0';
+					test_sr(1) <= '0';
 			
 				end if;
+				
+			elsif (internal_opcode = "00000110") then --BSR
+				
+				
+				
+			elsif (internal_opcode = "00000111") then --RSR
+			
+				
+			
+			elsif (internal_opcode = "00001000") then --RIR
+			
+				
+			
+			elsif (internal_opcode = "00001001") then --SEI
+				
+				test_sr(0) <= '1';
+				next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+			
+			elsif (internal_opcode = "00001010") then --CLI
+				
+				test_sr(0) <= '0';
+				next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 				
 			end if;
 			
 			if(rst = '1' or delay = '1') then
-				next_test_pc <= (others => '0');
+				next_test_pc <= "001000";
 			end if;
 			
+  end process;
+  
+  pop: process(clk)
+  begin
+  	test_sr(3) <= '1';
   end process;
   
   

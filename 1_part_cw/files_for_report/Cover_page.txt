@@ -1,0 +1,5 @@
+DSA Coursework 1 assessed parts
+
+All of the relevant parts of my coursework follow on as pages of pdf after this cover page. I wasn't sure which output you wanted (with the changed input or not) so I included both and have labelled them as such.
+
+My assembler and disassembler are at github.com/jarob22/dsa_cw1_assembler_disassembler

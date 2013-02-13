@@ -9,15 +9,15 @@ TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR 
 BIC|000007																	||Increment or branch conditionally to address00000 |
 TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00 | test center button depressed
 BIC|000009																	||Increment or branch conditionally to address00000 |	
-TSTI|port:00|anded with:F0|or'd with:70			||Test input port 00, AND with F0, OR with 70 			|		keep previous value for all except 
-BIC|00000E																	||Increment or branch conditionally to address00000
+TSTI|port:00|anded with:F0|or'd with:70			||Test input port 00, AND with F0, OR with 70 			|		check whether 6th switch on
+BIC|00000E																	||Increment or branch conditionally to address00000 | 
 BUC|000028																	||Branch unconditionally to address00002
-SET0|port:00|anded with:FF|or'd with:40			||Specify port 00, AND with FF, OR with 40
+SET0|port:00|anded with:FF|or'd with:40			||Specify port 00, AND with FF, OR with 40					|input was 7, light up led 2
 TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
 BIC|00000F																	||Increment or branch conditionally to address00000
 TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
 BIC|000011																	||Increment or branch conditionally to address00001
-TSTI|port:00|anded with:F0|or'd with:00			||Test input port 00, AND with F0, OR with 00 
+TSTI|port:00|anded with:F0|or'd with:00			||Test input port 00, AND with F0, OR with 00 			| keep all upper switches, clear bottom 4
 BIC|000016																	||Increment or branch conditionally to address00001
 BUC|00002D																	||Branch unconditionally to address00002
 SET0|port:00|anded with:FF|or'd with:20			||Specify port 00, AND with FF, OR with 20
@@ -25,7 +25,7 @@ TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR 
 BIC|000017																	||Increment or branch conditionally to address00001
 TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
 BIC|000019																	||Increment or branch conditionally to address00001
-TSTI|port:00|anded with:F0|or'd with:20			||Test input port 00, AND with F0, OR with 20
+TSTI|port:00|anded with:F0|or'd with:20			||Test input port 00, AND with F0, OR with 20				|check whether 5th switch toggled on
 BIC|00001E																	||Increment or branch conditionally to address00001
 BUC|000032																	||Branch unconditionally to address00003
 SET0|port:00|anded with:FF|or'd with:10			||Specify port 00, AND with FF, OR with 10

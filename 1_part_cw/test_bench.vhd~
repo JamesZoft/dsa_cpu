@@ -143,8 +143,11 @@ begin
         variable test_ins_data_var: std_logic_vector(word_size - 9 downto 0);
         variable ld_var:            std_logic_vector(7 downto 0);
         variable t_var:             time;
+        file     output_data_file: text;
+        variable output_data_line: line;
     begin
         file_open(data_file, "test_bench_outputs.dat", read_mode);
+        file_open(output_data_file, "output__.dat", write_mode);
 
         while not endfile(data_file) loop
             readline(data_file, data_line);
@@ -154,6 +157,27 @@ begin
             read(data_line, test_ins_data_var);
             read(data_line, ld_var);
             read(data_line, t_var);
+            
+            
+            write(output_data_line, std_logic_vector(test_pc));
+            write(output_data_line, ' ');
+            write(output_data_line, test_opcode);
+            write(output_data_line, ' ');
+            write(output_data_line, test_ins_data);
+            write(output_data_line, ' ');
+            write(output_data_line, ld);
+            write(output_data_line, ' ');
+            write(output_data_line, t_var);
+
+            write(output_data_line, now);
+
+            writeline(output_data_file, output_data_line);
+            
+            exp_test_pc_var <= test_pc_var;
+            exp_test_opcode_var <= test_opcode_var;
+            exp_test_ins_data_var <= test_ins_data_var;
+            exp_ld_var <= ld_var;
+            exp_t_var <= t_var;
 
             if (t_var > now) then
                 wait for t_var - now;
@@ -176,5 +200,8 @@ begin
         file_close(data_file);
         wait;
     end process;
+    
+    
+  
     
 end behav;
