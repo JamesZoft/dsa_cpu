@@ -1,0 +1,8 @@
+INTSTYLE=silent
+INFILE=/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.ncd
+OUTFILE=/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.bit
+FAMILY=Spartan6
+PART=xc6slx16-3csg324
+WORKINGDIR=/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw
+LICENSE=ISE
+USER_INFO=174459675_174119114_210552569_120

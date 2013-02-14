@@ -1,0 +1,995 @@
+Release 14.1 - xst P.15xf (lin)
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
+ 
+--> 
+Parameter xsthdpdir set to tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
+ 
+--> 
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "tmp/top_level.prj"
+
+---- Target Parameters
+Output File Name                   : "top_level"
+Target Device                      : xc6slx16-csg324-3
+
+---- Source Options
+Top Module Name                    : top_level
+
+---- General Options
+Library Search Order               : tmp/top_level.lso
+Optimization Goal                  : speed
+Optimization Effort                : 1
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/std_logic_textio.vhd" into library work
+Parsing package <STD_LOGIC_TEXTIO>.
+Parsing package body <STD_LOGIC_TEXTIO>.
+Parsing VHDL file "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/util.vhd" into library work
+Parsing package <util>.
+Parsing package body <util>.
+Parsing VHDL file "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/rom.vhd" into library work
+Parsing entity <rom>.
+Parsing architecture <syn> of entity <rom>.
+Parsing VHDL file "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" into library work
+Parsing entity <trigger>.
+Parsing architecture <rtl> of entity <trigger>.
+Parsing VHDL file "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/execution_unit.vhd" into library work
+Parsing entity <execution_unit>.
+Parsing architecture <syn> of entity <execution_unit>.
+Parsing VHDL file "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.vhd" into library work
+Parsing entity <top_level>.
+Parsing architecture <behav> of entity <top_level>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating entity <top_level> (architecture <behav>) with generics from library <work>.
+
+Elaborating entity <trigger> (architecture <rtl>) with generics from library <work>.
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd" Line 119. Case statement is complete. others clause is never selected
+
+Elaborating entity <rom> (architecture <syn>) with generics from library <work>.
+
+Elaborating entity <execution_unit> (architecture <syn>) with generics from library <work>.
+WARNING:HDLCompiler:1127 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/execution_unit.vhd" Line 153: Assignment to inhibit_flag ignored, since the identifier is never used
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <top_level>.
+    Related source file is "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.vhd".
+        clk_freq = 100000000
+        debounce = 10000
+        baud_rate = 57600
+        ts_digits = 13
+        fifo_size = 16
+        word_size = 32
+        rom_size = 64
+        rom_file = "rom.dat"
+        ports_in = 2
+        ports_out = 1
+INFO:Xst:3210 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.vhd" line 68: Output port <eo> of the instance <trigger_uut> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.vhd" line 68: Output port <ro> of the instance <trigger_uut> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.vhd" line 68: Output port <fo> of the instance <trigger_uut> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/top_level.vhd" line 68: Output port <wo> of the instance <trigger_uut> is unconnected or connected to loadless signal.
+    Summary:
+	no macro.
+Unit <top_level> synthesized.
+
+Synthesizing Unit <trigger>.
+    Related source file is "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/trigger.vhd".
+        clk_freq = 100000000
+        debounce = 10000
+        signals = 16
+    Found 2-bit register for signal <state<0>>.
+    Found 2-bit register for signal <state<1>>.
+    Found 2-bit register for signal <state<2>>.
+    Found 2-bit register for signal <state<3>>.
+    Found 2-bit register for signal <state<4>>.
+    Found 2-bit register for signal <state<5>>.
+    Found 2-bit register for signal <state<6>>.
+    Found 2-bit register for signal <state<7>>.
+    Found 2-bit register for signal <state<8>>.
+    Found 2-bit register for signal <state<9>>.
+    Found 2-bit register for signal <state<10>>.
+    Found 2-bit register for signal <state<11>>.
+    Found 2-bit register for signal <state<12>>.
+    Found 2-bit register for signal <state<13>>.
+    Found 2-bit register for signal <state<14>>.
+    Found 2-bit register for signal <state<15>>.
+    Found 20-bit register for signal <cnt<1>>.
+    Found 20-bit register for signal <cnt<2>>.
+    Found 20-bit register for signal <cnt<3>>.
+    Found 20-bit register for signal <cnt<4>>.
+    Found 20-bit register for signal <cnt<5>>.
+    Found 20-bit register for signal <cnt<6>>.
+    Found 20-bit register for signal <cnt<7>>.
+    Found 20-bit register for signal <cnt<8>>.
+    Found 20-bit register for signal <cnt<9>>.
+    Found 20-bit register for signal <cnt<10>>.
+    Found 20-bit register for signal <cnt<11>>.
+    Found 20-bit register for signal <cnt<12>>.
+    Found 20-bit register for signal <cnt<13>>.
+    Found 20-bit register for signal <cnt<14>>.
+    Found 20-bit register for signal <cnt<15>>.
+    Found 20-bit register for signal <cnt<0>>.
+    Found 1-bit register for signal <di_sampled<0>>.
+    Found 1-bit register for signal <di_sampled<1>>.
+    Found 1-bit register for signal <di_sampled<2>>.
+    Found 1-bit register for signal <di_sampled<3>>.
+    Found 1-bit register for signal <di_sampled<4>>.
+    Found 1-bit register for signal <di_sampled<5>>.
+    Found 1-bit register for signal <di_sampled<6>>.
+    Found 1-bit register for signal <di_sampled<7>>.
+    Found 1-bit register for signal <di_sampled<8>>.
+    Found 1-bit register for signal <di_sampled<9>>.
+    Found 1-bit register for signal <di_sampled<10>>.
+    Found 1-bit register for signal <di_sampled<11>>.
+    Found 1-bit register for signal <di_sampled<12>>.
+    Found 1-bit register for signal <di_sampled<13>>.
+    Found 1-bit register for signal <di_sampled<14>>.
+    Found 1-bit register for signal <di_sampled<15>>.
+    Found finite state machine <FSM_0> for signal <state_0>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_1> for signal <state_1>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_2> for signal <state_2>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_3> for signal <state_3>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_4> for signal <state_4>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_5> for signal <state_5>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_6> for signal <state_6>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_7> for signal <state_7>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_8> for signal <state_8>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_9> for signal <state_9>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_10> for signal <state_10>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_11> for signal <state_11>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_12> for signal <state_12>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_13> for signal <state_13>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_14> for signal <state_14>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_15> for signal <state_15>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 2                                              |
+    | Outputs            | 5                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | st_low                                         |
+    | Power Up State     | st_low                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 20-bit adder for signal <cnt[0][19]_GND_8_o_add_8_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[1][19]_GND_8_o_add_25_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[2][19]_GND_8_o_add_42_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[3][19]_GND_8_o_add_59_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[4][19]_GND_8_o_add_76_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[5][19]_GND_8_o_add_93_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[6][19]_GND_8_o_add_110_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[7][19]_GND_8_o_add_127_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[8][19]_GND_8_o_add_144_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[9][19]_GND_8_o_add_161_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[10][19]_GND_8_o_add_178_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[11][19]_GND_8_o_add_195_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[12][19]_GND_8_o_add_212_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[13][19]_GND_8_o_add_229_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[14][19]_GND_8_o_add_246_OUT> created at line 1241.
+    Found 20-bit adder for signal <cnt[15][19]_GND_8_o_add_263_OUT> created at line 1241.
+    Found 20-bit comparator greater for signal <cnt[0][19]_PWR_8_o_LessThan_8_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[1][19]_PWR_8_o_LessThan_25_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[2][19]_PWR_8_o_LessThan_42_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[3][19]_PWR_8_o_LessThan_59_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[4][19]_PWR_8_o_LessThan_76_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[5][19]_PWR_8_o_LessThan_93_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[6][19]_PWR_8_o_LessThan_110_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[7][19]_PWR_8_o_LessThan_127_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[8][19]_PWR_8_o_LessThan_144_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[9][19]_PWR_8_o_LessThan_161_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[10][19]_PWR_8_o_LessThan_178_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[11][19]_PWR_8_o_LessThan_195_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[12][19]_PWR_8_o_LessThan_212_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[13][19]_PWR_8_o_LessThan_229_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[14][19]_PWR_8_o_LessThan_246_o> created at line 106
+    Found 20-bit comparator greater for signal <cnt[15][19]_PWR_8_o_LessThan_263_o> created at line 106
+    Summary:
+	inferred  16 Adder/Subtractor(s).
+	inferred 336 D-type flip-flop(s).
+	inferred  16 Comparator(s).
+	inferred  64 Multiplexer(s).
+	inferred  16 Finite State Machine(s).
+Unit <trigger> synthesized.
+
+Synthesizing Unit <rom>.
+    Related source file is "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/rom.vhd".
+        word_size = 32
+        rom_size = 64
+        file_name = "rom.dat"
+WARNING:Xst:2999 - Signal 'data', unconnected in block 'rom', is tied to its initial value.
+    Found 64x32-bit single-port Read Only RAM <Mram_data> for signal <data>.
+    Found 1-bit register for signal <en_clk_DFF_71>.
+    Found 32-bit register for signal <Z_9_o_dff_2_OUT>.
+    Found 1-bit tristate buffer for signal <do<31>> created at line 51
+    Found 1-bit tristate buffer for signal <do<30>> created at line 51
+    Found 1-bit tristate buffer for signal <do<29>> created at line 51
+    Found 1-bit tristate buffer for signal <do<28>> created at line 51
+    Found 1-bit tristate buffer for signal <do<27>> created at line 51
+    Found 1-bit tristate buffer for signal <do<26>> created at line 51
+    Found 1-bit tristate buffer for signal <do<25>> created at line 51
+    Found 1-bit tristate buffer for signal <do<24>> created at line 51
+    Found 1-bit tristate buffer for signal <do<23>> created at line 51
+    Found 1-bit tristate buffer for signal <do<22>> created at line 51
+    Found 1-bit tristate buffer for signal <do<21>> created at line 51
+    Found 1-bit tristate buffer for signal <do<20>> created at line 51
+    Found 1-bit tristate buffer for signal <do<19>> created at line 51
+    Found 1-bit tristate buffer for signal <do<18>> created at line 51
+    Found 1-bit tristate buffer for signal <do<17>> created at line 51
+    Found 1-bit tristate buffer for signal <do<16>> created at line 51
+    Found 1-bit tristate buffer for signal <do<15>> created at line 51
+    Found 1-bit tristate buffer for signal <do<14>> created at line 51
+    Found 1-bit tristate buffer for signal <do<13>> created at line 51
+    Found 1-bit tristate buffer for signal <do<12>> created at line 51
+    Found 1-bit tristate buffer for signal <do<11>> created at line 51
+    Found 1-bit tristate buffer for signal <do<10>> created at line 51
+    Found 1-bit tristate buffer for signal <do<9>> created at line 51
+    Found 1-bit tristate buffer for signal <do<8>> created at line 51
+    Found 1-bit tristate buffer for signal <do<7>> created at line 51
+    Found 1-bit tristate buffer for signal <do<6>> created at line 51
+    Found 1-bit tristate buffer for signal <do<5>> created at line 51
+    Found 1-bit tristate buffer for signal <do<4>> created at line 51
+    Found 1-bit tristate buffer for signal <do<3>> created at line 51
+    Found 1-bit tristate buffer for signal <do<2>> created at line 51
+    Found 1-bit tristate buffer for signal <do<1>> created at line 51
+    Found 1-bit tristate buffer for signal <do<0>> created at line 51
+    Summary:
+	inferred   1 RAM(s).
+	inferred  33 D-type flip-flop(s).
+	inferred  32 Tristate(s).
+Unit <rom> synthesized.
+
+Synthesizing Unit <execution_unit>.
+    Related source file is "/users/r/reedj/EE3DSA/dsa_cpu/1_part_cw/execution_unit.vhd".
+        word_size = 32
+        rom_size = 64
+        ports_in = 2
+        ports_out = 1
+WARNING:Xst:647 - Input <en> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found 1-bit register for signal <delay>.
+    Found 6-bit register for signal <curr_test_pc>.
+    Found 8-bit register for signal <curr_sample_io_out<0>>.
+    Found 1-bit register for signal <test_flag>.
+    Found 1-bit register for signal <next_delay>.
+    Found 6-bit adder for signal <curr_test_pc[5]_GND_43_o_add_25_OUT> created at line 1241.
+    Summary:
+	inferred   1 Adder/Subtractor(s).
+	inferred  17 D-type flip-flop(s).
+	inferred  12 Multiplexer(s).
+Unit <execution_unit> synthesized.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# RAMs                                                 : 1
+ 64x32-bit single-port Read Only RAM                   : 1
+# Adders/Subtractors                                   : 17
+ 20-bit adder                                          : 16
+ 6-bit adder                                           : 1
+# Registers                                            : 39
+ 1-bit register                                        : 20
+ 20-bit register                                       : 16
+ 32-bit register                                       : 1
+ 6-bit register                                        : 1
+ 8-bit register                                        : 1
+# Comparators                                          : 16
+ 20-bit comparator greater                             : 16
+# Multiplexers                                         : 76
+ 20-bit 2-to-1 multiplexer                             : 64
+ 6-bit 2-to-1 multiplexer                              : 8
+ 8-bit 2-to-1 multiplexer                              : 4
+# Tristates                                            : 32
+ 1-bit tristate buffer                                 : 32
+# FSMs                                                 : 16
+# Xors                                                 : 2
+ 8-bit xor2                                            : 2
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+Synthesizing (advanced) Unit <rom>.
+INFO:Xst:3231 - The small RAM <Mram_data> will be implemented on LUTs in order to maximize performance and save block RAM resources. If you want to force its implementation on block, use option/constraint ram_style.
+    -----------------------------------------------------------------------
+    | ram_type           | Distributed                         |          |
+    -----------------------------------------------------------------------
+    | Port A                                                              |
+    |     aspect ratio   | 64-word x 32-bit                    |          |
+    |     weA            | connected to signal <GND>           | high     |
+    |     addrA          | connected to signal <addr>          |          |
+    |     diA            | connected to signal <GND>           |          |
+    |     doA            | connected to internal node          |          |
+    -----------------------------------------------------------------------
+Unit <rom> synthesized (advanced).
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# RAMs                                                 : 1
+ 64x32-bit single-port distributed Read Only RAM       : 1
+# Adders/Subtractors                                   : 17
+ 20-bit adder                                          : 16
+ 6-bit adder                                           : 1
+# Registers                                            : 386
+ Flip-Flops                                            : 386
+# Comparators                                          : 16
+ 20-bit comparator greater                             : 16
+# Multiplexers                                         : 76
+ 20-bit 2-to-1 multiplexer                             : 64
+ 6-bit 2-to-1 multiplexer                              : 8
+ 8-bit 2-to-1 multiplexer                              : 4
+# FSMs                                                 : 16
+# Xors                                                 : 2
+ 8-bit xor2                                            : 2
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_0> on signal <state_0[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_1> on signal <state_1[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_2> on signal <state_2[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_3> on signal <state_3[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_6> on signal <state_6[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_4> on signal <state_4[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_5> on signal <state_5[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_7> on signal <state_7[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_8> on signal <state_8[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_9> on signal <state_9[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_10> on signal <state_10[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_13> on signal <state_13[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_11> on signal <state_11[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_12> on signal <state_12[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_14> on signal <state_14[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <trigger_uut/FSM_15> on signal <state_15[1:2]> with gray encoding.
+-----------------------------
+ State           | Encoding
+-----------------------------
+ st_low          | 00
+ st_rising_edge  | 01
+ st_high         | 11
+ st_falling_edge | 10
+-----------------------------
+WARNING:Xst:1710 - FF/Latch <do_17> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_18> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_19> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_20> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_21> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_22> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_23> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_27> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_28> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_29> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_30> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <do_31> (without init value) has a constant value of 0 in block <rom>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2042 - Unit rom: 32 internal tristates are replaced by logic (pull-up yes): do<0>, do<10>, do<11>, do<12>, do<13>, do<14>, do<15>, do<16>, do<17>, do<18>, do<19>, do<1>, do<20>, do<21>, do<22>, do<23>, do<24>, do<25>, do<26>, do<27>, do<28>, do<29>, do<2>, do<30>, do<31>, do<3>, do<4>, do<5>, do<6>, do<7>, do<8>, do<9>.
+
+Optimizing unit <top_level> ...
+
+Optimizing unit <trigger> ...
+
+Optimizing unit <rom> ...
+
+Optimizing unit <execution_unit> ...
+WARNING:Xst:1710 - FF/Latch <rom_unit/en_clk_DFF_71> (without init value) has a constant value of 1 in block <top_level>. This FF/Latch will be trimmed during the optimization process.
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 0) on block top_level, actual ratio is 10.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 405
+ Flip-Flops                                            : 405
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Design Summary                             *
+=========================================================================
+
+Top Level Output File Name         : top_level.ngc
+
+Primitive and Black Box Usage:
+------------------------------
+# BELS                             : 1396
+#      GND                         : 1
+#      INV                         : 16
+#      LUT1                        : 304
+#      LUT2                        : 5
+#      LUT3                        : 5
+#      LUT4                        : 53
+#      LUT5                        : 323
+#      LUT6                        : 63
+#      MUXCY                       : 304
+#      MUXF7                       : 1
+#      VCC                         : 1
+#      XORCY                       : 320
+# FlipFlops/Latches                : 405
+#      FD                          : 21
+#      FDC                         : 367
+#      FDP                         : 17
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 37
+#      IBUF                        : 16
+#      OBUF                        : 21
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx16csg324-3 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:             405  out of  18224     2%  
+ Number of Slice LUTs:                  769  out of   9112     8%  
+    Number used as Logic:               769  out of   9112     8%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:    791
+   Number with an unused Flip Flop:     386  out of    791    48%  
+   Number with an unused LUT:            22  out of    791     2%  
+   Number of fully used LUT-FF pairs:   383  out of    791    48%  
+   Number of unique control sets:         2
+
+IO Utilization: 
+ Number of IOs:                          38
+ Number of bonded IOBs:                  38  out of    232    16%  
+
+Specific Feature Utilization:
+ Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+Timing Report
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+clk                                | BUFGP                  | 405   |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -3
+
+   Minimum period: 4.781ns (Maximum Frequency: 209.168MHz)
+   Minimum input arrival time before clock: 6.460ns
+   Maximum output required time after clock: 6.229ns
+   Maximum combinational path delay: No path found
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 4.781ns (frequency: 209.168MHz)
+  Total number of paths / destination ports: 11114 / 389
+-------------------------------------------------------------------------
+Delay:               4.781ns (Levels of Logic = 4)
+  Source:            rom_unit/do_24 (FF)
+  Destination:       rom_unit/do_26 (FF)
+  Source Clock:      clk rising
+  Destination Clock: clk rising
+
+  Data Path: rom_unit/do_24 to rom_unit/do_26
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q               8   0.447   1.031  rom_unit/do_24 (rom_unit/do_24)
+     LUT4:I1->O            7   0.205   0.774  execution_unit/Mmux_next_test_pc111 (execution_unit/Mmux_next_test_pc11)
+     LUT6:I5->O            1   0.205   0.580  execution_unit/Mmux_next_test_pc61 (execution_unit/Mmux_next_test_pc6)
+     LUT5:I4->O           17   0.205   1.028  execution_unit/Mmux_next_test_pc62 (eu_rom_addr<5>)
+     LUT6:I5->O            1   0.205   0.000  rom_unit_Mram_data71 (rom_unit/_n0039<7>)
+     FD:D                      0.102          rom_unit/do_7
+    ----------------------------------------
+    Total                      4.781ns (1.369ns logic, 3.412ns route)
+                                       (28.6% logic, 71.4% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
+  Total number of paths / destination ports: 529 / 427
+-------------------------------------------------------------------------
+Offset:              6.460ns (Levels of Logic = 4)
+  Source:            sw<0> (PAD)
+  Destination:       rom_unit/do_26 (FF)
+  Destination Clock: clk rising
+
+  Data Path: sw<0> to rom_unit/do_26
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O           391   1.222   2.183  sw_0_IBUF (sw_0_IBUF)
+     LUT2:I0->O            3   0.203   0.995  execution_unit/Mmux_next_test_pc31 (execution_unit/Mmux_next_test_pc1)
+     LUT6:I1->O           16   0.203   1.349  execution_unit/Mmux_next_test_pc34 (eu_rom_addr<2>)
+     LUT6:I1->O            1   0.203   0.000  rom_unit_Mram_data261 (rom_unit/_n0039<26>)
+     FD:D                      0.102          rom_unit/do_26
+    ----------------------------------------
+    Total                      6.460ns (1.933ns logic, 4.527ns route)
+                                       (29.9% logic, 70.1% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
+  Total number of paths / destination ports: 56 / 8
+-------------------------------------------------------------------------
+Offset:              6.229ns (Levels of Logic = 3)
+  Source:            rom_unit/do_25 (FF)
+  Destination:       ld<7> (PAD)
+  Source Clock:      clk rising
+
+  Data Path: rom_unit/do_25 to ld<7>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q              12   0.447   1.137  rom_unit/do_25 (rom_unit/do_25)
+     LUT4:I1->O            8   0.205   1.050  execution_unit/Mmux_internal_io_out<0>111 (execution_unit/Mmux_internal_io_out<0>11)
+     LUT4:I0->O            2   0.203   0.616  execution_unit/Mmux_internal_io_out<0>81 (ld_7_OBUF)
+     OBUF:I->O                 2.571          ld_7_OBUF (ld<7>)
+    ----------------------------------------
+    Total                      6.229ns (3.426ns logic, 2.803ns route)
+                                       (55.0% logic, 45.0% route)
+
+=========================================================================
+
+Cross Clock Domains Report:
+--------------------------
+
+Clock to Setup on destination clock clk
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+clk            |    4.781|         |         |         |
+---------------+---------+---------+---------+---------+
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 16.00 secs
+Total CPU time to Xst completion: 14.09 secs
+ 
+--> 
+
+
+Total memory usage is 123780 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :   17 (   0 filtered)
+Number of infos    :    5 (   0 filtered)
+
