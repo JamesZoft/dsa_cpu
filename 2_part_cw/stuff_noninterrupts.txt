@@ -1,0 +1,14 @@
+ghdl -a std_logic_textio.vhd
+ghdl -a util.vhd
+ghdl -a ram.vhd
+ghdl -a reset.vhd
+ghdl -a rom.vhd
+ghdl -a timer.vhd
+ghdl -a trigger.vhd
+ghdl -a execution_unit.vhd
+ghdl -a top_level.vhd
+ghdl -a test_bench.vhd
+ghdl -e test_bench
+ghdl -r test_bench --wave=test_bench.ghw 
+test_bench.vhd:238:13:@500ns:(assertion error): sr = 0000000000000000000000000000000U, but should be 00000000000000000000000000000000
+test_bench.vhd:247:13:@500ns:(assertion error): rom_data = 00001000000000000000000000000000, but should be 00000000000000000000000000000000
