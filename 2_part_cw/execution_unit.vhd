@@ -183,7 +183,7 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 					ram_wr <= '1'; --enable RAM writing
 					ram_waddr <= std_logic_vector(curr_test_sp);
 					ram_wdata((n_bits(rom_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_pc)); 
-					ram_wdata((word_size - 1) downto (word_size - 1)/2) <= curr_test_sr;
+					ram_wdata((word_size - 1) downto (word_size/2)) <= curr_test_sr(15 downto 0);
 					next_test_sp <= (curr_test_sp - 1); 
 					
 				end if;
@@ -547,7 +547,7 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 			
 				elsif (internal_opcode = "00001001") then --SEI
 				
-					--next_test_sr(0) <= '1';
+					next_test_sr(0) <= '1';
 					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 			
 				elsif (internal_opcode = "00001010") then --CLI
