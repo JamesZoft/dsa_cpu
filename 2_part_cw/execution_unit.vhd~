@@ -171,7 +171,7 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 			internal_io_out <= curr_sample_io_out;
 			next_interrupt_register <= curr_interrupt_register;
 			
-		--	if(curr_test_sr(0) = '1') then
+			if(intr /= "00000000") or (curr_interrupt_register /= "00000000") then
 			
 				if(intr /= "00000000") then -- If we get an interrupt
 			
@@ -290,9 +290,10 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 						end if;			
 					
 					end if;
+			
+				end if;		
 					
-					
-				elsif(curr_interrupt_register /= "00000000") then
+				if(curr_interrupt_register /= "00000000") then
 					
 					next_test_sr(0) <= '0';
 				
@@ -411,94 +412,96 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 						end if;			
 					
 					end if;
+					
+				end if;
 				
 				
 				
-				--else
+			else
+				
 			
-					if (internal_opcode = "00000000") then --IUC
-						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				
-					elsif (internal_opcode = "00000001") then --HUC
-						--stuff
-				
-					elsif (internal_opcode = "00000010") then --BUC
+		
+				if (internal_opcode = "00000000") then --IUC
+					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+			
+				elsif (internal_opcode = "00000001") then --HUC
+					--stuff
+			
+				elsif (internal_opcode = "00000010") then --BUC
+					next_test_pc <= std_logic_vector(internal_test_ins_data((n_bits(rom_size) - 1) downto 0));
+			
+				elsif (internal_opcode = "00000011") then --BIC
+		
+					if(test_flag = '1') then
+																							
 						next_test_pc <= std_logic_vector(internal_test_ins_data((n_bits(rom_size) - 1) downto 0));
-				
-					elsif (internal_opcode = "00000011") then --BIC
 			
-						if(test_flag = '1') then
-																								
-							next_test_pc <= std_logic_vector(internal_test_ins_data((n_bits(rom_size) - 1) downto 0));
-				
-						elsif(test_flag = '0') then
+					elsif(test_flag = '0') then
 
-							next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				
-						end if;
-				
-					elsif (internal_opcode = "00000100") then --SETO
-						internal_io_out(to_integer(unsigned(io_out_port))) <= std_logic_vector((curr_sample_io_out(to_integer(unsigned(io_out_port)))) and and_argument) xor xor_argument;
-						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-					
-						inhibit_flag <= '1';			    	  
-				
-					elsif (internal_opcode = "00000101") then --TSTI
-			
-						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-
-						if ((std_logic_vector((io_in(to_integer(unsigned(io_out_port))) and and_argument) xor xor_argument)) = "00000000") then --It is zero, branch
-			
-							next_test_flag <= '1';
-							next_test_sr(1) <= '1';
-				
-						else --Don't branch
-				
-							next_test_flag <= '0';
-							next_test_sr(1) <= '0';
-			
-						end if;
-				
-					elsif (internal_opcode = "00000110") then --BSR
-				
-						ram_wr <= '1'; --enable RAM writing
-						ram_waddr <= std_logic_vector(curr_test_sp); --set the first RAM address to be written to, to be the current stack pointer (initialised to "1111111")
-						ram_wdata((n_bits(rom_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_pc) + 1); --set the data to be written to the current program counter + 1
-						next_test_sp <= (curr_test_sp - 1); --decrement the stack pointer
-						next_test_pc <= std_logic_vector(internal_test_ins_data((n_bits(rom_size) - 1) downto 0)); --set the program counter to the address of the BSR command
-				
-					elsif (internal_opcode = "00000111") then --RSR
-						 --set the ram address to be written to, to be the current stack pointer - 1 (curr stack pointer points to the next empty address in RAM)
-				    
-				    next_test_pc <= ram_rdata((n_bits(rom_size) - 1) downto 0); --set program counter to the data stored in ram 
-				    next_test_sp <= (curr_test_sp + 1); --increment the stack pointer
-					
-			
-					elsif (internal_opcode = "00001000") then --RIR
-			
-						next_test_pc <= ram_rdata((n_bits(rom_size) - 1) downto 0); --set program counter to the data stored in ram 
-				    next_test_sp <= (curr_test_sp + 1); --increment the stack pointer
-				    next_test_sr(0) <= '1';
-			
-					elsif (internal_opcode = "00001001") then --SEI
-				
-						next_test_sr(0) <= '1';
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 			
-					elsif (internal_opcode = "00001010") then --CLI
-				
-						next_test_sr(0) <= '0';
-						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				
 					end if;
-				
-				end if;
 			
-				if(rst = '1') then
-					next_test_pc <= "001000";
+				elsif (internal_opcode = "00000100") then --SETO
+					internal_io_out(to_integer(unsigned(io_out_port))) <= std_logic_vector((curr_sample_io_out(to_integer(unsigned(io_out_port)))) and and_argument) xor xor_argument;
+					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				
+					inhibit_flag <= '1';			    	  
+			
+				elsif (internal_opcode = "00000101") then --TSTI
+		
+					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+
+					if ((std_logic_vector((io_in(to_integer(unsigned(io_out_port))) and and_argument) xor xor_argument)) = "00000000") then --It is zero, branch
+		
+						next_test_flag <= '1';
+						next_test_sr(1) <= '1';
+			
+					else --Don't branch
+			
+						next_test_flag <= '0';
+						next_test_sr(1) <= '0';
+		
+					end if;
+			
+				elsif (internal_opcode = "00000110") then --BSR
+			
+					ram_wr <= '1'; --enable RAM writing
+					ram_waddr <= std_logic_vector(curr_test_sp); --set the first RAM address to be written to, to be the current stack pointer (initialised to "1111111")
+					ram_wdata((n_bits(rom_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_pc) + 1); --set the data to be written to the current program counter + 1
+					next_test_sp <= (curr_test_sp - 1); --decrement the stack pointer
+					next_test_pc <= std_logic_vector(internal_test_ins_data((n_bits(rom_size) - 1) downto 0)); --set the program counter to the address of the BSR command
+			
+				elsif (internal_opcode = "00000111") then --RSR
+					 --set the ram address to be written to, to be the current stack pointer - 1 (curr stack pointer points to the next empty address in RAM)
+			    
+			    next_test_pc <= ram_rdata((n_bits(rom_size) - 1) downto 0); --set program counter to the data stored in ram 
+			    next_test_sp <= (curr_test_sp + 1); --increment the stack pointer
+				
+		
+				elsif (internal_opcode = "00001000") then --RIR
+		
+					next_test_pc <= ram_rdata((n_bits(rom_size) - 1) downto 0); --set program counter to the data stored in ram 
+			    next_test_sp <= (curr_test_sp + 1); --increment the stack pointer
+			    next_test_sr(0) <= '1';
+		
+				elsif (internal_opcode = "00001001") then --SEI
+			
+					next_test_sr(0) <= '1';
+					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+		
+				elsif (internal_opcode = "00001010") then --CLI
+			
+					next_test_sr(0) <= '0';
+					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+			
 				end if;
 				
-			--end if;
+			end if;
+			
+			if(rst = '1') then
+				next_test_pc <= "001000";
+			end if;
 			
   end process;
   
