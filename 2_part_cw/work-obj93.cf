@@ -1,31 +1,31 @@
 v 3
-file . "top_level.vhd" "20130214105941.000" "20130214122834.176":
-  entity top_level at 1( 0) + 0 on 2573;
-  architecture behav of top_level at 66( 3799) + 0 on 2574;
-file . "trigger.vhd" "20130214105942.000" "20130214122833.439":
-  entity trigger at 1( 0) + 0 on 2569;
-  architecture rtl of trigger at 31( 1321) + 0 on 2570;
-file . "rom.vhd" "20130214105941.000" "20130214122833.124":
-  entity rom at 1( 0) + 0 on 2565;
-  architecture syn of rom at 29( 859) + 0 on 2566;
-file . "ram.vhd" "20130214105941.000" "20130214122832.813":
-  entity ram at 1( 0) + 0 on 2561;
-  architecture syn of ram at 34( 1176) + 0 on 2562;
-file . "std_logic_textio.vhd" "20130214105941.000" "20130214122831.976":
-  package std_logic_textio at 19( 657) + 0 on 2557 body;
-  package body std_logic_textio at 69( 2830) + 0 on 2558;
-file . "util.vhd" "20130214105942.000" "20130214122832.570":
-  package util at 1( 0) + 0 on 2559 body;
-  package body util at 80( 3242) + 0 on 2560;
-file . "reset.vhd" "20130214105941.000" "20130214122832.974":
-  entity reset at 1( 0) + 0 on 2563;
-  architecture rtl of reset at 24( 459) + 0 on 2564;
-file . "timer.vhd" "20130214105941.000" "20130214122833.265":
-  entity timer at 1( 0) + 0 on 2567;
-  architecture rtl of timer at 25( 508) + 0 on 2568;
-file . "execution_unit.vhd" "20130214122827.000" "20130214122833.706":
-  entity execution_unit at 1( 0) + 0 on 2571;
-  architecture syn of execution_unit at 56( 3212) + 0 on 2572;
-file . "test_bench.vhd" "20130214105941.000" "20130214122834.574":
-  entity test_bench at 1( 0) + 0 on 2575;
-  architecture behav of test_bench at 12( 179) + 0 on 2576;
+file . "top_level.vhd" "20130214105941.000" "20130214124622.409":
+  entity top_level at 1( 0) + 0 on 2593;
+  architecture behav of top_level at 66( 3799) + 0 on 2594;
+file . "trigger.vhd" "20130214105942.000" "20130214124621.657":
+  entity trigger at 1( 0) + 0 on 2589;
+  architecture rtl of trigger at 31( 1321) + 0 on 2590;
+file . "rom.vhd" "20130214105941.000" "20130214124621.437":
+  entity rom at 1( 0) + 0 on 2585;
+  architecture syn of rom at 29( 859) + 0 on 2586;
+file . "ram.vhd" "20130214105941.000" "20130214124621.176":
+  entity ram at 1( 0) + 0 on 2581;
+  architecture syn of ram at 34( 1176) + 0 on 2582;
+file . "std_logic_textio.vhd" "20130214105941.000" "20130214124620.578":
+  package std_logic_textio at 19( 657) + 0 on 2577 body;
+  package body std_logic_textio at 69( 2830) + 0 on 2578;
+file . "util.vhd" "20130214105942.000" "20130214124620.946":
+  package util at 1( 0) + 0 on 2579 body;
+  package body util at 80( 3242) + 0 on 2580;
+file . "reset.vhd" "20130214105941.000" "20130214124621.316":
+  entity reset at 1( 0) + 0 on 2583;
+  architecture rtl of reset at 24( 459) + 0 on 2584;
+file . "timer.vhd" "20130214105941.000" "20130214124621.554":
+  entity timer at 1( 0) + 0 on 2587;
+  architecture rtl of timer at 25( 508) + 0 on 2588;
+file . "execution_unit.vhd" "20130214122827.000" "20130214124621.993":
+  entity execution_unit at 1( 0) + 0 on 2591;
+  architecture syn of execution_unit at 56( 3212) + 0 on 2592;
+file . "test_bench.vhd" "20130214105941.000" "20130214124622.747":
+  entity test_bench at 1( 0) + 0 on 2595;
+  architecture behav of test_bench at 12( 179) + 0 on 2596;
