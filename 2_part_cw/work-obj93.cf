@@ -1,4 +1,5 @@
 v 3
+<<<<<<< HEAD
 file . "top_level.vhd" "20130214105941.000" "20130214124622.409":
   entity top_level at 1( 0) + 0 on 2593;
   architecture behav of top_level at 66( 3799) + 0 on 2594;
@@ -29,3 +30,35 @@ file . "execution_unit.vhd" "20130214122827.000" "20130214124621.993":
 file . "test_bench.vhd" "20130214105941.000" "20130214124622.747":
   entity test_bench at 1( 0) + 0 on 2595;
   architecture behav of test_bench at 12( 179) + 0 on 2596;
+=======
+file . "top_level.vhd" "20130212090429.000" "20130219190743.651":
+  entity top_level at 1( 0) + 0 on 4221;
+  architecture behav of top_level at 66( 3799) + 0 on 4222;
+file . "trigger.vhd" "20120916144722.000" "20130219190743.306":
+  entity trigger at 1( 0) + 0 on 4217;
+  architecture rtl of trigger at 31( 1321) + 0 on 4218;
+file . "rom.vhd" "20130211114206.000" "20130219190743.239":
+  entity rom at 1( 0) + 0 on 4213;
+  architecture syn of rom at 29( 859) + 0 on 4214;
+file . "ram.vhd" "20130211115957.000" "20130219190743.158":
+  entity ram at 1( 0) + 0 on 4209;
+  architecture syn of ram at 34( 1176) + 0 on 4210;
+file . "std_logic_textio.vhd" "20130126230505.000" "20130219190742.973":
+  package std_logic_textio at 19( 657) + 0 on 4205 body;
+  package body std_logic_textio at 69( 2830) + 0 on 4206;
+file . "util.vhd" "20120916161847.000" "20130219190743.099":
+  package util at 1( 0) + 0 on 4207 body;
+  package body util at 80( 3242) + 0 on 4208;
+file . "reset.vhd" "20130212084015.000" "20130219190743.208":
+  entity reset at 1( 0) + 0 on 4211;
+  architecture rtl of reset at 24( 459) + 0 on 4212;
+file . "timer.vhd" "20130211124604.000" "20130219190743.275":
+  entity timer at 1( 0) + 0 on 4215;
+  architecture rtl of timer at 25( 508) + 0 on 4216;
+file . "execution_unit.vhd" "20130219190729.000" "20130219190743.400":
+  entity execution_unit at 1( 0) + 0 on 4219;
+  architecture syn of execution_unit at 56( 3212) + 0 on 4220;
+file . "test_bench.vhd" "20130212094327.000" "20130219190743.785":
+  entity test_bench at 1( 0) + 0 on 4223;
+  architecture behav of test_bench at 12( 179) + 0 on 4224;
+>>>>>>> a2a261b9f0b9f54948e54997db4d45ad4190fb2d
