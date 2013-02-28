@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="HDLCompiler" num="871" delta="new" >"/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/execution_unit.vhd" Line 87: Using initial value <arg fmt="%s" index="1">&quot;000000001000&quot;</arg> for <arg fmt="%s" index="2">start_of_rom</arg> since it is never assigned
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="634" delta="new" >"/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd" Line 112: Net &lt;<arg fmt="%s" index="1">eu_intr[7]</arg>&gt; does not have a driver.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">142</arg>: Output port &lt;<arg fmt="%s" index="3">eo</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">reset_debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">142</arg>: Output port &lt;<arg fmt="%s" index="3">ro</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">reset_debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">142</arg>: Output port &lt;<arg fmt="%s" index="3">fo</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">reset_debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">142</arg>: Output port &lt;<arg fmt="%s" index="3">wo</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">reset_debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">191</arg>: Output port &lt;<arg fmt="%s" index="3">eo</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">191</arg>: Output port &lt;<arg fmt="%s" index="3">ro</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">191</arg>: Output port &lt;<arg fmt="%s" index="3">fo</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="info" file="Xst" num="3210" delta="new" >&quot;<arg fmt="%s" index="1">/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.vhd</arg>&quot; line <arg fmt="%s" index="2">191</arg>: Output port &lt;<arg fmt="%s" index="3">wo</arg>&gt; of the instance &lt;<arg fmt="%s" index="4">debounce_unit</arg>&gt; is unconnected or connected to loadless signal.
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">eu_intr&lt;7:2&gt;</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">top_level</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">000000</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">reg_b_do</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">reg_c_do</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">ram_rdata&lt;31:12&gt;</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">alu_s_do</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">en</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">alu_c_out</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">reg_a_addr</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">00000000</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="653" delta="new" >Signal &lt;<arg fmt="%s" index="1">reg_a_di</arg>&gt; is used but never assigned. This sourceless signal will be automatically connected to value <arg fmt="%s" index="2">GND</arg>.
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">reg_b_addr</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">00000000</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">reg_c_addr</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">00000000</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">alu_a_di</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">00000000000000000000000000000000</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">alu_b_di</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">00000000000000000000000000000000</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">reg_a_wr</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">reg_b_rd</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">reg_c_rd</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">alu_si</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">alu_a_c</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">alu_b_c</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">alu_c_in</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">execution_unit</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="warning" file="Xst" num="2404" delta="new" > FFs/Latches &lt;<arg fmt="%s" index="1">curr_test_sr</arg>&lt;<arg fmt="%d" index="2">31</arg>:<arg fmt="%d" index="3">2</arg>&gt;&gt; (without init value) have a constant value of <arg fmt="%c" index="4">0</arg> in block &lt;<arg fmt="%s" index="5">execution_unit</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">a_di</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">b_di</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">si</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">a_c</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">b_c</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="647" delta="new" >Input &lt;<arg fmt="%s" index="1">c_in</arg>&gt; is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+</msg>
+
+<msg type="warning" file="Xst" num="2935" delta="new" >Signal &apos;<arg fmt="%s" index="1">c_out</arg>&apos;, unconnected in block &apos;<arg fmt="%s" index="2">alu</arg>&apos;, is tied to its initial value (<arg fmt="%s" index="3">0</arg>).
+</msg>
+
+<msg type="info" file="Xst" num="3226" delta="new" >The RAM &lt;<arg fmt="%s" index="1">Mram_data</arg>&gt; will be implemented as a BLOCK RAM, absorbing the following register(s):</msg>
+
+<msg type="info" file="Xst" num="3226" delta="new" >The RAM &lt;<arg fmt="%s" index="1">Mram_data</arg>&gt; will be implemented as a BLOCK RAM, absorbing the following register(s):</msg>
+
+<msg type="info" file="Xst" num="3226" delta="new" >The RAM &lt;<arg fmt="%s" index="1">Mram_data1</arg>&gt; will be implemented as a BLOCK RAM, absorbing the following register(s):</msg>
+
+<msg type="warning" file="Xst" num="1293" delta="new" >FF/Latch &lt;<arg fmt="%s" index="1">curr_interrupt_register_2</arg>&gt; has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">execution_unit</arg>&gt;. This FF/Latch will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="1896" delta="new" >Due to other FF/Latch trimming, FF/Latch &lt;<arg fmt="%s" index="1">curr_interrupt_register_3</arg>&gt; has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">execution_unit</arg>&gt;. This FF/Latch will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="1896" delta="new" >Due to other FF/Latch trimming, FF/Latch &lt;<arg fmt="%s" index="1">curr_interrupt_register_4</arg>&gt; has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">execution_unit</arg>&gt;. This FF/Latch will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="1896" delta="new" >Due to other FF/Latch trimming, FF/Latch &lt;<arg fmt="%s" index="1">curr_interrupt_register_5</arg>&gt; has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">execution_unit</arg>&gt;. This FF/Latch will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="1896" delta="new" >Due to other FF/Latch trimming, FF/Latch &lt;<arg fmt="%s" index="1">curr_interrupt_register_6</arg>&gt; has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">execution_unit</arg>&gt;. This FF/Latch will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="1896" delta="new" >Due to other FF/Latch trimming, FF/Latch &lt;<arg fmt="%s" index="1">curr_interrupt_register_7</arg>&gt; has a constant value of <arg fmt="%d" index="2">0</arg> in block &lt;<arg fmt="%s" index="3">execution_unit</arg>&gt;. This FF/Latch will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="2677" delta="new" >Node &lt;<arg fmt="%s" index="1">register_unit/Mram_data1</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">top_level</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="2677" delta="new" >Node &lt;<arg fmt="%s" index="1">register_unit/Mram_data</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">top_level</arg>&gt;.
+</msg>
+
+<msg type="warning" file="Xst" num="2677" delta="new" >Node &lt;<arg fmt="%s" index="1">ram_unit/Mram_data6</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">top_level</arg>&gt;.
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="new" >The FF/Latch &lt;<arg fmt="%s" index="1">timer_unit/cnt_0</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">top_level</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">FF/Latch</arg>, which will be removed : <arg fmt="%s" index="4">&lt;sseg_unit/cnt_0&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="new" >The FF/Latch &lt;<arg fmt="%s" index="1">timer_unit/cnt_1</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">top_level</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">FF/Latch</arg>, which will be removed : <arg fmt="%s" index="4">&lt;sseg_unit/cnt_1&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="new" >The FF/Latch &lt;<arg fmt="%s" index="1">timer_unit/cnt_2</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">top_level</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">FF/Latch</arg>, which will be removed : <arg fmt="%s" index="4">&lt;sseg_unit/cnt_2&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="new" >The FF/Latch &lt;<arg fmt="%s" index="1">timer_unit/cnt_3</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">top_level</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">FF/Latch</arg>, which will be removed : <arg fmt="%s" index="4">&lt;sseg_unit/cnt_3&gt; </arg>
+</msg>
+
+<msg type="info" file="Xst" num="2261" delta="new" >The FF/Latch &lt;<arg fmt="%s" index="1">execution_unit/test_flag</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">top_level</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">FF/Latch</arg>, which will be removed : <arg fmt="%s" index="4">&lt;execution_unit/curr_test_sr_1&gt; </arg>
+</msg>
+
+</messages>
+

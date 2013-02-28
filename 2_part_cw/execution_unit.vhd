@@ -81,24 +81,14 @@ architecture syn of execution_unit is
   signal test_flag: std_logic := 'X';
   signal next_test_flag: std_logic := 'X';
   
-  signal inhibit_flag: std_logic := '0';
-  
   signal curr_test_sp: unsigned((n_bits(ram_size) - 1) downto 0) := (others => '1');
   signal next_test_sp: unsigned((n_bits(ram_size) - 1) downto 0) := (others => '1');
-  
-  signal b: unsigned(6 downto 0) := (others => '0');
-  signal c: std_logic_vector(6 downto 0) := (others => '0');
   
   signal curr_test_sr: std_logic_vector((word_size - 1) downto 0) := (others => '0');
   signal next_test_sr: std_logic_vector((word_size - 1) downto 0) := (others => '0');
   
   signal curr_interrupt_register: std_logic_vector(7 downto 0) := (others => '0');
   signal next_interrupt_register: std_logic_vector(7 downto 0) := (others => '0');
-  
-  signal blah: std_logic := '0';
-  signal blaha: std_logic := '0';
-  signal blahb: std_logic := '0';
-  signal blahc: std_logic := '0';
 
 begin
 
@@ -120,7 +110,6 @@ internal_test_ins_data <= rom_data(23 downto 0);
 
 ram_rd <= '1';
 ram_raddr <=  std_logic_vector(curr_test_sp + 1);
---curr_interrupt_register <= intr;
 
 
   
@@ -150,20 +139,19 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
   
   end process;
   
-  process(internal_io_out, inhibit_flag, curr_sample_io_out) --Sampling process for io_out with an inhibitor for when we want to change the value
+  process(internal_io_out,  curr_sample_io_out) --Sampling process for io_out with an inhibitor for when we want to change the value
   begin
   	
   		next_sample_io_out <= internal_io_out;
   	
   end process;
   
-  process(curr_interrupt_register, ram_rdata, curr_test_sp, io_in, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode, curr_test_sp, curr_test_sr)
+  process(intr, curr_interrupt_register, ram_rdata, curr_test_sp, io_in, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode, curr_test_sp, curr_test_sr)
   begin
   
 			next_test_pc <= curr_test_pc;
 			next_test_sp <= curr_test_sp;
 			next_test_sr <= curr_test_sr;
-			inhibit_flag <= '0';
 			next_test_flag <= test_flag;
 			ram_wr <= '0';
 			ram_waddr <= (others => '0');
@@ -171,255 +159,90 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 			internal_io_out <= curr_sample_io_out;
 			next_interrupt_register <= curr_interrupt_register;
 			
-			if((intr /= "00000000") or (curr_interrupt_register /= "00000000")) and (curr_test_sr(0) = '1') then
-			
-				if(intr /= "00000000") then -- If we get an interrupt
-			
-					next_test_sr(0) <= '0';
-				
-					 --If interrupts are enabled: disable them, enable ram wr, set addr to curr stack pointer, set data to current sp, decrement sp
-					if(curr_test_sr(0) = '1') then
-				
-						blah <= '1';
-						ram_wr <= '1'; --enable RAM writing
-						ram_waddr <= std_logic_vector(curr_test_sp);
-						ram_wdata((n_bits(rom_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_pc)); 
-						ram_wdata((word_size - 1) downto (word_size/2)) <= curr_test_sr(15 downto 0);
-						next_test_sp <= (curr_test_sp - 1); 
-					
-					end if;
-				
-					--For each digit in intr, check whether interrupts are enabled, if so, set pc to 
-					
-					if(intr = "10000000") then
-					
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(7, n_bits(rom_size - 1))); 
-						
-						else
-			
-							next_interrupt_register(7) <= '1';
-						
-						end if;
-						
-					elsif(intr = "01000000") then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(6, n_bits(rom_size - 1)));	
-												
-						else
-			
-							next_interrupt_register(6) <= '1';
-						
-						end if;				
-				
-					elsif(intr = "00100000") then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(5, n_bits(rom_size - 1)));
-												
-						else
-			
-							next_interrupt_register(5) <= '1'; 	
-						
-						end if;				
-			
-					elsif(intr = "00010000") then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(4, n_bits(rom_size - 1))); 		
-												
-						else
-			
-							next_interrupt_register(4) <= '1';		
-						
-						end if;	
-				
-					elsif(intr = "00001000") then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(3, n_bits(rom_size - 1))); 	
-												
-						else
-			
-							next_interrupt_register(3) <= '1';		
-						
-						end if;		
-				
-					elsif(intr = "00000100") then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(2, n_bits(rom_size - 1))); 	
-												
-						else
-			
-							next_interrupt_register(2) <= '1';			
-						
-						end if;						
-				
-					elsif(intr = "00000010") then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(1, n_bits(rom_size - 1))); 	
-												
-						else
-			
-							next_interrupt_register(1) <= '1';	
-						
-						end if;								
-				
-					elsif(intr = "00000001") then
-			
-						if(curr_test_sr(0) = '1') then
-					
-							blaha <= '1';
-		
-							next_test_pc <= std_logic_vector(to_unsigned(0, n_bits(rom_size - 1))); 	
-												
-						else
-			
-							next_interrupt_register(0) <= '1';	
-						
-						end if;			
-					
-					end if;
-			
-				end if;		
-					
-				if(curr_interrupt_register /= "00000000") then
-					
-					next_test_sr(0) <= '0';
-				
-					if(curr_test_sr(0) = '1') then
-				
-						blah <= '1';
-						ram_wr <= '1'; --enable RAM writing
-						ram_waddr <= std_logic_vector(curr_test_sp);
-						ram_wdata((n_bits(rom_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_pc)); 
-						next_test_sp <= (curr_test_sp - 1); 
-				
-					end if;
-				
-					if(curr_interrupt_register(7) = '1') then
-					
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(7, n_bits(rom_size - 1))); 
-							next_interrupt_register(7) <= '0';
-						
-						else
-			
-							next_interrupt_register(7) <= '1';
-						
-						end if;
-						
-					elsif(curr_interrupt_register(6) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(6, n_bits(rom_size - 1)));	
-							next_interrupt_register(7) <= '0';
-												
-						else
-			
-							next_interrupt_register(6) <= '1';
-						
-						end if;				
-				
-					elsif(curr_interrupt_register(5) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(5, n_bits(rom_size - 1)));
-							next_interrupt_register(7) <= '0';
-												
-						else
-			
-							next_interrupt_register(5) <= '1'; 	
-						
-						end if;				
-			
-					elsif(curr_interrupt_register(4) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(4, n_bits(rom_size - 1))); 	
-							next_interrupt_register(7) <= '0';	
-												
-						else
-			
-							next_interrupt_register(4) <= '1';		
-						
-						end if;	
-				
-					elsif(curr_interrupt_register(3) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(3, n_bits(rom_size - 1))); 	
-							next_interrupt_register(7) <= '0';
-												
-						else
-			
-							next_interrupt_register(3) <= '1';		
-						
-						end if;		
-				
-					elsif(curr_interrupt_register(2) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(2, n_bits(rom_size - 1))); 	
-							next_interrupt_register(7) <= '0';
-												
-						else
-			
-							next_interrupt_register(2) <= '1';			
-						
-						end if;						
-				
-					elsif(curr_interrupt_register(1) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(1, n_bits(rom_size - 1))); 	
-							next_interrupt_register(7) <= '0';
-												
-						else
-			
-							next_interrupt_register(1) <= '1';	
-						
-						end if;								
-				
-					elsif(curr_interrupt_register(0) = '1') then
-			
-						if(curr_test_sr(0) = '1') then
-		
-							next_test_pc <= std_logic_vector(to_unsigned(0, n_bits(rom_size - 1))); 	
-							next_interrupt_register(7) <= '0';
-												
-						else
-			
-							next_interrupt_register(0) <= '1';	
-						
-						end if;			
-					
-					end if;
-					
+			if (intr /= "00000000") then
+				if (intr(7) = '1') then
+					next_interrupt_register(7) <= '1';
 				end if;
 				
+				if (intr(6) = '1') then
+					next_interrupt_register(6) <= '1';
+				end if;
 				
+				if (intr(5) = '1') then
+					next_interrupt_register(5) <= '1';
+				end if;
+				
+				if (intr(4) = '1') then
+					next_interrupt_register(4) <= '1';
+				end if;
+				
+				if (intr(3) = '1') then
+					next_interrupt_register(3) <= '1';
+				end if;
+				
+				if (intr(2) = '1') then
+					next_interrupt_register(2) <= '1';
+				end if;
+				
+				if (intr(1) = '1') then
+					next_interrupt_register(1) <= '1';
+				end if;
+				
+				if (intr(0) = '1') then
+					next_interrupt_register(0) <= '1';
+				end if;
+			end if;
+					
+			if (curr_interrupt_register /= "00000000") and (curr_test_sr(0) = '1') then
+				next_test_sr(0) <= '0';
+			
+				ram_wr <= '1'; --enable RAM writing
+				ram_waddr <= std_logic_vector(curr_test_sp);
+				ram_wdata((n_bits(rom_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_pc)); 
+				ram_wdata((word_size - 1) downto (word_size/2)) <= curr_test_sr(15 downto 0);
+				next_test_sp <= (curr_test_sp - 1); 
+			
+				if (curr_interrupt_register(7) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(7, n_bits(rom_size-1)));
+					next_interrupt_register(7) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(6) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(6, n_bits(rom_size-1)));
+					next_interrupt_register(6) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(5) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(5, n_bits(rom_size-1)));
+					next_interrupt_register(5) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(4) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(4, n_bits(rom_size-1)));
+					next_interrupt_register(4) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(3) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(3, n_bits(rom_size-1)));
+					next_interrupt_register(3) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(2) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(2, n_bits(rom_size-1)));
+					next_interrupt_register(2) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(1) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(1, n_bits(rom_size-1)));
+					next_interrupt_register(1) <= '0';
+				end if;
+				
+				if (curr_interrupt_register(0) = '1') then
+					next_test_pc <= std_logic_vector(to_unsigned(0, n_bits(rom_size-1)));
+					next_interrupt_register(0) <= '0';
+				end if;
 				
 			else
-				
-			
 		
 				if (internal_opcode = "00000000") then --IUC
 					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
@@ -446,7 +269,7 @@ ram_raddr <=  std_logic_vector(curr_test_sp + 1);
 					internal_io_out(to_integer(unsigned(io_out_port))) <= std_logic_vector((curr_sample_io_out(to_integer(unsigned(io_out_port)))) and and_argument) xor xor_argument;
 					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 				
-					inhibit_flag <= '1';			    	  
+
 			
 				elsif (internal_opcode = "00000101") then --TSTI
 		

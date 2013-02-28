@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.15xf on Thu Feb 14 12:36:03 2013
+// Written by: Map P.15xf on Thu Feb 21 12:00:47 2013
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -46,8 +46,17 @@ PIN ram_unit/Mram_data_pins<19> = BEL "ram_unit/Mram_data" PINNAME CLKB;
 TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
         "reset_unit/cnt_2" BEL "reset_unit/cnt_3" BEL "reset_unit/cnt_4" BEL
         "reset_unit/cnt_5" BEL "reset_unit/cnt_6" BEL "reset_unit/cnt_7" BEL
-        "reset_unit/cnt_8" BEL "reset_unit/cnt_9" BEL
-        "reset_debounce_unit/state_0_FSM_FFd1" BEL
+        "reset_unit/cnt_8" BEL "reset_unit/cnt_9" BEL "timer_unit/cnt_0" BEL
+        "timer_unit/cnt_1" BEL "timer_unit/cnt_2" BEL "timer_unit/cnt_3" BEL
+        "timer_unit/cnt_4" BEL "timer_unit/cnt_5" BEL "timer_unit/cnt_6" BEL
+        "timer_unit/cnt_7" BEL "timer_unit/cnt_8" BEL "timer_unit/cnt_9" BEL
+        "timer_unit/cnt_10" BEL "timer_unit/cnt_11" BEL "timer_unit/cnt_12"
+        BEL "timer_unit/cnt_13" BEL "timer_unit/cnt_14" BEL
+        "timer_unit/cnt_15" BEL "timer_unit/cnt_16" BEL "timer_unit/cnt_17"
+        BEL "timer_unit/cnt_18" BEL "timer_unit/cnt_19" BEL
+        "timer_unit/cnt_20" BEL "timer_unit/cnt_21" BEL "timer_unit/cnt_22"
+        BEL "timer_unit/cnt_23" BEL "timer_unit/cnt_24" BEL
+        "timer_unit/cnt_25" BEL "reset_debounce_unit/state_0_FSM_FFd1" BEL
         "reset_debounce_unit/state_0_FSM_FFd2" BEL
         "reset_debounce_unit/cnt_0_19" BEL "reset_debounce_unit/cnt_0_18" BEL
         "reset_debounce_unit/cnt_0_17" BEL "reset_debounce_unit/cnt_0_16" BEL
@@ -275,11 +284,11 @@ TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
         BEL "execution_unit/curr_test_sp_4" BEL
         "execution_unit/curr_test_sp_3" BEL "execution_unit/curr_test_sp_2"
         BEL "execution_unit/curr_test_sp_1" BEL
-        "execution_unit/curr_test_sp_0" BEL "execution_unit/test_flag" BEL
-        "reset_debounce_unit/state_0_FSM_FFd2_1" BEL "rom_unit/do_25_1" BEL
-        "rom_unit/do_27_1" BEL "rom_unit/do_26_1" BEL "rom_unit/do_24_1" BEL
-        "clk_BUFGP/BUFG" PIN "ram_unit/Mram_data_pins<18>" PIN
-        "ram_unit/Mram_data_pins<19>";
+        "execution_unit/curr_test_sp_0" BEL "execution_unit/curr_test_sr_0"
+        BEL "execution_unit/curr_interrupt_register_0" BEL
+        "execution_unit/test_flag" BEL
+        "reset_debounce_unit/state_0_FSM_FFd2_1" BEL "clk_BUFGP/BUFG" PIN
+        "ram_unit/Mram_data_pins<18>" PIN "ram_unit/Mram_data_pins<19>";
 TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 100 MHz HIGH 50%;
 SCHEMATIC END;
 

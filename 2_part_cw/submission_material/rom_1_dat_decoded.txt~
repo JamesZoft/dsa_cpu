@@ -1,0 +1,67 @@
+																						||Interrupt vector table:
+02000036																		||Branch unconditionally to address 000036
+08000000																		||Returns immediately
+08000000																		||Returns immediately
+08000000																		||Returns immediately
+08000000																		||Returns immediately
+08000000																		||Returns immediately
+08000000																		||Returns immediately
+08000000																		||Returns immediately
+---------------------------------------------------------------------------------------
+SEI 																				|| Set interrupt enable flag
+SET0|port:00|anded with:00|or'd with:08			||Specify port 00, AND with 00, OR with 08
+BSR|000033																	||Branch to subroutine at address 000033
+TSTI|port:00|anded with:F0|or'd with:40			||Test input port 00, AND with F0, OR with 40 (Check whether switch 6 is on)
+BIC|00000E																	||Increment or branch conditionally to address 00000E
+BUC|000022																	||Branch unconditionally to address 000022
+SET0|port:00|anded with:FF|or'd with:80			||Specify port 00, AND with FF, OR with 80 
+BSR|000031																	||Branch to subroutine at address 000031
+TSTI|port:00|anded with:F0|or'd with:D0			||Test input port 00, AND with F0, OR with D0 (Check whether switches 7, 6 and 4 are on)
+BIC|000013																	||Increment or branch conditionally to address 000013
+BUC|000024																	||Branch unconditionally to address 000024
+SET0|port:00|anded with:FF|or'd with:40			||Specify port 00, AND with FF, OR with 40
+BSR|000031																	||Branch to subroutine at address 000031
+TSTI|port:00|anded with:F0|or'd with:50			||Test input port 00, AND with F0, OR with 50 (Check whether switches 6 and 4 are on)
+BIC|000018																	||Increment or branch conditionally to address 000018
+BUC|000026																	||Branch unconditionally to address 000026
+SET0|port:00|anded with:FF|or'd with:20			||Specify port 00, AND with FF, OR with 20
+BSR|000031																	||Branch to subroutine at address 000031
+TSTI|port:00|anded with:F0|or'd with:A0			||Test input port 00, AND with F0, OR with A0 (Check whether switches 7 and 5 are on)
+BIC|00001D																	||Increment or branch conditionally to address 00001D
+BUC|000028																	||Branch unconditionally to address 000028
+SET0|port:00|anded with:FF|or'd with:10			||Specify port 00, AND with FF, OR with 10
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|00001E																	||Increment or branch conditionally to address 00001E
+SET0|port:00|anded with:FF|or'd with:01			||Specify port 00, AND with FF, OR with 01
+BUC|00002C																	||Branch unconditionally to address 00002C
+SET0|port:00|anded with:FF|or'd with:80			||Specify port 00, AND with FF, OR with 80
+BSR|000031																	||Branch to subroutine at address 000031
+SET0|port:00|anded with:FF|or'd with:40			||Specify port 00, AND with FF, OR with 40
+BSR|000031																	||Branch to subroutine at address 000031
+SET0|port:00|anded with:FF|or'd with:20			||Specify port 00, AND with FF, OR with 20
+BSR|000031																	||Branch to subroutine at address 000031
+SET0|port:00|anded with:FF|or'd with:10			||Specify port 00, AND with FF, OR with 10
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000029																	||Increment or branch conditionally to address 000029
+SET0|port:00|anded with:FF|or'd with:02			||Specify port 00, AND with FF, OR with 02
+TSTI|port:01|anded with:40|or'd with:00			||Test input port 01, AND with 40, OR with 00
+BIC|00002C																	||Increment or branch conditionally to address 00002C
+TSTI|port:01|anded with:40|or'd with:40			||Test input port 01, AND with 40, OR with 40
+BIC|00002E																	||Increment or branch conditionally to address 00002E
+BUC|000008																	||Branch unconditionally to address 000008
+TSTI|port:01|anded with:20|or'd with:20			||Test input port 01, AND with 20, OR with 20
+BIC|000031																	||Increment or branch conditionally to address 000031
+TSTI|port:01|anded with:20|or'd with:00			||Test input port 01, AND with 20, OR with 00
+BIC|000033																	||Increment or branch conditionally to address 000033
+RSR 																				|| Return from subroutine
+SET0|port:00|anded with:FF|or'd with:0C			||Specify port 00, AND with FF, OR with 0C
+RIR 																				|| Return from interrupt
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+IUC 																				|| Increment unconditionally
+
