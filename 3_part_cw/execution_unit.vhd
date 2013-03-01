@@ -92,7 +92,8 @@ architecture syn of execution_unit is
   signal xor_argument: std_logic_vector(7 downto 0) := (others => 'X');
   signal address_or_value: std_logic_vector(15 downto 0) := (others => 'X');
   
-  signal curr_test_pc: std_logic_vector((n_bits(ram_size) - 1) downto 0) := start_of_rom;
+  signal curr_test_pc: std_logic_vector((n_bits(ram_size) - 1) downto 0) := start_of_rom;			
+  																																							
   signal next_test_pc: std_logic_vector((n_bits(ram_size) - 1) downto 0) := start_of_rom;
   
   signal internal_test_ins_data: std_logic_vector(word_size - 9 downto 0) := (others => 'X');
@@ -384,7 +385,7 @@ address_or_value <= rom_data(15 downto 0);
 					
 						next_two_cycle_counter <= '1';
 						ram_rd <= '1';
-						ram_addr <= address_or_value;
+						ram_addr <= address_or_value((n_bits(ram_size) - 1) downto 0);
 						
 					else
 					
@@ -392,6 +393,7 @@ address_or_value <= rom_data(15 downto 0);
 				    reg_a_wr <= '1';
 				    reg_a_di <= ram_rdata;
 				    next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 				    
 				  end if;
 				
@@ -407,9 +409,10 @@ address_or_value <= rom_data(15 downto 0);
 					else
 					
 						ram_wr <= '1';
-						ram_addr <= address_or_value;
+						ram_addr <= address_or_value((n_bits(ram_size) - 1) downto 0);
 						ram_wdata <= reg_b_do;
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 					
@@ -436,6 +439,7 @@ address_or_value <= rom_data(15 downto 0);
 				    reg_a_wr <= '1';
 				    reg_a_di <= ram_rdata;
 				    next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_three_cycle_counter <= 0;
 					
 					end if;
 					
@@ -464,6 +468,7 @@ address_or_value <= rom_data(15 downto 0);
 						ram_addr <= register_storage;
 						ram_wdata <= reg_c_do;
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_three_cycle_counter <= 0;
 					
 					end if;
 				
@@ -482,6 +487,7 @@ address_or_value <= rom_data(15 downto 0);
 						ram_wdata <= reg_b_do; 
 						next_test_sp <= (curr_test_sp - 1); 
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 						
 					end if;
 				
@@ -505,12 +511,13 @@ address_or_value <= rom_data(15 downto 0);
 							
 						else
 						
-							next_test_pc <= std_logic_vector(unsigned(reg_b_do) + 1);
+							next_test_pc <= std_logic_vector(unsigned(reg_b_do((n_bits(ram_size) - 1) downto 0)) + 1);
 						
 						end if;
 						
 						next_test_sp <= (curr_test_sp + 1);
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 						
 					end if;
 				
@@ -525,6 +532,7 @@ address_or_value <= rom_data(15 downto 0);
 						
 						internal_io_out(to_integer(unsigned(io_out_port))) <= reg_b_do;
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 						
 					end if;
 				
@@ -532,7 +540,7 @@ address_or_value <= rom_data(15 downto 0);
 				
 					reg_a_addr <= and_argument;
 					reg_a_wr <= '1';
-					reg_a_di <= io_in(to_integer(unsigned(io_out_port)));
+					reg_a_di(8 downto 0) <= io_in(to_integer(unsigned(io_out_port)));
 					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 				
 				elsif(internal_opcode = X"13") then --LDLR R[A](15 downto 0) = value
@@ -547,6 +555,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di(15 downto 0) <= address_or_value;	
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 				
@@ -562,6 +571,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di(31 downto 16) <= address_or_value;	
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 						
 					end if;
 				
@@ -581,6 +591,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di <= (reg_b_do and reg_c_do);
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 				
@@ -600,6 +611,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di <= (reg_b_do or reg_c_do);
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 				
@@ -619,6 +631,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di <= (reg_b_do xor reg_c_do);
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 				
@@ -636,6 +649,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 				
@@ -653,6 +667,7 @@ address_or_value <= rom_data(15 downto 0);
 						reg_a_wr <= '1';
 						reg_a_di <= std_logic_vector(unsigned(reg_b_do) sll to_integer(unsigned(xor_argument)));
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+				    next_two_cycle_counter <= '0';
 					
 					end if;
 				
