@@ -1,0 +1,70 @@
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx16csg324-3 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:             449  out of  18224     2%  
+ Number of Slice LUTs:                  879  out of   9112     9%  
+    Number used as Logic:               879  out of   9112     9%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:    898
+   Number with an unused Flip Flop:     449  out of    898    50%  
+   Number with an unused LUT:            19  out of    898     2%  
+   Number of fully used LUT-FF pairs:   430  out of    898    47%  
+   Number of unique control sets:         6
+
+IO Utilization: 
+ Number of IOs:                          38
+ Number of bonded IOBs:                  38  out of    232    16%  
+
+Specific Feature Utilization:
+ Number of Block RAM/FIFO:                1  out of     32     3%  
+    Number using Block RAM only:          1
+ Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
+
+Timing Summary:
+---------------
+Speed Grade: -3
+
+   Minimum period: 5.542ns (Maximum Frequency: 180.453MHz)
+   Minimum input arrival time before clock: 2.211ns
+   Maximum output required time after clock: 6.655ns
+   Maximum combinational path delay: No path found
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 5.542ns (frequency: 180.453MHz)
+  Total number of paths / destination ports: 23054 / 864
+-------------------------------------------------------------------------
+Delay:               5.542ns (Levels of Logic = 5)
+  Source:            reset_unit/cnt_6 (FF)
+  Destination:       rom_unit/do_27 (FF)
+  Source Clock:      clk rising
+  Destination Clock: clk rising
+
+  Data Path: reset_unit/cnt_6 to rom_unit/do_27
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q              3   0.447   1.015  reset_unit/cnt_6 (reset_unit/cnt_6)
+     LUT6:I0->O            6   0.203   0.745  rst_SW0 (N4)
+     LUT6:I5->O            1   0.205   0.580  rst_1 (rst1)
+     LUT6:I5->O            1   0.205   0.580  execution_unit/Mmux_next_test_pc46_SW3 (N16)
+     LUT6:I5->O           18   0.205   1.050  execution_unit/Mmux_next_test_pc46 (eu_rom_addr<0>)
+     LUT6:I5->O            2   0.205   0.000  rom_unit_Mram_addr[5]_GND_16_o_wide_mux_0_OUT241 (rom_unit/addr[5]_GND_16_o_wide_mux_0_OUT<24>)
+     FDE:D                     0.102          rom_unit/do_24
+    ----------------------------------------
+    Total                      5.542ns (1.572ns logic, 3.970ns route)
+                                       (28.4% logic, 71.6% route)
+ 
+  The utilisation that limits the number of cores I can have on this FPGA is the number of IOs, which is 100%/16%, rounded down, which is 6 cores.
+ 
+ The limit on how fast my processor can go is set by the timer unit where the longest delay is 6.016ns. This means the highest frequency possible for my processor is 1/5.542 = 180MHz
+

@@ -1,0 +1,19 @@
+ghdl -a std_logic_textio.vhd
+ghdl -a util.vhd
+ghdl -a alu.vhd
+ghdl -a ram.vhd
+ghdl -a registers.vhd
+ghdl -a reset.vhd
+ghdl -a timer.vhd
+ghdl -a trigger.vhd
+ghdl -a execution_unit.vhd
+ghdl -a top_level.vhd
+ghdl -a test_bench.vhd
+ghdl -e test_bench
+ghdl -r test_bench --wave=test_bench.ghw 
+test_bench.vhd:355:13:@11500ns:(assertion error): reg_b_addr = 00000000, but should be 00100000
+test_bench.vhd:358:13:@11500ns:(assertion error): reg_b_rd = '0', but should be '1'
+./test_bench:error: bound check failure at execution_unit.vhd:93
+./test_bench:error: simulation failed
+/usr/lib/ghdl/bin/ghdl: compilation error
+make: *** [sim] Error 1

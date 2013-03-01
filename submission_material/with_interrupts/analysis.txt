@@ -1,0 +1,76 @@
+	inferred   3 Adder/Subtractor(s).
+	inferred  32 D-type flip-flop(s).
+	inferred 167 Multiplexer(s).
+	
+	Timing Summary:
+---------------
+Speed Grade: -3
+
+   Minimum period: 6.016ns (Maximum Frequency: 166.221MHz)
+   Minimum input arrival time before clock: 2.211ns
+   Maximum output required time after clock: 8.752ns
+   Maximum combinational path delay: No path found
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 6.016ns (frequency: 166.221MHz)
+  Total number of paths / destination ports: 27324 / 917
+-------------------------------------------------------------------------
+Delay:               6.016ns (Levels of Logic = 5)
+  Source:            timer_unit/cnt_8 (FF)
+  Destination:       rom_unit/do_27 (FF)
+  Source Clock:      clk rising
+  Destination Clock: clk rising
+
+  Data Path: timer_unit/cnt_8 to rom_unit/do_27
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDC:C->Q              2   0.447   0.981  timer_unit/cnt_8 (timer_unit/cnt_8)
+     LUT6:I0->O            4   0.203   0.931  timer_unit/tmr<25>4 (timer_unit/tmr<25>3)
+     LUT6:I2->O            1   0.203   0.580  timer_unit/tmr<25>5_1 (timer_unit/tmr<25>5)
+     LUT2:I1->O            8   0.205   0.803  execution_unit/Mmux_ram_wdata4311 (eu_ram_wdata<16>)
+     LUT6:I5->O           18   0.205   1.154  execution_unit/Mmux_next_test_pc426 (eu_rom_addr<5>)
+     LUT6:I4->O            1   0.203   0.000  rom_unit_Mram_addr[5]_GND_16_o_wide_mux_0_OUT17 (rom_unit/addr[5]_GND_16_o_wide_mux_0_OUT<0>)
+     FDE:D                     0.102          rom_unit/do_0
+    ----------------------------------------
+    Total                      6.016ns (1.568ns logic, 4.448ns route)
+                                       (26.1% logic, 73.9% route)
+
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx16csg324-3 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:             472  out of  18224     2%  
+ Number of Slice LUTs:                  951  out of   9112    10%  
+    Number used as Logic:               951  out of   9112    10%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:    982
+   Number with an unused Flip Flop:     510  out of    982    51%  
+   Number with an unused LUT:            31  out of    982     3%  
+   Number of fully used LUT-FF pairs:   441  out of    982    44%  
+   Number of unique control sets:         7
+
+IO Utilization: 
+ Number of IOs:                          38
+ Number of bonded IOBs:                  38  out of    232    16%  
+
+Specific Feature Utilization:
+ Number of Block RAM/FIFO:                1  out of     32     3%  
+    Number using Block RAM only:          1
+ Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
+ 
+ 
+ The utilisation that limits the number of cores I can have on this FPGA is the number of IOs, which is 100%/16%, rounded down, which is 6 cores. This is the same as the processor without interrupts.
+ 
+ The limit on how fast my processor can go is set by the timer unit where the longest delay is 6.016ns. This means the highest frequency possible for my processor is 1/6.016 = 166MHz. This is a 7.8% decrease in speed which can mostly be attributed to an increase of 0.1ns in the logic/routing to work out the next program counter and an increase of 0.223ns in the logic/routing to work out the ram_wdata. Interestingly, the total time taken to work out the logic has gone down by a small fraction (0.003ns) whilst it's mostly the routing time that is the cause of the delays (gone up by 0.472ns). I am assuming this is either because a) the FPGA can't decide how to efficiently place the extra logic that I have programmed or b) I have not programmed the extra logic for the interrupts efficiently using some sort of templates or similar.
+
