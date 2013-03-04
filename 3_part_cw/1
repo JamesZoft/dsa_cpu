@@ -1,0 +1,12 @@
+ghdl -a std_logic_textio.vhd
+ghdl -a util.vhd
+ghdl -a alu.vhd
+ghdl -a ram.vhd
+ghdl -a registers.vhd
+ghdl -a reset.vhd
+ghdl -a timer.vhd
+ghdl -a trigger.vhd
+ghdl -a execution_unit.vhd
+execution_unit.vhd:543:64: length of value does not match length of target
+/usr/lib/ghdl/bin/ghdl: compilation error
+make: *** [sim] Error 1

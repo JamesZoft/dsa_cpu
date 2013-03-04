@@ -540,7 +540,7 @@ address_or_value <= rom_data(15 downto 0);
 				
 					reg_a_addr <= and_argument;
 					reg_a_wr <= '1';
-					reg_a_di(8 downto 0) <= io_in(to_integer(unsigned(io_out_port)));
+					reg_a_di(7 downto 0) <= io_in(to_integer(unsigned(io_out_port)));
 					next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 				
 				elsif(internal_opcode = X"13") then --LDLR R[A](15 downto 0) = value

@@ -13,7 +13,12 @@ ghdl -e test_bench
 ghdl -r test_bench --wave=test_bench.ghw 
 test_bench.vhd:355:13:@11500ns:(assertion error): reg_b_addr = 00000000, but should be 00100000
 test_bench.vhd:358:13:@11500ns:(assertion error): reg_b_rd = '0', but should be '1'
-./test_bench:error: bound check failure at execution_unit.vhd:93
+test_bench.vhd:355:13:@15500ns:(assertion error): reg_b_addr = 00000000, but should be 00100000
+test_bench.vhd:358:13:@15500ns:(assertion error): reg_b_rd = '0', but should be '1'
+test_bench.vhd:361:13:@16500ns:(assertion error): reg_b_do = 00000000000000000000000000000000, but should be 00000000000000000000000001001000
+test_bench.vhd:355:13:@26500ns:(assertion error): reg_b_addr = 00000001, but should be 00000000
+test_bench.vhd:358:13:@26500ns:(assertion error): reg_b_rd = '1', but should be '0'
+./test_bench:error: bound check failure at registers.vhd:59
 ./test_bench:error: simulation failed
 /usr/lib/ghdl/bin/ghdl: compilation error
 make: *** [sim] Error 1
