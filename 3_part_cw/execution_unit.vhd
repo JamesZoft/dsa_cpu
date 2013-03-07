@@ -151,13 +151,13 @@ internal_test_ins_data <= rom_data(23 downto 0);
 address_or_value <= rom_data(15 downto 0);
   
   
-  process(clk, rst, start_of_rom)
+  process(clk, rst)
   begin
   
   	if (rst = '1') then -- If reset
   	
   		curr_sample_io_out <= (others => byte_null);
-  		curr_test_pc <= start_of_rom;
+  		curr_test_pc <= std_logic_vector(to_unsigned(8, n_bits(ram_size)));
   		test_flag <= 'X';
   		curr_test_sp <= (others => '1');
   		curr_test_sr <= (others => '0');

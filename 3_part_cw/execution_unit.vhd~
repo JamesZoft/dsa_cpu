@@ -233,6 +233,7 @@ address_or_value <= rom_data(15 downto 0);
       intermediate_value_2 := (others => '0');
       next_intermediate_value_reg <= intermediate_value_reg;
       next_intermediate_value_2_reg <= intermediate_value_2_reg;
+      next_register_storage <= register_storage;
 		
 			if (intr /= "00000000") then
 				if (intr(7) = '1') then
