@@ -122,9 +122,10 @@ architecture syn of execution_unit is
   signal pop_reg_is_pc: std_logic := '0';
   signal next_pop_reg_is_pc: std_logic := '0';
   
-  signal intermediate_value : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
-  signal intermediate_value_2 : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
-  
+  signal intermediate_value_reg : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
+  signal next_intermediate_value_reg : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
+  signal intermediate_value_2_reg : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
+  signal next_intermediate_value_2_reg : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
   signal operator_for_cmp : std_logic_vector(7 downto 0) := (others => 'X');
   
   signal test: std_logic := '0';
@@ -150,7 +151,7 @@ internal_test_ins_data <= rom_data(23 downto 0);
 address_or_value <= rom_data(15 downto 0);
   
   
-  process(clk, rst)
+  process(clk, rst, start_of_rom)
   begin
   
   	if (rst = '1') then -- If reset
@@ -165,6 +166,8 @@ address_or_value <= rom_data(15 downto 0);
   		three_cycle_counter <= 2;
   		register_storage <= (others => '0');
   		pop_reg_is_pc <= '0';
+  		intermediate_value_reg <= (others => '0');
+  		intermediate_value_2_reg <= (others => '0');
   	
 		elsif clk'event and (clk = '1') then	--On clock ri
 		
@@ -178,6 +181,8 @@ address_or_value <= rom_data(15 downto 0);
 			three_cycle_counter <= next_three_cycle_counter;
 			register_storage <= next_register_storage;
 			pop_reg_is_pc <= next_pop_reg_is_pc;
+			intermediate_value_reg <= next_intermediate_value_reg;
+			intermediate_value_2_reg <= next_intermediate_value_2_reg;
 			
 		end if;
   
@@ -190,7 +195,11 @@ address_or_value <= rom_data(15 downto 0);
   	
   end process;
   
-  process(intermediate_value, intermediate_value_2, address_or_value, pop_reg_is_pc, register_storage, reg_c_do, reg_b_do, three_cycle_counter, two_cycle_counter, intr, curr_interrupt_register, ram_rdata, curr_test_sp, io_in, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode, curr_test_sp, curr_test_sr)
+  process(alu_c_out, start_of_rom, operator_for_cmp, alu_s_do, intermediate_value_reg, intermediate_value_2_reg, address_or_value, pop_reg_is_pc, register_storage, reg_c_do, reg_b_do, three_cycle_counter, two_cycle_counter, intr, curr_interrupt_register, ram_rdata, curr_test_sp, io_in, rst, test_flag, internal_test_ins_data, curr_sample_io_out, io_out_port, and_argument, xor_argument, curr_test_pc, internal_opcode, curr_test_sp, curr_test_sr)
+  
+  	variable intermediate_value : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
+  	variable intermediate_value_2 : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
+  	
   begin
   
 			next_test_pc <= curr_test_pc;
@@ -220,6 +229,11 @@ address_or_value <= rom_data(15 downto 0);
       alu_b_c <= '0';
       alu_b_di <= (others => '0');
       alu_c_in <= '0';
+      intermediate_value := (others => '0');
+      intermediate_value_2 := (others => '0');
+      next_intermediate_value_reg <= intermediate_value_reg;
+      next_intermediate_value_2_reg <= intermediate_value_2_reg;
+      next_register_storage <= register_storage;
 		
 			if (intr /= "00000000") then
 				if (intr(7) = '1') then
@@ -441,25 +455,25 @@ address_or_value <= rom_data(15 downto 0);
 						test <= '1';
 						if(io_out_port = X"00") then
 						
-							intermediate_value <= (others => '0');
+							intermediate_value := (others => '0');
 							ram_wdata <= intermediate_value;
 						
 						elsif(io_out_port = X"01") then
 						
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 							ram_wdata <= intermediate_value;
 					
 						elsif(io_out_port = X"02") then
 					
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 							ram_wdata <= intermediate_value;
 					
 						elsif(io_out_port = X"03") then
 						
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-							intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+							intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 							ram_wdata <= intermediate_value;
 							
 						else
@@ -509,58 +523,58 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(xor_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								intermediate_value := (others => '0');
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_c_do;
+								intermediate_value := reg_c_do;
 								
 							end if;
 							
 							if(and_argument = X"00") then
 								
 								
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) + to_unsigned(0, 8));
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) + to_unsigned(0, 8));
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) + unsigned(curr_test_pc));
-								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) + unsigned(curr_test_pc));
+								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) + unsigned(curr_test_sp));
-								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) + unsigned(curr_test_sp));
+								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) + unsigned(curr_test_sr));
-								intermediate_value_2( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) + unsigned(curr_test_sr));
+								intermediate_value_2( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 								
 							else
 							
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) + unsigned(reg_b_do));
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) + unsigned(reg_b_do));
 								
 							end if;
 						
 						else
 					
-							intermediate_value_2 <= std_logic_vector(unsigned(reg_b_do) + unsigned(reg_c_do));
+							intermediate_value_2 := std_logic_vector(unsigned(reg_b_do) + unsigned(reg_c_do));
 						
 						
 						end if;
@@ -638,26 +652,26 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(io_out_port = X"00") then
 						
-								intermediate_value <= (others => '0');
+								intermediate_value := (others => '0');
 							
 							elsif(io_out_port = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(io_out_port = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(io_out_port = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								intermediate_value := reg_b_do;
 								
 							end if;
 							
@@ -713,22 +727,22 @@ address_or_value <= rom_data(15 downto 0);
 							
 						elsif(xor_argument = X"01") then
 							
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							ram_wdata <= intermediate_value;
 							
 						elsif(xor_argument = X"02") then
 						
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							ram_wdata <= intermediate_value;
 						
 						elsif(xor_argument = X"03") then
 							
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-							intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+							intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 						
 							ram_wdata <= intermediate_value;
 							
@@ -778,22 +792,22 @@ address_or_value <= rom_data(15 downto 0);
 							
 						elsif(io_out_port = X"01") then
 							
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							ram_wdata <= intermediate_value;
 							
 						elsif(io_out_port = X"02") then
 						
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+							intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							ram_wdata <= intermediate_value;
 						
 						elsif(io_out_port = X"03") then
 							
-							intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-							intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+							intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+							intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 						
 							ram_wdata <= intermediate_value;
 							
@@ -903,8 +917,8 @@ address_or_value <= rom_data(15 downto 0);
 				elsif(internal_opcode = X"12") then --IOTR R[A] = IN[port]
 					
 
-					intermediate_value(7 downto 0) <= io_in(to_integer(unsigned(and_argument)));
-					intermediate_value(( word_size - 1) downto 8) <= (others => '0');
+					intermediate_value(7 downto 0) := io_in(to_integer(unsigned(and_argument)));
+					intermediate_value(( word_size - 1) downto 8) := (others => '0');
 					reg_a_wr <= '1';
 					reg_a_addr <= io_out_port;
 					reg_a_di <= intermediate_value;
@@ -925,8 +939,8 @@ address_or_value <= rom_data(15 downto 0);
 					
 						reg_a_addr <= io_out_port;
 						reg_a_wr <= '1';
-						intermediate_value(15 downto 0) <= address_or_value;
-						intermediate_value(31 downto 16) <= reg_b_do(31 downto 16);
+						intermediate_value(15 downto 0) := address_or_value;
+						intermediate_value(31 downto 16) := reg_b_do(31 downto 16);
 						reg_a_di <= intermediate_value;
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
 				    next_two_cycle_counter <= '0';
@@ -982,55 +996,55 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								intermediate_value := (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								intermediate_value := reg_b_do;
 								
 							end if;
 							
 							if(xor_argument = X"00") then
 								
 								
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) and to_unsigned(0, 8));
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) and to_unsigned(0, 8));
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2 <= (intermediate_value and curr_test_pc);
+								intermediate_value_2 := (intermediate_value and curr_test_pc);
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2 <= (intermediate_value and std_logic_vector(curr_test_sp));
+								intermediate_value_2 := (intermediate_value and std_logic_vector(curr_test_sp));
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2 <= (intermediate_value and curr_test_sr);
+								intermediate_value_2 := (intermediate_value and curr_test_sr);
 								
 							else
 							
-								intermediate_value_2 <= (intermediate_value and reg_c_do);
+								intermediate_value_2 := (intermediate_value and reg_c_do);
 								
 							end if;
 						
 						else
 					
-							intermediate_value_2 <= (reg_b_do and reg_c_do);
+							intermediate_value_2 := (reg_b_do and reg_c_do);
 						
 						
 						end if;
@@ -1113,55 +1127,55 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								intermediate_value := (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								intermediate_value := reg_b_do;
 								
 							end if;
 							
 							if(xor_argument = X"00") then
 								
 								
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) or to_unsigned(0, 8));
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) or to_unsigned(0, 8));
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2 <= (intermediate_value or curr_test_pc);
+								intermediate_value_2 := (intermediate_value or curr_test_pc);
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2 <= (intermediate_value or std_logic_vector(curr_test_sp));
+								intermediate_value_2 := (intermediate_value or std_logic_vector(curr_test_sp));
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2 <= (intermediate_value or curr_test_sr);
+								intermediate_value_2 := (intermediate_value or curr_test_sr);
 								
 							else
 							
-								intermediate_value_2 <= (intermediate_value or reg_c_do);
+								intermediate_value_2 := (intermediate_value or reg_c_do);
 								
 							end if;
 						
 						else
 					
-							intermediate_value_2 <= (reg_b_do or reg_c_do);
+							intermediate_value_2 := (reg_b_do or reg_c_do);
 						
 						
 						end if;
@@ -1244,55 +1258,55 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								intermediate_value := (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) := (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								intermediate_value((n_bits(ram_size) - 1) downto 0) := curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) := (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								intermediate_value := reg_b_do;
 								
 							end if;
 							
 							if(xor_argument = X"00") then
 								
 								
-								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) xor to_unsigned(0, 8));
+								intermediate_value_2 := std_logic_vector(unsigned(intermediate_value) xor to_unsigned(0, 8));
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2 <= (intermediate_value xor curr_test_pc);
+								intermediate_value_2 := (intermediate_value xor curr_test_pc);
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2 <= (intermediate_value xor std_logic_vector(curr_test_sp));
+								intermediate_value_2 := (intermediate_value xor std_logic_vector(curr_test_sp));
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2 <= (intermediate_value xor curr_test_sr);
+								intermediate_value_2 := (intermediate_value xor curr_test_sr);
 								
 							else
 							
-								intermediate_value_2 <= (intermediate_value xor reg_c_do);
+								intermediate_value_2 := (intermediate_value xor reg_c_do);
 								
 							end if;
 						
 						else
 					
-							intermediate_value_2 <= (reg_b_do xor reg_c_do);
+							intermediate_value_2 := (reg_b_do xor reg_c_do);
 						
 						
 						end if;
@@ -1365,32 +1379,32 @@ address_or_value <= rom_data(15 downto 0);
 						
 						if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								next_intermediate_value_reg <= (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value <= std_logic_vector(unsigned(curr_test_pc) srl to_integer(unsigned(xor_argument)));
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg <= (X"00000" & std_logic_vector(unsigned(curr_test_pc) srl to_integer(unsigned(xor_argument))));
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp srl to_integer(unsigned(xor_argument)));
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp srl to_integer(unsigned(xor_argument)));
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_sr((n_bits(ram_size) - 1) downto 0)) srl to_integer(unsigned(xor_argument)));
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_sr((n_bits(ram_size) - 1) downto 0)) srl to_integer(unsigned(xor_argument)));
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-								intermediate_value <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
+								next_intermediate_value_reg <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
 								
 							end if;
 				    
 				  elsif(three_cycle_counter = 0) then
 				  
-				  	reg_a_di <= intermediate_value;
+				  	reg_a_di <= intermediate_value_reg;
 				  	reg_a_addr <= io_out_port;
 						reg_a_wr <= '1';
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
@@ -1421,32 +1435,32 @@ address_or_value <= rom_data(15 downto 0);
 						
 						if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								next_intermediate_value_reg <= (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value <= std_logic_vector(unsigned(curr_test_pc) sll to_integer(unsigned(xor_argument)));
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg <= (X"00000" & std_logic_vector(unsigned(curr_test_pc) sll to_integer(unsigned(xor_argument))));
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp sll to_integer(unsigned(xor_argument)));
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp sll to_integer(unsigned(xor_argument)));
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_sr((n_bits(ram_size) - 1) downto 0)) sll to_integer(unsigned(xor_argument)));
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_sr((n_bits(ram_size) - 1) downto 0)) sll to_integer(unsigned(xor_argument)));
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-								intermediate_value <= std_logic_vector(unsigned(reg_b_do) sll to_integer(unsigned(xor_argument)));
+								next_intermediate_value_reg <= std_logic_vector(unsigned(reg_b_do) sll to_integer(unsigned(xor_argument)));
 								
 							end if;
 				    
 				  elsif(three_cycle_counter = 0) then
 				  
-				  	reg_a_di <= intermediate_value;
+				  	reg_a_di <= intermediate_value_reg;
 				  	reg_a_addr <= io_out_port;
 						reg_a_wr <= '1';
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
@@ -1486,55 +1500,55 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								next_intermediate_value_reg <= (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								next_intermediate_value_reg <= reg_b_do;
 								
 							end if;
 							
 							if(xor_argument = X"00") then
 								
-								intermediate_value_2 <= (others => '0');
+								next_intermediate_value_2_reg <= (others => '0');
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2 <= curr_test_pc;
+								next_intermediate_value_2_reg <= ("00000000000000000000" & curr_test_pc);
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2 <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_2_reg <= ("00000000000000000000" & std_logic_vector(curr_test_sp));
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2 <= curr_test_sr;
+								next_intermediate_value_2_reg <= curr_test_sr;
 								
 							else
 							
-								intermediate_value_2 <= reg_c_do;
+								next_intermediate_value_2_reg <= reg_c_do;
 								
 							end if;
 						
 						else
 						
-					    intermediate_value <= reg_b_do;  
-							intermediate_value_2 <= reg_c_do;
+					    next_intermediate_value_reg <= reg_b_do;  
+							next_intermediate_value_2_reg <= reg_c_do;
 						
 						end if;
 						
@@ -1546,7 +1560,7 @@ address_or_value <= rom_data(15 downto 0);
 						
 						  when "00000000" => --Equals
 						    
-						    if(unsigned(intermediate_value) = unsigned(intermediate_value_2)) then
+						    if(unsigned(intermediate_value_reg) = unsigned(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1556,7 +1570,7 @@ address_or_value <= rom_data(15 downto 0);
 						  
 						  when "00000001" => 
 						  
-						    if(unsigned(intermediate_value) /= unsigned(intermediate_value_2)) then
+						    if(unsigned(intermediate_value_reg) /= unsigned(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1566,7 +1580,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000010" => 
 						  
-						    if(unsigned(intermediate_value) < unsigned(intermediate_value_2)) then
+						    if(unsigned(intermediate_value_reg) < unsigned(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1576,7 +1590,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000011" => 
 						  
-						    if(unsigned(intermediate_value) <= unsigned(intermediate_value_2)) then
+						    if(unsigned(intermediate_value_reg) <= unsigned(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1586,7 +1600,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000100" => 
 						  
-						    if(unsigned(intermediate_value) > unsigned(intermediate_value_2)) then
+						    if(unsigned(intermediate_value_reg) > unsigned(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1596,7 +1610,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000101" => 
 						  
-						    if(unsigned(intermediate_value) >= unsigned(intermediate_value_2)) then
+						    if(unsigned(intermediate_value_reg) >= unsigned(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1606,7 +1620,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000110" => 
 						  
-						    if(unsigned(intermediate_value) = 0) then
+						    if(unsigned(intermediate_value_reg) = 0) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1616,7 +1630,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000111" => 
 						  
-						    if(unsigned(intermediate_value) /= 0) then
+						    if(unsigned(intermediate_value_reg) /= 0) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1667,55 +1681,55 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								next_intermediate_value_reg <= (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								next_intermediate_value_reg <= reg_b_do;
 								
 							end if;
 							
 							if(xor_argument = X"00") then
 								
 								
-								intermediate_value_2 <= std_logic_vector(to_unsigned(0, 8));
+								next_intermediate_value_2_reg <= (others => '0');
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2 <= curr_test_pc;
+								next_intermediate_value_2_reg <= ("00000000000000000000" & curr_test_pc);
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2 <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_2_reg <= ("00000000000000000000" & std_logic_vector(curr_test_sp));
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2 <= curr_test_sr;
+								next_intermediate_value_2_reg <= curr_test_sr;
 								
 							else
 							
-								intermediate_value_2 <= reg_c_do;
+								next_intermediate_value_2_reg <= reg_c_do;
 								
 							end if;
 						
 						else
 					
-							intermediate_value_2 <= reg_c_do;
+							next_intermediate_value_2_reg <= reg_c_do;
 						
 						end if;
 						
@@ -1727,7 +1741,7 @@ address_or_value <= rom_data(15 downto 0);
 						
 						  when "00000000" => --Equals
 						    
-						    if(signed(intermediate_value) = signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) = signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1737,7 +1751,7 @@ address_or_value <= rom_data(15 downto 0);
 						  
 						  when "00000001" => 
 						  
-						    if(signed(intermediate_value) /= signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) /= signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1747,7 +1761,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000010" => 
 						  
-						    if(signed(intermediate_value) < signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) < signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1757,7 +1771,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000011" => 
 						  
-						    if(signed(intermediate_value) <= signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) <= signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1767,7 +1781,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000100" => 
 						  
-						    if(signed(intermediate_value) > signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) > signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1777,7 +1791,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000101" => 
 						  
-						    if(signed(intermediate_value) >= signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) >= signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1787,7 +1801,7 @@ address_or_value <= rom_data(15 downto 0);
 					      
 				     when "00000110" => 
 						  
-						    if(signed(intermediate_value) /= signed(intermediate_value_2)) then
+						    if(signed(intermediate_value_reg) /= signed(intermediate_value_2_reg)) then
 						      next_test_flag <= '1';
 						      next_test_sr(1) <= '1';
 					      else
@@ -1850,58 +1864,58 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								next_intermediate_value_reg <= (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								next_intermediate_value_reg <= reg_b_do;
 								
 							end if;
 							
 						  if(xor_argument = X"00") then
 						
-								intermediate_value_2 <= (others => '0');
+								next_intermediate_value_2_reg <= (others => '0');
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_2_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								next_intermediate_value_2_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_2_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_2_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value_2( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_2_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								next_intermediate_value_2_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-							  intermediate_value_2 <= reg_c_do;
+							  next_intermediate_value_2_reg <= reg_c_do;
 							  
 							end if;
 						
 						else
 					
-					    intermediate_value <= reg_b_do;
-							intermediate_value_2 <= reg_c_do;
+					    next_intermediate_value_reg <= reg_b_do;
+							next_intermediate_value_2_reg <= reg_c_do;
 						
 						end if;
 						
@@ -1914,8 +1928,8 @@ address_or_value <= rom_data(15 downto 0);
             alu_b_c <= internal_opcode(1);
             alu_c_in <= internal_opcode(0);
             
-            alu_a_di <= intermediate_value;
-            alu_b_di <= intermediate_value_2;
+            alu_a_di <= intermediate_value_reg;
+            alu_b_di <= intermediate_value_2_reg;
             
             next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
   				  next_three_cycle_counter <= 2;
@@ -1926,11 +1940,11 @@ address_or_value <= rom_data(15 downto 0);
 							
 						elsif(io_out_port = X"01") then
 						
-							next_test_pc <= alu_s_do;
+							next_test_pc <= alu_s_do((n_bits(ram_size) - 1) downto 0);
 							
 						elsif(io_out_port = X"02") then
 						
-							next_test_sp <= unsigned(alu_s_do);
+							next_test_sp <= unsigned(alu_s_do((n_bits(ram_size) - 1) downto 0));
 						
 						elsif(io_out_port = X"03") then
 						
@@ -1984,58 +1998,58 @@ address_or_value <= rom_data(15 downto 0);
 						
 							if(and_argument = X"00") then
 						
-								intermediate_value <= (others => '0');
+								next_intermediate_value_reg <= (others => '0');
 							
 							elsif(and_argument = X"01") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"02") then
 						
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(and_argument = X"03") then
 							
-								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								next_intermediate_value_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-								intermediate_value <= reg_b_do;
+								next_intermediate_value_reg <= reg_b_do;
 								
 							end if;
 							
 						  if(xor_argument = X"00") then
 						
-								intermediate_value_2 <= (others => '0');
+								next_intermediate_value_2_reg <= (others => '0');
 							
 							elsif(xor_argument = X"01") then
 							
-								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
-								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_2_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								next_intermediate_value_2_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(xor_argument = X"02") then
 						
-								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
-								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_2_reg((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								next_intermediate_value_2_reg( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
 						
 							elsif(xor_argument = X"03") then
 							
-								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
-								intermediate_value_2( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								next_intermediate_value_2_reg((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								next_intermediate_value_2_reg( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
 								
 							else
 							
-							  intermediate_value_2 <= reg_c_do;
+							  next_intermediate_value_2_reg <= reg_c_do;
 							  
 							end if;
 						
 						else
 					
-					    intermediate_value <= reg_b_do;
-							intermediate_value_2 <= reg_c_do;
+					    next_intermediate_value_reg <= reg_b_do;
+							next_intermediate_value_2_reg <= reg_c_do;
 						
 						end if;
 						
@@ -2048,8 +2062,8 @@ address_or_value <= rom_data(15 downto 0);
             alu_b_c <= internal_opcode(1);
             alu_c_in <= internal_opcode(0);
             
-            alu_a_di <= intermediate_value;
-            alu_b_di <= intermediate_value_2;
+            alu_a_di <= intermediate_value_reg;
+            alu_b_di <= intermediate_value_2_reg;
             
             next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
   				  next_three_cycle_counter <= 2;
@@ -2060,11 +2074,11 @@ address_or_value <= rom_data(15 downto 0);
 							
 						elsif(io_out_port = X"01") then
 						
-							next_test_pc <= alu_s_do;
+							next_test_pc <= alu_s_do((n_bits(ram_size) - 1) downto 0);
 							
 						elsif(io_out_port = X"02") then
 						
-							next_test_sp <= unsigned(alu_s_do);
+							next_test_sp <= unsigned(alu_s_do((n_bits(ram_size) - 1) downto 0));
 						
 						elsif(io_out_port = X"03") then
 						

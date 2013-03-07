@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.15xf on Thu Feb 28 12:02:54 2013
+// Written by: Map P.15xf on Thu Mar 07 12:25:18 2013
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -41,12 +41,22 @@ COMP "sw<4>" LOCATE = SITE "N8" LEVEL 1;
 COMP "sw<5>" LOCATE = SITE "U8" LEVEL 1;
 COMP "sw<6>" LOCATE = SITE "V8" LEVEL 1;
 COMP "sw<7>" LOCATE = SITE "T5" LEVEL 1;
+PIN register_unit/Mram_data1_pins<18> = BEL "register_unit/Mram_data1" PINNAME
+        CLKA;
+PIN register_unit/Mram_data1_pins<19> = BEL "register_unit/Mram_data1" PINNAME
+        CLKB;
+PIN register_unit/Mram_data_pins<18> = BEL "register_unit/Mram_data" PINNAME
+        CLKA;
+PIN register_unit/Mram_data_pins<19> = BEL "register_unit/Mram_data" PINNAME
+        CLKB;
 PIN ram_unit/Mram_data1_pins<24> = BEL "ram_unit/Mram_data1" PINNAME CLKA;
 PIN ram_unit/Mram_data1_pins<25> = BEL "ram_unit/Mram_data1" PINNAME CLKB;
 PIN ram_unit/Mram_data2_pins<24> = BEL "ram_unit/Mram_data2" PINNAME CLKA;
 PIN ram_unit/Mram_data2_pins<25> = BEL "ram_unit/Mram_data2" PINNAME CLKB;
 PIN ram_unit/Mram_data3_pins<24> = BEL "ram_unit/Mram_data3" PINNAME CLKA;
 PIN ram_unit/Mram_data3_pins<25> = BEL "ram_unit/Mram_data3" PINNAME CLKB;
+PIN ram_unit/Mram_data6_pins<24> = BEL "ram_unit/Mram_data6" PINNAME CLKA;
+PIN ram_unit/Mram_data6_pins<25> = BEL "ram_unit/Mram_data6" PINNAME CLKB;
 PIN ram_unit/Mram_data4_pins<24> = BEL "ram_unit/Mram_data4" PINNAME CLKA;
 PIN ram_unit/Mram_data4_pins<25> = BEL "ram_unit/Mram_data4" PINNAME CLKB;
 PIN ram_unit/Mram_data5_pins<24> = BEL "ram_unit/Mram_data5" PINNAME CLKA;
@@ -55,24 +65,24 @@ PIN ram_unit/Mram_data7_pins<24> = BEL "ram_unit/Mram_data7" PINNAME CLKA;
 PIN ram_unit/Mram_data7_pins<25> = BEL "ram_unit/Mram_data7" PINNAME CLKB;
 PIN ram_unit/Mram_data8_pins<24> = BEL "ram_unit/Mram_data8" PINNAME CLKA;
 PIN ram_unit/Mram_data8_pins<25> = BEL "ram_unit/Mram_data8" PINNAME CLKB;
-TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
-        "reset_unit/cnt_2" BEL "reset_unit/cnt_3" BEL "reset_unit/cnt_4" BEL
-        "reset_unit/cnt_5" BEL "reset_unit/cnt_6" BEL "reset_unit/cnt_7" BEL
-        "reset_unit/cnt_8" BEL "reset_unit/cnt_9" BEL "timer_unit/cnt_0" BEL
-        "timer_unit/cnt_1" BEL "timer_unit/cnt_2" BEL "timer_unit/cnt_3" BEL
-        "timer_unit/cnt_4" BEL "timer_unit/cnt_5" BEL "timer_unit/cnt_6" BEL
-        "timer_unit/cnt_7" BEL "timer_unit/cnt_8" BEL "timer_unit/cnt_9" BEL
-        "timer_unit/cnt_10" BEL "timer_unit/cnt_11" BEL "timer_unit/cnt_12"
-        BEL "timer_unit/cnt_13" BEL "timer_unit/cnt_14" BEL
-        "timer_unit/cnt_15" BEL "timer_unit/cnt_16" BEL "timer_unit/cnt_17"
-        BEL "timer_unit/cnt_18" BEL "timer_unit/cnt_19" BEL
-        "timer_unit/cnt_20" BEL "timer_unit/cnt_21" BEL "timer_unit/cnt_22"
-        BEL "timer_unit/cnt_23" BEL "timer_unit/cnt_24" BEL
-        "timer_unit/cnt_25" BEL "sseg_unit/cnt_4" BEL "sseg_unit/cnt_5" BEL
-        "sseg_unit/cnt_6" BEL "sseg_unit/cnt_7" BEL "sseg_unit/cnt_8" BEL
-        "sseg_unit/cnt_9" BEL "sseg_unit/cnt_10" BEL "sseg_unit/cnt_11" BEL
-        "sseg_unit/cnt_12" BEL "sseg_unit/cnt_13" BEL "sseg_unit/cnt_14" BEL
-        "sseg_unit/cnt_15" BEL "sseg_unit/cnt_16" BEL "sseg_unit/cnt_17" BEL
+TIMEGRP sys_clk_pin = BEL "timer_unit/cnt_0" BEL "timer_unit/cnt_1" BEL
+        "timer_unit/cnt_2" BEL "timer_unit/cnt_3" BEL "timer_unit/cnt_4" BEL
+        "timer_unit/cnt_5" BEL "timer_unit/cnt_6" BEL "timer_unit/cnt_7" BEL
+        "timer_unit/cnt_8" BEL "timer_unit/cnt_9" BEL "timer_unit/cnt_10" BEL
+        "timer_unit/cnt_11" BEL "timer_unit/cnt_12" BEL "timer_unit/cnt_13"
+        BEL "timer_unit/cnt_14" BEL "timer_unit/cnt_15" BEL
+        "timer_unit/cnt_16" BEL "timer_unit/cnt_17" BEL "timer_unit/cnt_18"
+        BEL "timer_unit/cnt_19" BEL "timer_unit/cnt_20" BEL
+        "timer_unit/cnt_21" BEL "timer_unit/cnt_22" BEL "timer_unit/cnt_23"
+        BEL "timer_unit/cnt_24" BEL "timer_unit/cnt_25" BEL "reset_unit/cnt_0"
+        BEL "reset_unit/cnt_1" BEL "reset_unit/cnt_2" BEL "reset_unit/cnt_3"
+        BEL "reset_unit/cnt_4" BEL "reset_unit/cnt_5" BEL "reset_unit/cnt_6"
+        BEL "reset_unit/cnt_7" BEL "reset_unit/cnt_8" BEL "reset_unit/cnt_9"
+        BEL "sseg_unit/cnt_4" BEL "sseg_unit/cnt_5" BEL "sseg_unit/cnt_6" BEL
+        "sseg_unit/cnt_7" BEL "sseg_unit/cnt_8" BEL "sseg_unit/cnt_9" BEL
+        "sseg_unit/cnt_10" BEL "sseg_unit/cnt_11" BEL "sseg_unit/cnt_12" BEL
+        "sseg_unit/cnt_13" BEL "sseg_unit/cnt_14" BEL "sseg_unit/cnt_15" BEL
+        "sseg_unit/cnt_16" BEL "sseg_unit/cnt_17" BEL
         "reset_debounce_unit/state_0_FSM_FFd1" BEL
         "reset_debounce_unit/state_0_FSM_FFd2" BEL
         "reset_debounce_unit/cnt_0_19" BEL "reset_debounce_unit/cnt_0_18" BEL
@@ -278,6 +288,20 @@ TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
         "debounce_unit/di_sampled_5" BEL "debounce_unit/di_sampled_3" BEL
         "debounce_unit/di_sampled_2" BEL "debounce_unit/di_sampled_4" BEL
         "debounce_unit/di_sampled_1" BEL "debounce_unit/di_sampled_0" BEL
+        "execution_unit/three_cycle_counter_FSM_FFd2" BEL
+        "execution_unit/three_cycle_counter_FSM_FFd1" BEL
+        "execution_unit/register_storage_11" BEL
+        "execution_unit/register_storage_10" BEL
+        "execution_unit/register_storage_9" BEL
+        "execution_unit/register_storage_8" BEL
+        "execution_unit/register_storage_7" BEL
+        "execution_unit/register_storage_6" BEL
+        "execution_unit/register_storage_5" BEL
+        "execution_unit/register_storage_4" BEL
+        "execution_unit/register_storage_3" BEL
+        "execution_unit/register_storage_2" BEL
+        "execution_unit/register_storage_1" BEL
+        "execution_unit/register_storage_0" BEL
         "execution_unit/curr_test_pc_11" BEL "execution_unit/curr_test_pc_10"
         BEL "execution_unit/curr_test_pc_9" BEL
         "execution_unit/curr_test_pc_8" BEL "execution_unit/curr_test_pc_7"
@@ -286,6 +310,69 @@ TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
         BEL "execution_unit/curr_test_pc_3" BEL
         "execution_unit/curr_test_pc_2" BEL "execution_unit/curr_test_pc_1"
         BEL "execution_unit/curr_test_pc_0" BEL
+        "execution_unit/curr_test_sr_31" BEL "execution_unit/curr_test_sr_30"
+        BEL "execution_unit/curr_test_sr_29" BEL
+        "execution_unit/curr_test_sr_28" BEL "execution_unit/curr_test_sr_27"
+        BEL "execution_unit/curr_test_sr_26" BEL
+        "execution_unit/curr_test_sr_25" BEL "execution_unit/curr_test_sr_24"
+        BEL "execution_unit/curr_test_sr_23" BEL
+        "execution_unit/curr_test_sr_22" BEL "execution_unit/curr_test_sr_21"
+        BEL "execution_unit/curr_test_sr_20" BEL
+        "execution_unit/curr_test_sr_19" BEL "execution_unit/curr_test_sr_18"
+        BEL "execution_unit/curr_test_sr_17" BEL
+        "execution_unit/curr_test_sr_16" BEL "execution_unit/curr_test_sr_15"
+        BEL "execution_unit/curr_test_sr_14" BEL
+        "execution_unit/curr_test_sr_13" BEL "execution_unit/curr_test_sr_12"
+        BEL "execution_unit/curr_test_sr_11" BEL
+        "execution_unit/curr_test_sr_10" BEL "execution_unit/curr_test_sr_9"
+        BEL "execution_unit/curr_test_sr_8" BEL
+        "execution_unit/curr_test_sr_7" BEL "execution_unit/curr_test_sr_6"
+        BEL "execution_unit/curr_test_sr_5" BEL
+        "execution_unit/curr_test_sr_4" BEL "execution_unit/curr_test_sr_3"
+        BEL "execution_unit/curr_test_sr_2" BEL
+        "execution_unit/curr_test_sr_1" BEL "execution_unit/curr_test_sr_0"
+        BEL "execution_unit/curr_interrupt_register_1" BEL
+        "execution_unit/curr_interrupt_register_0" BEL
+        "execution_unit/test_flag" BEL "execution_unit/curr_test_sp_11" BEL
+        "execution_unit/curr_test_sp_10" BEL "execution_unit/curr_test_sp_9"
+        BEL "execution_unit/curr_test_sp_8" BEL
+        "execution_unit/curr_test_sp_7" BEL "execution_unit/curr_test_sp_6"
+        BEL "execution_unit/curr_test_sp_5" BEL
+        "execution_unit/curr_test_sp_4" BEL "execution_unit/curr_test_sp_3"
+        BEL "execution_unit/curr_test_sp_2" BEL
+        "execution_unit/curr_test_sp_1" BEL "execution_unit/curr_test_sp_0"
+        BEL "execution_unit/intermediate_value_reg_31" BEL
+        "execution_unit/intermediate_value_reg_30" BEL
+        "execution_unit/intermediate_value_reg_29" BEL
+        "execution_unit/intermediate_value_reg_28" BEL
+        "execution_unit/intermediate_value_reg_27" BEL
+        "execution_unit/intermediate_value_reg_26" BEL
+        "execution_unit/intermediate_value_reg_25" BEL
+        "execution_unit/intermediate_value_reg_24" BEL
+        "execution_unit/intermediate_value_reg_23" BEL
+        "execution_unit/intermediate_value_reg_22" BEL
+        "execution_unit/intermediate_value_reg_21" BEL
+        "execution_unit/intermediate_value_reg_20" BEL
+        "execution_unit/intermediate_value_reg_19" BEL
+        "execution_unit/intermediate_value_reg_18" BEL
+        "execution_unit/intermediate_value_reg_17" BEL
+        "execution_unit/intermediate_value_reg_16" BEL
+        "execution_unit/intermediate_value_reg_15" BEL
+        "execution_unit/intermediate_value_reg_14" BEL
+        "execution_unit/intermediate_value_reg_13" BEL
+        "execution_unit/intermediate_value_reg_12" BEL
+        "execution_unit/intermediate_value_reg_11" BEL
+        "execution_unit/intermediate_value_reg_10" BEL
+        "execution_unit/intermediate_value_reg_9" BEL
+        "execution_unit/intermediate_value_reg_8" BEL
+        "execution_unit/intermediate_value_reg_7" BEL
+        "execution_unit/intermediate_value_reg_6" BEL
+        "execution_unit/intermediate_value_reg_5" BEL
+        "execution_unit/intermediate_value_reg_4" BEL
+        "execution_unit/intermediate_value_reg_3" BEL
+        "execution_unit/intermediate_value_reg_2" BEL
+        "execution_unit/intermediate_value_reg_1" BEL
+        "execution_unit/intermediate_value_reg_0" BEL
         "execution_unit/curr_sample_io_out_2_7" BEL
         "execution_unit/curr_sample_io_out_2_6" BEL
         "execution_unit/curr_sample_io_out_2_5" BEL
@@ -294,14 +381,6 @@ TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
         "execution_unit/curr_sample_io_out_2_2" BEL
         "execution_unit/curr_sample_io_out_2_1" BEL
         "execution_unit/curr_sample_io_out_2_0" BEL
-        "execution_unit/curr_sample_io_out_1_7" BEL
-        "execution_unit/curr_sample_io_out_1_6" BEL
-        "execution_unit/curr_sample_io_out_1_5" BEL
-        "execution_unit/curr_sample_io_out_1_4" BEL
-        "execution_unit/curr_sample_io_out_1_3" BEL
-        "execution_unit/curr_sample_io_out_1_2" BEL
-        "execution_unit/curr_sample_io_out_1_1" BEL
-        "execution_unit/curr_sample_io_out_1_0" BEL
         "execution_unit/curr_sample_io_out_0_7" BEL
         "execution_unit/curr_sample_io_out_0_6" BEL
         "execution_unit/curr_sample_io_out_0_5" BEL
@@ -310,26 +389,62 @@ TIMEGRP sys_clk_pin = BEL "reset_unit/cnt_0" BEL "reset_unit/cnt_1" BEL
         "execution_unit/curr_sample_io_out_0_2" BEL
         "execution_unit/curr_sample_io_out_0_1" BEL
         "execution_unit/curr_sample_io_out_0_0" BEL
-        "execution_unit/curr_test_sr_0" BEL
-        "execution_unit/curr_interrupt_register_1" BEL
-        "execution_unit/curr_interrupt_register_0" BEL
-        "execution_unit/rsr_cycle_counter" BEL "execution_unit/test_flag" BEL
-        "execution_unit/curr_test_sp_11" BEL "execution_unit/curr_test_sp_10"
-        BEL "execution_unit/curr_test_sp_9" BEL
-        "execution_unit/curr_test_sp_8" BEL "execution_unit/curr_test_sp_7"
-        BEL "execution_unit/curr_test_sp_6" BEL
-        "execution_unit/curr_test_sp_5" BEL "execution_unit/curr_test_sp_4"
-        BEL "execution_unit/curr_test_sp_3" BEL
-        "execution_unit/curr_test_sp_2" BEL "execution_unit/curr_test_sp_1"
-        BEL "execution_unit/curr_test_sp_0" BEL
-        "reset_debounce_unit/state_0_FSM_FFd2_1" BEL "clk_BUFGP/BUFG" PIN
-        "ram_unit/Mram_data1_pins<24>" PIN "ram_unit/Mram_data1_pins<25>" PIN
-        "ram_unit/Mram_data2_pins<24>" PIN "ram_unit/Mram_data2_pins<25>" PIN
-        "ram_unit/Mram_data3_pins<24>" PIN "ram_unit/Mram_data3_pins<25>" PIN
-        "ram_unit/Mram_data4_pins<24>" PIN "ram_unit/Mram_data4_pins<25>" PIN
-        "ram_unit/Mram_data5_pins<24>" PIN "ram_unit/Mram_data5_pins<25>" PIN
-        "ram_unit/Mram_data7_pins<24>" PIN "ram_unit/Mram_data7_pins<25>" PIN
-        "ram_unit/Mram_data8_pins<24>" PIN "ram_unit/Mram_data8_pins<25>";
+        "execution_unit/curr_sample_io_out_1_7" BEL
+        "execution_unit/curr_sample_io_out_1_6" BEL
+        "execution_unit/curr_sample_io_out_1_5" BEL
+        "execution_unit/curr_sample_io_out_1_4" BEL
+        "execution_unit/curr_sample_io_out_1_3" BEL
+        "execution_unit/curr_sample_io_out_1_2" BEL
+        "execution_unit/curr_sample_io_out_1_1" BEL
+        "execution_unit/curr_sample_io_out_1_0" BEL
+        "execution_unit/two_cycle_counter" BEL
+        "execution_unit/intermediate_value_2_reg_31" BEL
+        "execution_unit/intermediate_value_2_reg_30" BEL
+        "execution_unit/intermediate_value_2_reg_29" BEL
+        "execution_unit/intermediate_value_2_reg_28" BEL
+        "execution_unit/intermediate_value_2_reg_27" BEL
+        "execution_unit/intermediate_value_2_reg_26" BEL
+        "execution_unit/intermediate_value_2_reg_25" BEL
+        "execution_unit/intermediate_value_2_reg_24" BEL
+        "execution_unit/intermediate_value_2_reg_23" BEL
+        "execution_unit/intermediate_value_2_reg_22" BEL
+        "execution_unit/intermediate_value_2_reg_21" BEL
+        "execution_unit/intermediate_value_2_reg_20" BEL
+        "execution_unit/intermediate_value_2_reg_19" BEL
+        "execution_unit/intermediate_value_2_reg_18" BEL
+        "execution_unit/intermediate_value_2_reg_17" BEL
+        "execution_unit/intermediate_value_2_reg_16" BEL
+        "execution_unit/intermediate_value_2_reg_15" BEL
+        "execution_unit/intermediate_value_2_reg_14" BEL
+        "execution_unit/intermediate_value_2_reg_13" BEL
+        "execution_unit/intermediate_value_2_reg_12" BEL
+        "execution_unit/intermediate_value_2_reg_11" BEL
+        "execution_unit/intermediate_value_2_reg_10" BEL
+        "execution_unit/intermediate_value_2_reg_9" BEL
+        "execution_unit/intermediate_value_2_reg_8" BEL
+        "execution_unit/intermediate_value_2_reg_7" BEL
+        "execution_unit/intermediate_value_2_reg_6" BEL
+        "execution_unit/intermediate_value_2_reg_5" BEL
+        "execution_unit/intermediate_value_2_reg_4" BEL
+        "execution_unit/intermediate_value_2_reg_3" BEL
+        "execution_unit/intermediate_value_2_reg_2" BEL
+        "execution_unit/intermediate_value_2_reg_1" BEL
+        "execution_unit/intermediate_value_2_reg_0" BEL
+        "execution_unit/two_cycle_counter_1" BEL
+        "execution_unit/three_cycle_counter_FSM_FFd1_1" BEL
+        "execution_unit/three_cycle_counter_FSM_FFd2_1" BEL "clk_BUFGP/BUFG"
+        PIN "register_unit/Mram_data1_pins<18>" PIN
+        "register_unit/Mram_data1_pins<19>" PIN
+        "register_unit/Mram_data_pins<18>" PIN
+        "register_unit/Mram_data_pins<19>" PIN "ram_unit/Mram_data1_pins<24>"
+        PIN "ram_unit/Mram_data1_pins<25>" PIN "ram_unit/Mram_data2_pins<24>"
+        PIN "ram_unit/Mram_data2_pins<25>" PIN "ram_unit/Mram_data3_pins<24>"
+        PIN "ram_unit/Mram_data3_pins<25>" PIN "ram_unit/Mram_data6_pins<24>"
+        PIN "ram_unit/Mram_data6_pins<25>" PIN "ram_unit/Mram_data4_pins<24>"
+        PIN "ram_unit/Mram_data4_pins<25>" PIN "ram_unit/Mram_data5_pins<24>"
+        PIN "ram_unit/Mram_data5_pins<25>" PIN "ram_unit/Mram_data7_pins<24>"
+        PIN "ram_unit/Mram_data7_pins<25>" PIN "ram_unit/Mram_data8_pins<24>"
+        PIN "ram_unit/Mram_data8_pins<25>";
 TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 100 MHz HIGH 50%;
 SCHEMATIC END;
 
