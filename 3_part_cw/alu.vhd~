@@ -26,10 +26,77 @@ end alu;
 
 architecture rtl of alu is
 
-  -- Your declarations go here --
+  signal internal_a_di : std_logic_vector(word_size downto 0) := (others => '0');
+  signal internal_b_di : std_logic_vector(word_size downto 0) := (others => '0');
+  
+  signal int_a_di : std_logic_vector(word_size downto 0) := (others => '0');
+  signal int_b_di : std_logic_vector(word_size downto 0) := (others => '0');
+  
+  signal internal_result : std_logic_vector(word_size downto 0) := (others => '0');
+  signal internal_small_result : std_logic_vector((word_size - 1) downto 0) := (others => '0');
 
 begin
 
-  -- Your implementation goes here --
+internal_small_result <= internal_result((word_size - 1) downto 0);
+
+  process(si, a_c, a_di, b_c, b_di, c_in, internal_a_di, internal_b_di, internal_result)
+  begin
+  
+    int_a_di <= ('0' & a_di);
+    int_b_di <= ('0' & b_di);
+  
+    if(a_c = '1') then
+      
+      internal_a_di <= (not int_a_di);
+      
+    else
+    
+      internal_a_di <= int_a_di;
+      
+    end if;
+    
+    if(b_c = '1') then 
+    
+      internal_b_di <= (not int_b_di);
+      
+    else
+    
+      internal_b_di <= int_b_di;
+      
+    end if;
+      
+    if(si = '0') then
+      
+      if(c_in = '1') then
+        
+        internal_result <= std_logic_vector( (unsigned(internal_a_di) + unsigned(internal_b_di)) + 1);
+        
+      else
+      
+        internal_result <= std_logic_vector( unsigned(internal_a_di) + unsigned(internal_b_di) );
+        
+      end if;
+      
+      c_out <= internal_result(word_size);
+        
+    else
+    
+       if(c_in = '1') then
+        
+        internal_result <= std_logic_vector( (signed(internal_a_di) + signed(internal_b_di)) + 1);
+        
+      else
+      
+        internal_result <= std_logic_vector( signed(internal_a_di) + signed(internal_b_di) );
+        
+      end if;
+      
+      c_out <= internal_a_di(word_size) xor internal_b_di(word_size);
+    
+    end if;
+    
+    s_do <= internal_result((word_size - 1) downto 0);
+  
+  end process;
 
 end rtl;

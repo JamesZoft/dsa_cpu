@@ -1,7 +1,23 @@
-[timestart] 0
-[size] 1600 1107
+[*]
+[*] GTKWave Analyzer v3.3.34 (w)1999-2012 BSI
+[*] Wed Mar  6 23:49:52 2013
+[*]
+[dumpfile] "/home/james/EE3DSA/3_part_cw/test_bench.ghw"
+[dumpfile_mtime] "Wed Mar  6 23:49:22 2013"
+[dumpfile_size] 661224
+[savefile] "/home/james/EE3DSA/3_part_cw/test_bench.sav"
+[timestart] 45819000000
+[size] 1600 935
 [pos] -1 -1
-*-36.727745 80354000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-30.727745 51518000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.test_bench.
+[treeopen] top.test_bench.top_level_uut.
+[treeopen] top.test_bench.top_level_uut.execution_unit.
+[sst_width] 293
+[signals_width] 190
+[sst_expanded] 1
+[sst_vpaned_height] 273
 @28
 top.test_bench.clk
 top.test_bench.top_level_uut.rst
@@ -28,13 +44,15 @@ top.test_bench.top_level_uut.btnl
 top.test_bench.top_level_uut.btnr
 top.test_bench.top_level_uut.msf
 top.test_bench.top_level_uut.dcf
+@23
+#{top.test_bench.top_level_uut.execution_unit.internal_opcode[7:0]} top.test_bench.top_level_uut.execution_unit.internal_opcode[7] top.test_bench.top_level_uut.execution_unit.internal_opcode[6] top.test_bench.top_level_uut.execution_unit.internal_opcode[5] top.test_bench.top_level_uut.execution_unit.internal_opcode[4] top.test_bench.top_level_uut.execution_unit.internal_opcode[3] top.test_bench.top_level_uut.execution_unit.internal_opcode[2] top.test_bench.top_level_uut.execution_unit.internal_opcode[1] top.test_bench.top_level_uut.execution_unit.internal_opcode[0]
 @200
 -
 @22
 #{top.test_bench.comp_ld[7:0]} top.test_bench.comp_ld[7] top.test_bench.comp_ld[6] top.test_bench.comp_ld[5] top.test_bench.comp_ld[4] top.test_bench.comp_ld[3] top.test_bench.comp_ld[2] top.test_bench.comp_ld[1] top.test_bench.comp_ld[0]
-@c00023
+@c00022
 #{top.test_bench.test_ld[7:0]} top.test_bench.test_ld[7] top.test_bench.test_ld[6] top.test_bench.test_ld[5] top.test_bench.test_ld[4] top.test_bench.test_ld[3] top.test_bench.test_ld[2] top.test_bench.test_ld[1] top.test_bench.test_ld[0]
-@29
+@28
 top.test_bench.test_ld[7]
 top.test_bench.test_ld[6]
 top.test_bench.test_ld[5]
@@ -43,7 +61,7 @@ top.test_bench.test_ld[3]
 top.test_bench.test_ld[2]
 top.test_bench.test_ld[1]
 top.test_bench.test_ld[0]
-@1401201
+@1401200
 -group_end
 @22
 #{top.test_bench.comp_an[3:0]} top.test_bench.comp_an[3] top.test_bench.comp_an[2] top.test_bench.comp_an[1] top.test_bench.comp_an[0]

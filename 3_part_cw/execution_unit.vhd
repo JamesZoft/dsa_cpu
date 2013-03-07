@@ -66,7 +66,7 @@ entity execution_unit is
         alu_b_di:      out std_logic_vector((       word_size - 1) downto 0) := (others => '0');          -- B data in
         alu_c_in:      out std_logic                                         :=            '0';           -- carry in
         alu_s_do:      in  std_logic_vector((       word_size - 1) downto 0) := (others => 'X');          -- sum data out
-        alu_c_out:     in  std_logic                                         :=            'X'            -- carry out
+        alu_c_out:     in  std_logic                                         :=            '0'            -- carry out
     );
 
 end execution_unit;
@@ -125,6 +125,8 @@ architecture syn of execution_unit is
   signal intermediate_value : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
   signal intermediate_value_2 : std_logic_vector((       word_size - 1) downto 0) := (others => 'X');
   
+  signal operator_for_cmp : std_logic_vector(7 downto 0) := (others => 'X');
+  
   signal test: std_logic := '0';
     
 begin
@@ -140,6 +142,7 @@ test_sp <= curr_test_sp;
 test_sr <= curr_test_sr;
 --synopsys synthesis_on
 internal_opcode <= rom_data(31 downto 24);
+operator_for_cmp <= rom_data(23 downto 16);
 io_out_port <= rom_data(23 downto 16);
 and_argument <= rom_data(15 downto 8);
 xor_argument <= rom_data(7 downto 0);
@@ -211,7 +214,13 @@ address_or_value <= rom_data(15 downto 0);
 			reg_c_rd <= '0';
 			pop_reg_is_pc <= '0';
 			test <= '0';
-			
+			alu_si <= '0';
+      alu_a_c <= '0'; 
+      alu_a_di <= (others => '0'); 
+      alu_b_c <= '0';
+      alu_b_di <= (others => '0');
+      alu_c_in <= '0';
+		
 			if (intr /= "00000000") then
 				if (intr(7) = '1') then
 					next_interrupt_register(7) <= '1';
@@ -942,61 +951,394 @@ address_or_value <= rom_data(15 downto 0);
 				
 				elsif(internal_opcode = X"15") then --ANDR R[A] = R[B] and R[C]
 				
-					if(two_cycle_counter = '0') then
+					if(three_cycle_counter = 2) then
 					
-						next_two_cycle_counter <= '1';
-						reg_b_addr <= and_argument;
-						reg_b_rd <= '1';
-						reg_c_addr <= xor_argument;
-						reg_c_rd <= '1';
+						next_three_cycle_counter <= 1;
 						
-					else
+						if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= and_argument;
+							
+						end if;
+						
+						if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_c_rd <= '1';
+							reg_c_addr <= xor_argument;
+							
+						end if;
 					
-						reg_a_addr <= io_out_port;
-						reg_a_wr <= '1';
-						reg_a_di <= (reg_b_do and reg_c_do);
+						
+					elsif(three_cycle_counter = 1) then
+						
+						if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+							if(xor_argument = X"00") then
+								
+								
+								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) and to_unsigned(0, 8));
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2 <= (intermediate_value and curr_test_pc);
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2 <= (intermediate_value and std_logic_vector(curr_test_sp));
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2 <= (intermediate_value and curr_test_sr);
+								
+							else
+							
+								intermediate_value_2 <= (intermediate_value and reg_c_do);
+								
+							end if;
+						
+						else
+					
+							intermediate_value_2 <= (reg_b_do and reg_c_do);
+						
+						
+						end if;
+						
+						next_three_cycle_counter <= 0;
+						
+						if(io_out_port >= X"00") and (io_out_port <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= io_out_port;
+							
+						end if;
+						
+						
+					elsif(three_cycle_counter = 0) then
+						
+						
+						if(io_out_port = X"00") then
+						
+							--Do nothing, can't write to this register
+							
+						elsif(io_out_port = X"01") then
+						
+							next_test_pc <= ram_rdata((n_bits(ram_size) - 1) downto 0);
+							
+						elsif(io_out_port = X"02") then
+						
+							next_test_sp <= unsigned(ram_rdata((n_bits(ram_size) - 1) downto 0));
+						
+						elsif(io_out_port = X"03") then
+						
+							next_test_sr <= ram_rdata((word_size - 1) downto 0); -- line 107 is sr
+							
+						else
+						
+							reg_a_wr <= '1';
+							reg_a_addr <= io_out_port;
+							reg_a_di <= ram_rdata;
+						
+						end if;
+						
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				    next_two_cycle_counter <= '0';
+				    next_three_cycle_counter <= 2;
 					
 					end if;
 				
 				elsif(internal_opcode = X"16") then --ORR R[A] = R[B] or R[C]
 				
-					if(two_cycle_counter = '0') then
+					if(three_cycle_counter = 2) then
 					
-						next_two_cycle_counter <= '1';
-						reg_b_addr <= and_argument;
-						reg_b_rd <= '1';
-						reg_c_addr <= xor_argument;
-						reg_c_rd <= '1';
+						next_three_cycle_counter <= 1;
 						
-					else
+						if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= and_argument;
+							
+						end if;
+						
+						if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_c_rd <= '1';
+							reg_c_addr <= xor_argument;
+							
+						end if;
 					
-						reg_a_addr <= io_out_port;
-						reg_a_wr <= '1';
-						reg_a_di <= (reg_b_do or reg_c_do);
+						
+					elsif(three_cycle_counter = 1) then
+						
+						if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+							if(xor_argument = X"00") then
+								
+								
+								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) or to_unsigned(0, 8));
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2 <= (intermediate_value or curr_test_pc);
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2 <= (intermediate_value or std_logic_vector(curr_test_sp));
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2 <= (intermediate_value or curr_test_sr);
+								
+							else
+							
+								intermediate_value_2 <= (intermediate_value or reg_c_do);
+								
+							end if;
+						
+						else
+					
+							intermediate_value_2 <= (reg_b_do or reg_c_do);
+						
+						
+						end if;
+						
+						next_three_cycle_counter <= 0;
+						
+						if(io_out_port >= X"00") or (io_out_port <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= io_out_port;
+							
+						end if;
+						
+						
+					elsif(three_cycle_counter = 0) then
+						
+						
+						if(io_out_port = X"00") then
+						
+							--Do nothing, can't write to this register
+							
+						elsif(io_out_port = X"01") then
+						
+							next_test_pc <= ram_rdata((n_bits(ram_size) - 1) downto 0);
+							
+						elsif(io_out_port = X"02") then
+						
+							next_test_sp <= unsigned(ram_rdata((n_bits(ram_size) - 1) downto 0));
+						
+						elsif(io_out_port = X"03") then
+						
+							next_test_sr <= ram_rdata((word_size - 1) downto 0); -- line 107 is sr
+							
+						else
+						
+							reg_a_wr <= '1';
+							reg_a_addr <= io_out_port;
+							reg_a_di <= ram_rdata;
+						
+						end if;
+						
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				    next_two_cycle_counter <= '0';
+				    next_three_cycle_counter <= 2;
 					
 					end if;
 				
 				elsif(internal_opcode = X"17") then --XORR R[A] = R[B] xor R[C]
 				
-					if(two_cycle_counter = '0') then
+					if(three_cycle_counter = 2) then
 					
-						next_two_cycle_counter <= '1';
-						reg_b_addr <= and_argument;
-						reg_b_rd <= '1';
-						reg_c_addr <= xor_argument;
-						reg_c_rd <= '1';
+						next_three_cycle_counter <= 1;
 						
-					else
+						if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= and_argument;
+							
+						end if;
+						
+						if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_c_rd <= '1';
+							reg_c_addr <= xor_argument;
+							
+						end if;
 					
-						reg_a_addr <= io_out_port;
-						reg_a_wr <= '1';
-						reg_a_di <= (reg_b_do xor reg_c_do);
+						
+					elsif(three_cycle_counter = 1) then
+						
+						if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+							if(xor_argument = X"00") then
+								
+								
+								intermediate_value_2 <= std_logic_vector(unsigned(intermediate_value) xor to_unsigned(0, 8));
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2 <= (intermediate_value xor curr_test_pc);
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2 <= (intermediate_value xor std_logic_vector(curr_test_sp));
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2 <= (intermediate_value xor curr_test_sr);
+								
+							else
+							
+								intermediate_value_2 <= (intermediate_value xor reg_c_do);
+								
+							end if;
+						
+						else
+					
+							intermediate_value_2 <= (reg_b_do xor reg_c_do);
+						
+						
+						end if;
+						
+						next_three_cycle_counter <= 0;
+						
+						if(io_out_port >= X"00") or (io_out_port <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= io_out_port;
+							
+						end if;
+						
+						
+					elsif(three_cycle_counter = 0) then
+						
+						
+						if(io_out_port = X"00") then
+						
+							--Do nothing, can't write to this register
+							
+						elsif(io_out_port = X"01") then
+						
+							next_test_pc <= ram_rdata((n_bits(ram_size) - 1) downto 0);
+							
+						elsif(io_out_port = X"02") then
+						
+							next_test_sp <= unsigned(ram_rdata((n_bits(ram_size) - 1) downto 0));
+						
+						elsif(io_out_port = X"03") then
+						
+							next_test_sr <= ram_rdata((word_size - 1) downto 0); -- line 107 is sr
+							
+						else
+						
+							reg_a_wr <= '1';
+							reg_a_addr <= io_out_port;
+							reg_a_di <= ram_rdata;
+						
+						end if;
+						
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				    next_two_cycle_counter <= '0';
+				    next_three_cycle_counter <= 2;
 					
 					end if;
 				
@@ -1005,13 +1347,46 @@ address_or_value <= rom_data(15 downto 0);
 					if(three_cycle_counter = 2) then
 					
 						next_three_cycle_counter <= 1;
-						reg_b_addr <= and_argument;
-						reg_b_rd <= '1';
+						
+						if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= and_argument;
+							
+						end if;
 						
 					elsif(three_cycle_counter = 1) then
 						
-						intermediate_value <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
+						--intermediate_value <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
 						next_three_cycle_counter <= 0;
+						
+						if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value <= std_logic_vector(unsigned(curr_test_pc) srl to_integer(unsigned(xor_argument)));
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp srl to_integer(unsigned(xor_argument)));
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_sr((n_bits(ram_size) - 1) downto 0)) srl to_integer(unsigned(xor_argument)));
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
+								
+							end if;
 				    
 				  elsif(three_cycle_counter = 0) then
 				  
@@ -1025,37 +1400,687 @@ address_or_value <= rom_data(15 downto 0);
 				
 				elsif(internal_opcode = X"19") then --SLLR R[A] = R[B] sll c
 				
-				if(two_cycle_counter = '0') then
+				  if(three_cycle_counter = 2) then
 					
-						next_two_cycle_counter <= '1';
-						reg_b_addr <= and_argument;
-						reg_b_rd <= '1';
+						next_three_cycle_counter <= 1;
 						
-					else
-					
-						reg_a_addr <= io_out_port;
+						if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							-- Don't read anything, special rules for what to write are needed
+							
+						else
+							reg_b_rd <= '1';
+							reg_b_addr <= and_argument;
+							
+						end if;
+						
+					elsif(three_cycle_counter = 1) then
+						
+						--intermediate_value <= std_logic_vector(unsigned(reg_b_do) srl to_integer(unsigned(xor_argument)));
+						next_three_cycle_counter <= 0;
+						
+						if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value <= std_logic_vector(unsigned(curr_test_pc) sll to_integer(unsigned(xor_argument)));
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp sll to_integer(unsigned(xor_argument)));
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(unsigned(curr_test_sr((n_bits(ram_size) - 1) downto 0)) sll to_integer(unsigned(xor_argument)));
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= std_logic_vector(unsigned(reg_b_do) sll to_integer(unsigned(xor_argument)));
+								
+							end if;
+				    
+				  elsif(three_cycle_counter = 0) then
+				  
+				  	reg_a_di <= intermediate_value;
+				  	reg_a_addr <= io_out_port;
 						reg_a_wr <= '1';
-						reg_a_di <= std_logic_vector(unsigned(reg_b_do) sll to_integer(unsigned(xor_argument)));
 						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
-				    next_two_cycle_counter <= '0';
+				    next_three_cycle_counter <= 2;
 					
 					end if;
 				
 				elsif(internal_opcode = X"1A") then --CMPU R[A] flag{=,/=,<,<=,>,>=,=0,/=0} R[B]
 				
-				
+				  if(three_cycle_counter = 2) then
+				    
+				    if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_b_rd <= '1';
+						  reg_b_addr <= and_argument;
+						
+					  end if;
+					
+					  if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_c_rd <= '1';
+						  reg_c_addr <= xor_argument;
+						
+					  end if;
+					  
+					  next_three_cycle_counter <= 1;
+					  
+					elsif(three_cycle_counter = 1) then
+					
+				  	if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+							if(xor_argument = X"00") then
+								
+								intermediate_value_2 <= (others => '0');
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2 <= curr_test_pc;
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2 <= std_logic_vector(curr_test_sp);
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2 <= curr_test_sr;
+								
+							else
+							
+								intermediate_value_2 <= reg_c_do;
+								
+							end if;
+						
+						else
+						
+					    intermediate_value <= reg_b_do;  
+							intermediate_value_2 <= reg_c_do;
+						
+						end if;
+						
+						next_three_cycle_counter <= 0;
+						
+					elsif(three_cycle_counter <= 0) then
+						
+						case operator_for_cmp is
+						
+						  when "00000000" => --Equals
+						    
+						    if(unsigned(intermediate_value) = unsigned(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+						  
+						  when "00000001" => 
+						  
+						    if(unsigned(intermediate_value) /= unsigned(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000010" => 
+						  
+						    if(unsigned(intermediate_value) < unsigned(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000011" => 
+						  
+						    if(unsigned(intermediate_value) <= unsigned(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000100" => 
+						  
+						    if(unsigned(intermediate_value) > unsigned(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000101" => 
+						  
+						    if(unsigned(intermediate_value) >= unsigned(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000110" => 
+						  
+						    if(unsigned(intermediate_value) = 0) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000111" => 
+						  
+						    if(unsigned(intermediate_value) /= 0) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+					   when others =>
+					   
+					    --do nothing
+					      
+					end case;
+						
+						next_three_cycle_counter <= 2;
+						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+						
+				end if;
 				
 				elsif(internal_opcode = X"1B") then --CMPS R[A] flag{=,/=,<,<=,>,>=,=0,/=0} R[B]
 				
-				
+				  if(three_cycle_counter = 2) then
+				    
+				    if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_b_rd <= '1';
+						  reg_b_addr <= and_argument;
+						
+					  end if;
+					
+					  if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_c_rd <= '1';
+						  reg_c_addr <= xor_argument;
+						
+					  end if;
+					  
+					  next_three_cycle_counter <= 1;
+					  
+					elsif(three_cycle_counter = 1) then
+					
+				  	if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+							if(xor_argument = X"00") then
+								
+								
+								intermediate_value_2 <= std_logic_vector(to_unsigned(0, 8));
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2 <= curr_test_pc;
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2 <= std_logic_vector(curr_test_sp);
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2 <= curr_test_sr;
+								
+							else
+							
+								intermediate_value_2 <= reg_c_do;
+								
+							end if;
+						
+						else
+					
+							intermediate_value_2 <= reg_c_do;
+						
+						end if;
+						
+						next_three_cycle_counter <= 0;
+						
+					elsif(three_cycle_counter = 0) then
+						
+						case operator_for_cmp is
+						
+						  when "00000000" => --Equals
+						    
+						    if(signed(intermediate_value) = signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+						  
+						  when "00000001" => 
+						  
+						    if(signed(intermediate_value) /= signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000010" => 
+						  
+						    if(signed(intermediate_value) < signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000011" => 
+						  
+						    if(signed(intermediate_value) <= signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000100" => 
+						  
+						    if(signed(intermediate_value) > signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000101" => 
+						  
+						    if(signed(intermediate_value) >= signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000110" => 
+						  
+						    if(signed(intermediate_value) /= signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+				     when "00000111" => 
+						  
+						    if(signed(intermediate_value) /= signed(intermediate_value_2)) then
+						      next_test_flag <= '1';
+						      next_test_sr(1) <= '1';
+					      else
+						      next_test_flag <= '0';
+						      next_test_sr(1) <= '0';
+					      end if;
+					      
+					   when others =>
+					   
+					    --do nothing
+					      
+					end case;
+						
+						next_three_cycle_counter <= 2;
+						next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+						
+				end if;
 				
 				elsif(internal_opcode >= X"20") and (internal_opcode <= X"27") then
 				
-				
+				 if(three_cycle_counter = 2) then
+				  
+				    if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_b_rd <= '1';
+						  reg_b_addr <= and_argument;
+						
+					  end if;
+					
+					  if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_c_rd <= '1';
+						  reg_c_addr <= xor_argument;
+						
+					  end if;
+					  
+					  next_three_cycle_counter <= 1;
+					  
+					  
+					  
+					elsif(three_cycle_counter = 1) then
+					
+				  	if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+						  if(xor_argument = X"00") then
+						
+								intermediate_value_2 <= (others => '0');
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value_2( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+							  intermediate_value_2 <= reg_c_do;
+							  
+							end if;
+						
+						else
+					
+					    intermediate_value <= reg_b_do;
+							intermediate_value_2 <= reg_c_do;
+						
+						end if;
+						
+					 next_three_cycle_counter <= 0;
+						
+					elsif(three_cycle_counter = 0) then
+						
+				    alu_si <= '0';
+				    alu_a_c <= internal_opcode(2);
+            alu_b_c <= internal_opcode(1);
+            alu_c_in <= internal_opcode(0);
+            
+            alu_a_di <= intermediate_value;
+            alu_b_di <= intermediate_value_2;
+            
+            next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+  				  next_three_cycle_counter <= 2;
+  				  
+  				  if(io_out_port = X"00") then
+						
+							--Do nothing, can't write to this register
+							
+						elsif(io_out_port = X"01") then
+						
+							next_test_pc <= alu_s_do;
+							
+						elsif(io_out_port = X"02") then
+						
+							next_test_sp <= unsigned(alu_s_do);
+						
+						elsif(io_out_port = X"03") then
+						
+							next_test_sr <= alu_s_do; -- line 107 is sr
+							
+						else
+						
+							reg_a_wr <= '1';
+							reg_a_addr <= io_out_port;
+							reg_a_di <= alu_s_do;
+						
+						end if;
+						
+  				  next_test_sr(2) <= alu_c_out;
+  				  
+  				end if;
 				
 				elsif(internal_opcode >= X"28") and (internal_opcode <= X"2F") then
 				
 				
+				
+				  if(three_cycle_counter = 2) then
+				  
+				    if(and_argument >= X"00") and (and_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_b_rd <= '1';
+						  reg_b_addr <= and_argument;
+						
+					  end if;
+					
+					  if(xor_argument >= X"00") and (xor_argument <= X"03") then
+						
+							  -- Don't read anything, special rules for what to write are needed
+							
+					  else
+						  reg_c_rd <= '1';
+						  reg_c_addr <= xor_argument;
+						
+					  end if;
+					  
+					  next_three_cycle_counter <= 1;
+					  
+					  
+					  
+					elsif(three_cycle_counter = 1) then
+					
+				  	if((and_argument >= X"00") and (and_argument <= X"03")) or ((xor_argument >= X"00") and (xor_argument <= X"03")) then
+						
+							if(and_argument = X"00") then
+						
+								intermediate_value <= (others => '0');
+							
+							elsif(and_argument = X"01") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"02") then
+						
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(and_argument = X"03") then
+							
+								intermediate_value((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+								intermediate_value <= reg_b_do;
+								
+							end if;
+							
+						  if(xor_argument = X"00") then
+						
+								intermediate_value_2 <= (others => '0');
+							
+							elsif(xor_argument = X"01") then
+							
+								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_pc;
+								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(xor_argument = X"02") then
+						
+								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= std_logic_vector(curr_test_sp);
+								intermediate_value_2( ((word_size - 9) -1) downto (n_bits(ram_size))) <= (others => '0');
+						
+							elsif(xor_argument = X"03") then
+							
+								intermediate_value_2((n_bits(ram_size) - 1) downto 0) <= curr_test_sr((n_bits(ram_size) - 1) downto 0);
+								intermediate_value_2( ((word_size - 9) - 1) downto (n_bits(ram_size))) <= (others => '0');
+								
+							else
+							
+							  intermediate_value_2 <= reg_c_do;
+							  
+							end if;
+						
+						else
+					
+					    intermediate_value <= reg_b_do;
+							intermediate_value_2 <= reg_c_do;
+						
+						end if;
+						
+					 next_three_cycle_counter <= 0;
+						
+					elsif(three_cycle_counter = 0) then
+						
+				    alu_si <= '1';
+				    alu_a_c <= internal_opcode(2);
+            alu_b_c <= internal_opcode(1);
+            alu_c_in <= internal_opcode(0);
+            
+            alu_a_di <= intermediate_value;
+            alu_b_di <= intermediate_value_2;
+            
+            next_test_pc <= std_logic_vector(unsigned(curr_test_pc) + 1);
+  				  next_three_cycle_counter <= 2;
+  				  
+  				  if(io_out_port = X"00") then
+						
+							--Do nothing, can't write to this register
+							
+						elsif(io_out_port = X"01") then
+						
+							next_test_pc <= alu_s_do;
+							
+						elsif(io_out_port = X"02") then
+						
+							next_test_sp <= unsigned(alu_s_do);
+						
+						elsif(io_out_port = X"03") then
+						
+							next_test_sr <= alu_s_do; -- line 107 is sr
+							
+						else
+						
+							reg_a_wr <= '1';
+							reg_a_addr <= io_out_port;
+							reg_a_di <= alu_s_do;
+						
+						end if;
+						
+  				  next_test_sr(2) <= alu_c_out;
+  				  
+  				end if;
 			
 				end if;
 				
