@@ -6,16 +6,16 @@
 08000000 -- 05 - interrupt_5:  rir
 08000000 -- 06 - interrupt_6:  rir
 08000000 -- 07 - interrupt_7:  rir
-0B21012B -- 08 - start:        store address 12D in register 32 (store 1 in 32)
-0B22012C -- 09 -               store address 12E in register 33 (store 1 in 32)
-20202122 -- 0A -               add register 32 and 33 (1 + 1) and store in 34
+0B210025 -- 08 - start:        store address 0F in register 21 (store 0 in 21)
+0B220026 -- 09 -               store address 10 in register 22 (store 1 in 22)
+20202122 -- 0A -               add register 21 and 22 (0 + 1) and store in 20
 05012000 -- 0A -               check whether centre button pressed
 0300000A -- 0B -               branch for above check
 06000014 -- 0C -               BSR to address 20 (centre button pressed method)
-0200000A -- 0E -               iuc
-00000000 -- 0F -               iuc
-00000000 -- 10
-00000000 -- 11
+0C20008A -- 0F -               Put the number to be converted into the "number" param of bin2dec method
+0600008B -- 10 -               bsr to bin2dec method
+060000D1 -- 11 -               bsr to SR to light up 7seg
+0200000A -- 11 -               loop back
 00000000 -- 12
 00000000 -- 13
 05012020 -- 14 -- centre button pressed method, check whether centre button released
@@ -28,24 +28,24 @@
 00000000 -- 1B
 00000000 -- 1C
 00000000 -- 1D
-20210022 -- 1E -- calculate fibb number method, store fibb answer reg in temp reg 40
+20210022 -- 1E -- calculate fibb number method, move n-1 value into n-2, n into n-1 and calculate n+1 and put into register for n 
 20220020 -- 1F
 20202122 -- 20
 07000000 -- 21
 00000000 -- 22
 00000000 -- 23
 00000000 -- 24
-00000000 -- 25
-00000000 -- 26
+00000000 -- 25 -- DATA STARTS HERE               n-2th starting value for fibb sequence
+00000001 -- 26 -               n-1th starting value for fibb sequence
 0000000E -- 27 -- anode 0
 0000000D -- 28 -- anode 1
 0000000B -- 29 -- anode 2
 00000007 -- 2A -- anode 3
-00000000
-00000000
-00000000
-00000000
-00000000
+00000000 -- 2B
+00000000 -- 2C
+00000000 -- 2D
+00000000 -- 2E
+00000000 -- 2F
 00000000 -- 30
 00000000 -- 31 -- 8.
 000000C0 -- 32 -- 0
@@ -57,316 +57,356 @@
 00000082 -- 38 -- 6
 000000F8 -- 39 -- 7
 00000080 -- 3A -- 8 
-00000090 -- 3B -- 9
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-000000001
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000001
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
+00000090 -- 3B -- 9 -- DATA ENDS HERE
+00000000 -- 3C
+00000000 -- 3D
+00000000 -- 3E
+00000000 -- 3F
+00000000 -- 40
+00000000 -- 41
+00000001 -- 42 -- value 1 stored here for use in remainder method
+00000000 -- 43 -- numerator param for remainder method | hex 43
+00000000 -- 44 -- denominator param for remainder method | hex 44
+20300000 -- 45 -- remainder method, return value stored in register 36, uses registers 30-36, params go in memory address 0x43 and 0x44
+0B310043 -- 46 -- put numerator into a register
+0B320044 -- 47 -- put denominator into a register
+0B330043 -- 48 -- num = numerator
+0B340000 -- 49 -- divide = 0
+1A023132 -- 4A -- until num < denominator
+03000050 -- 4B -- jump if loop finishes, else continue
+23333332 -- 4C -- num -= denominator
+0B350042 -- 4D -- put 1 into a register
+20343435 -- 4E -- divide += 1
+0300004A -- 4F -- loop back
+0C34006B -- 50 -- put divide into multipliee param of multiply method
+0C32006C -- 51 -- put denominator into multiplior param of multiply method
+0600006D -- 52 -- branch to multiply function
+23363143 -- 53 -- store return value (numerator - (divide * denominator))
+07000000 -- 54
+00000000 -- 55
+00000000 -- 56
+00000000 -- 57
+00000000 -- 58
+00000000 -- 59
+00000000 -- 5A
+00000000 -- 5B
+00000000 -- 5C
+00000000 -- 5D
+00000000 -- 5E
+00000000 -- 5F
+00000000 -- 60
+00000000 -- 61
+00000000 -- 62
+00000000 -- 63
+00000000 -- 64
+00000000 -- 65
+00000000 -- 66
+00000000 -- 67
+00000000 -- 68
+00000000 -- 69
+00000001 -- 6A -- value 1 stored here for multiply method
+00000000 -- 6B -- multipliee
+00000000 -- 6C --multiplior
+0B40006B -- 6D -- multiply function -- put multipliee into register, return value is stored in register 43, uses registers 40-43, params go into addresses 0x6B, 0x6C
+0B41006C -- 6E -- put multiplior into register
+20430000 -- 6F -- clear any previous final values
+1A004100 -- 70 -- compare multiplior == 0
+03000076 -- 71 -- jump if yes, if not continue
+0B42006A -- 72 -- put 1 into register
+23414142 -- 73 -- take 1 off the multiplior
+20434043 -- 74 -- add the value of the final multiply value and the multipliee into the final value register
+03000070 -- 75 -- loop back
+07000000 -- 76 -- return
+00000000 -- 77
+00000000 -- 78
+00000000 -- 79
+00000000 -- 7A
+00000000 -- 7B
+00000000 -- 7C
+00000000 -- 7D
+00000000 -- 7E
+00000000 -- 7F
+00000000 -- 80
+00000000 -- 81
+00000000 -- 82
+00000000 -- 83
+00000000 -- 84
+00000000 -- 85
+00000000 -- 86
+00000000 -- 87
+00000000 -- 88
+00000000 -- 89
+00000000 -- 8A -- number param for bin2dec method
+0B50008A -- 8B -- bin2dec method -- store param in reg, output values in memory addresses C7-CA
+135300C7 -- 8C -- load C7 in register 53, used for where to store the remainder SR return values
+13540001 -- 8D -- load 1 in register 54
+1A035000 -- 8E -- while number > 0
+0300009C -- 8F -- jump for previous compare
+0C500043 -- 90 -- store number in remainder method numerator param address space  
+0B510089 -- 91 -- put value 10 into a register
+0C510044 -- 92 -- put value 10 into remainder method denominator param address space
+06000045 -- 93 -- branch to remainder subroutine
+0E530036 -- 94 -- store return value in memory address given by adding values of registers 53 and 00
+20535354 -- 95 -- add one to the memory address we're putting the remainder SR return values
+0C5000AE -- 96 -- put dividee into memory address to be used for divide SR
+1355000A -- 97 -- load register 55 with value 10
+0C5500AF -- 98 -- put divisor(10) into memory address to be used for divide SR
+060000B0 -- 99 -- branch to divide SR
+20506300 -- 9A -- number = number/10
+0300008E -- 9B -- loop back
+07000000 -- 9C
+00000000 -- 9D
+00000000 -- 9E
+00000000 -- 9F --
+00000000 -- A0
+00000000 -- A1
+00000000 -- A2
+00000000 -- A3
+00000000 -- A4
+00000000 -- A5
+00000000 -- A6
+00000000 -- A7
+00000000 -- A8
+00000000 -- A9
+00000000 -- AA
+00000000 -- AB
+00000000 -- AC
+00000000 -- AD
+00000000 -- AE -- dividee
+00000000 -- AF -- divisor
+0B6000AE -- B0 -- divide method -- put dividee into register; uses registers 60-63, return value in register 63
+0B6100AF -- B1 -- put divisor into register
+20620000 -- B2 -- clear any value out of the register used for the return value
+13630001 -- B3 -- load reg 63 with 1
+1A016100 -- B4 -- compare divisor with !0
+030000B7 -- B5 -- BIC for previous compare
+01000000 -- B6 -- if 0, halt
+1B036000 -- B7 -- compare dividee <= 0
+030000BC -- B8 -- jump for loop compare
+23606061 -- B9 -- take one lot of the divisor away from the dividee
+20626263 -- BA -- add one to return value
+030000B4 -- BB -- loop back
+07000000 -- BC -- RSR
+00000000 -- BD
+00000000 -- BE
+00000000 -- BF
+00000000 -- C0
+00000000 -- C1
+00000000 -- C2
+00000000 -- C3
+00000000 -- C4
+00000000 -- C5
+00000000 -- C6
+00000000 -- C7
+00000000 -- C8
+00000000 -- C9
+00000000 -- CA
+00000000 -- CB
+00000000 -- CC
+00000000 -- CD
+00000000 -- CE
+00000000 -- CF
+00000000 -- D0
+0B7000C7 -- D1 -- SR to light up the 7seg display -- put all the digits needing to be displayed in registers, takes no params and has no return values
+0B7100C8 -- D2
+0B7200C9 -- D3
+0B7300CA -- D4
+0B740032 -- D5 -- put all of the possible values needed to set the cathode in registers
+0B750033 -- D6
+0B760034 -- D7
+0B770035 -- D8
+0B780036 -- D9
+0B790037 -- DA
+0B7A0038 -- DB
+0B7B0039 -- DC
+0B7C003A -- DD
+0B7D003B -- DE -- end of cathode values
+00000000 -- DF 
+00000000 -- E0 
+00000000 -- E1 
+13810000 -- E2 -- put values 0-9 into registers
+13820001 -- E3
+13830002 -- E4
+13840003 -- E5
+13850004 -- E6
+13860005 -- E7
+13870006 -- E8
+13880007 -- E9
+13890008 -- EA
+138A0009 -- EB -- end of 0-9 values
+1A017081 -- EC -- long string of if/elses to find out what the onesDigit is -- if(onesDigit == 0), == 1, ==2...
+030000F0 -- ED -- jump if onesDigit != 0
+04010007 -- EE -- set anode 3
+040200C0 -- EF -- set cathodes for pattern for decimal 0
+1A017082 -- F0 
+030000F4 -- F1 -- jump if onesDigit != 1
+04010007 -- F2 
+040200F9 -- F3 -- set cathodes for pattern for decimal 1
+1A017083 -- F4 -- 
+030000F8 -- F5 -- 
+04010007 -- F6 -- 
+040200A4 -- F7 -- set cathodes for pattern for decimal 2
+1A017084 -- F8 -- 
+030000FC -- F9 -- 
+04010007 -- FA -- 
+040200B0 -- FB -- set cathodes for pattern for decimal 3
+1A017085 -- FC -- 
+03000100 -- FD -- 
+04010007 -- FE -- 
+04020099 -- FF -- set cathodes for pattern for decimal 4
+1A017086 -- 100 -- 
+03000104 -- 101 -- 
+04010007 -- 102 -- 
+04020092 -- 103 -- set cathodes for pattern for decimal 5
+1A017087 -- 104 -- 
+03000108 -- 105 -- 
+04010007 -- 106 -- 
+04020082 -- 107 -- set cathodes for pattern for decimal 6
+1A017088 -- 108 -- 
+0300010D -- 109 -- 
+04010007 -- 10A -- 
+00000000 -- 10B -- (accidently missed a line, added an iuc)
+040200F8 -- 10C -- set cathodes for pattern for decimal 7
+1A017089 -- 10D --
+03000111 -- 10E --
+04010007 -- 10F --
+04020080 -- 110 -- set cathodes for pattern for decimal 8
+1A01708A -- 111 -- 
+03000115 -- 112 -- 
+04010007 -- 113 -- 
+04020090 -- 114 -- set cathodes for pattern for decimal 9
+1A017181 -- 115 -- long string of if/elses to find out what the tensDigit is -- if(tensDigit == 0), == 1, ==2...
+03000119 -- 116 -- jump if tensDigit != 0
+0401000B -- 117 -- set anode 2
+040200C0 -- 118 -- set cathodes for pattern for decimal 0
+1A017182 -- 119 
+0300011D -- 11A -- jump if twosDigit != 1
+0401000B -- 11B 
+040200F9 -- 11C -- set cathodes for pattern for decimal 1
+1A017183 -- 11D -- 
+03000121 -- 11E -- 
+0401000B -- 11F -- 
+040200A4 -- 120 -- set cathodes for pattern for decimal 2
+1A017184 -- 121 -- 
+03000125 -- 122 -- 
+0401000B -- 123 -- 
+040200B0 -- 124 -- set cathodes for pattern for decimal 3
+1A017185 -- 125 -- 
+03000129 -- 126 -- 
+0401000B -- 127 -- 
+04020099 -- 128 -- set cathodes for pattern for decimal 4
+1A017186 -- 129 -- 
+0300012D -- 12A -- 
+0401000B -- 12B -- 
+04020092 -- 12C -- set cathodes for pattern for decimal 5
+1A017187 -- 12D -- 
+03000131 -- 12E -- 
+0401000B -- 12F -- 
+04020082 -- 130 -- set cathodes for pattern for decimal 6
+1A017188 -- 131 -- 
+03000135 -- 132 -- 
+0401000B -- 133 -- 
+040200F8 -- 134 -- set cathodes for pattern for decimal 7
+1A017189 -- 135 --
+03000139 -- 136 --
+0401000B -- 137 --
+04020080 -- 138 -- set cathodes for pattern for decimal 8
+1A01718A -- 139 -- 
+0300013D -- 13A -- 
+0401000B -- 13B -- 
+04020090 -- 13C -- set cathodes for pattern for decimal 9
+1A017281 -- 13D -- long string of if/elses to find out what the 100sDigit is -- if(100sDigit == 0), == 1, ==2...
+03000141 -- 13E -- jump if 100sDigit != 0
+0401000D -- 13F -- set anode 1
+040200C0 -- 140 -- set cathodes for pattern for decimal 0
+1A017282 -- 141 
+03000145 -- 142 -- jump if threesDigit != 1
+0401000D -- 143
+040200F9 -- 144 -- set cathodes for pattern for decimal 1
+1A017283 -- 145 -- 
+03000149 -- 146 -- 
+0401000D -- 147 -- 
+040200A4 -- 148 -- set cathodes for pattern for decimal 2
+1A017284 -- 149 -- 
+0300014D -- 14A -- 
+0401000D -- 14B -- 
+040200B0 -- 14C -- set cathodes for pattern for decimal 3
+1A017285 -- 14D -- 
+03000151 -- 14E -- 
+0401000D -- 14F -- 
+04020099 -- 150 -- set cathodes for pattern for decimal 4
+1A017286 -- 151 -- 
+03000155 -- 152 -- 
+0401000D -- 153 -- 
+04020092 -- 154 -- set cathodes for pattern for decimal 5
+1A017287 -- 155 -- 
+03000159 -- 156 -- 
+0401000D -- 157 -- 
+04020082 -- 158 -- set cathodes for pattern for decimal 6
+1A017288 -- 159 -- 
+0300015D -- 15A -- 
+0401000D -- 15B -- 
+040200F8 -- 15C -- set cathodes for pattern for decimal 7
+1A017289 -- 15D --
+03000161 -- 15E --
+0401000D -- 15F --
+04020080 -- 160 -- set cathodes for pattern for decimal 8
+1A01728A -- 161 -- 
+03000165 -- 162 -- 
+0401000D -- 163 -- 
+04020090 -- 164 -- set cathodes for pattern for decimal 9
+1A017381 -- 165 -- long string of if/elses to find out what the 1000sDigit is -- if(1000sDigit == 0), == 1, ==2...
+03000141 -- 166 -- jump if 1000sDigit != 0
+0401000E -- 167 -- set anode 0
+040200C0 -- 168 -- set cathodes for pattern for decimal 0
+1A017382 -- 169 
+03000145 -- 16A -- jump if threesDigit != 1
+0401000E -- 16B
+040200F9 -- 16C -- set cathodes for pattern for decimal 1
+1A017383 -- 16D -- 
+03000149 -- 16E -- 
+0401000E -- 16F -- 
+040200A4 -- 170 -- set cathodes for pattern for decimal 2
+1A017384 -- 171 -- 
+0300014D -- 172 -- 
+0401000E -- 173 -- 
+040200B0 -- 174 -- set cathodes for pattern for decimal 3
+1A017385 -- 175 -- 
+03000151 -- 176 -- 
+0401000E -- 177 -- 
+04020099 -- 178 -- set cathodes for pattern for decimal 4
+1A017386 -- 179 -- 
+03000155 -- 17A -- 
+0401000E -- 17B -- 
+04020092 -- 17C -- set cathodes for pattern for decimal 5
+1A017387 -- 17D -- 
+03000159 -- 17E -- 
+0401000E -- 17F -- 
+04020082 -- 180 -- set cathodes for pattern for decimal 6
+1A017388 -- 181 -- 
+0300015D -- 182 -- 
+0401000E -- 183 -- 
+040200F8 -- 184 -- set cathodes for pattern for decimal 7
+1A017389 -- 185 --
+03000161 -- 186 --
+0401000E -- 187 --
+04020080 -- 188 -- set cathodes for pattern for decimal 8
+1A01738A -- 189 -- 
+03000165 -- 18A -- 
+0401000E -- 18B -- 
+04020090 -- 18C -- set cathodes for pattern for decimal 9
+07000000 -- 18D -- RSR
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
+00000000 
 00000000
 00000000
 00000000

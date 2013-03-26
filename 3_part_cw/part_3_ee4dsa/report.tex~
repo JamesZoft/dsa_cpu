@@ -1,0 +1,77 @@
+\documentclass[11pt, oneside, titlepage]{article}
+
+\author{James Reed}
+\title{EE4DSA - Coursework 3}
+\date{Submitted: \today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Overview}
+My decoded and commented hex is in decoded_commented_hex.txt, with my unlocking code in a separate text file in this folder. My assembler and disassembler are in the .zip with instructions on how to run them if you wish. My reports are in the reports/ directory as directed and my unlocking code, decoded hex and assembler/disassembler are in the extra/ folder.
+
+\section{Reports discussion}
+
+My resource utilisation summary for my execution unit is as shown here:
+
+Summary:
+ 
+\begin{itemize}
+
+	\item inferred   9 Adder/Subtractor(s).
+	\item inferred 186 D-type flip-flop(s).
+	\item inferred  13 Comparator(s).
+	\item inferred 407 Multiplexer(s).
+	\item inferred   8 Combinational logic shifter(s).
+	\item inferred   1 Finite State Machine(s).
+  \item Unit <execution_unit> synthesized.
+  
+\end{itemize}
+
+My resource utilisation summary for my ALU unit is as shown here:
+\newline
+
+Summary:
+
+\begin{itemize}
+
+  \item inferred   2 Adder/Subtractor(s).
+	\item inferred   4 Multiplexer(s).
+	\item Unit <alu> synthesized.
+
+\end{itemize}
+
+Overall device utilisation is shown here:
+
+Device utilization summary:
+---------------------------
+\begin{itemize}
+
+  \item Selected Device : 6slx16csg324-3 
+
+
+  \item Slice Logic Utilization: 
+  \item  Number of Slice Registers:             606  out of  18224     3\%  
+  \item  Number of Slice LUTs:                 2912  out of   9112    31\%  
+  \item     Number used as Logic:              2912  out of   9112    31\%  
+
+  \item Slice Logic Distribution: 
+  \item  Number of LUT Flip Flop pairs used:   2939
+  \item    Number with an unused Flip Flop:    2333  out of   2939    79\%  
+  \item    Number with an unused LUT:            27  out of   2939     0\%  
+  \item    Number of fully used LUT-FF pairs:   579  out of   2939    19\%  
+  \item    Number of unique control sets:        10
+
+  \item IO Utilization: 
+   \item Number of IOs:                          38
+  \item  Number of bonded IOBs:                  38  out of    232    16\%  
+
+  \item Specific Feature Utilization:
+  \item  Number of Block RAM/FIFO:               10  out of     32    31\%  
+  \item     Number using Block RAM only:         10
+  \item  Number of BUFG/BUFGCTRLs:                1  out of     16     6\%  
+\begin{itemize}
+
+\end{document}
