@@ -5,7 +5,7 @@ Command Line: /usr/local/Xilinx/14.1/ISE_DS/ISE/bin/lin/unwrapped/ngdbuild
 -intstyle silent -quiet -dd tmp -uc top_level.ucf -p xc6slx16-csg324-3
 top_level.ngc top_level.ngd
 
-Reading NGO file "/users/r/reedj/EE3DSA/dsa_cpu/3_part_cw/top_level.ngc" ...
+Reading NGO file "/users/r/reedj/EE3DSA/dsa_cpu/4_part_cw/top_level.ngc" ...
 Gathering constraint information from source properties...
 Done.
 
@@ -27,7 +27,7 @@ NGDBUILD Design Results Summary:
   Number of errors:     0
   Number of warnings:   0
 
-Total memory usage is 106356 kilobytes
+Total memory usage is 106036 kilobytes
 
 Writing NGD file "top_level.ngd" ...
 Total REAL time to NGDBUILD completion:  3 sec

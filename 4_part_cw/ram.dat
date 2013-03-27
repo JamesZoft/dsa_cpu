@@ -71,13 +71,13 @@
 0B310043 -- 46 -- put numerator into a register
 0B320044 -- 47 -- put denominator into a register
 0B330043 -- 48 -- num = numerator
-0B340000 -- 49 -- divide = 0
+13340000 -- 49 -- load divide with 0
 1A023132 -- 4A -- until num < denominator
 03000050 -- 4B -- jump if loop finishes, else continue
 23333332 -- 4C -- num -= denominator
 0B350042 -- 4D -- put 1 into a register
 20343435 -- 4E -- divide += 1
-0300004A -- 4F -- loop back
+0200004A -- 4F -- loop back
 0C34006B -- 50 -- put divide into multipliee param of multiply method
 0C32006C -- 51 -- put denominator into multiplior param of multiply method
 0600006D -- 52 -- branch to multiply function
@@ -115,7 +115,7 @@
 0B42006A -- 72 -- put 1 into register
 23414142 -- 73 -- take 1 off the multiplior
 20434043 -- 74 -- add the value of the final multiply value and the multipliee into the final value register
-03000070 -- 75 -- loop back
+02000070 -- 75 -- loop back
 07000000 -- 76 -- return
 00000000 -- 77
 00000000 -- 78
@@ -153,7 +153,7 @@
 0C5500AF -- 98 -- put divisor(10) into memory address to be used for divide SR
 060000B0 -- 99 -- branch to divide SR
 20506300 -- 9A -- number = number/10
-0300008E -- 9B -- loop back
+0200008E -- 9B -- loop back
 07000000 -- 9C
 00000000 -- 9D
 00000000 -- 9E
@@ -180,12 +180,12 @@
 13630001 -- B3 -- load reg 63 with 1
 1A016100 -- B4 -- compare divisor with !0
 030000B7 -- B5 -- BIC for previous compare
-01000000 -- B6 -- if 0, halt
+01000000 -- B6 -- if 0, halt (dividing by 0 == bad)
 1B036000 -- B7 -- compare dividee <= 0
 030000BC -- B8 -- jump for loop compare
 23606061 -- B9 -- take one lot of the divisor away from the dividee
 20626263 -- BA -- add one to return value
-030000B4 -- BB -- loop back
+020000B4 -- BB -- loop back
 07000000 -- BC -- RSR
 00000000 -- BD
 00000000 -- BE
@@ -4093,43 +4093,3 @@
 00000000
 00000000
 00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000000
-00000001

@@ -1,0 +1,40 @@
+Release 14.1 Map P.15xf (lin)
+Xilinx Mapping Report File for Design 'top_level'
+
+Design Information
+------------------
+Command Line   : map -intstyle silent -detail -p xc6slx16-csg324-3 -pr b -c 100
+-w -o top_level_map.ncd top_level.ngd top_level.pcf 
+Target Device  : xc6slx16
+Target Package : csg324
+Target Speed   : -3
+Mapper Version : spartan6 -- $Revision: 1.55 $
+Mapped Date    : Wed Mar 27 13:37:41 2013
+
+Design Summary
+--------------
+Number of errors   :   1
+Number of warnings :   0
+
+Section 1 - Errors
+------------------
+ERROR:Security:9c - No 'ISE' nor 'WebPack' feature version 2012.04 was available
+for part 'xc6slx16'.
+ERROR:Map:258 - A problem was encountered attempting to get the license for this
+   architecture.
+
+
+
+Section 2 - Warnings
+--------------------
+WARNING:Security:43 - No license file was found in the standard Xilinx license
+directory.
+WARNING:Security:44 - Since no license file was found,
+
+Section 3 - Informational
+-------------------------
+INFO:Security:50 - The XILINXD_LICENSE_FILE environment variable is set to
+'2100@ee-blackadder;1717@ee-blackadder'.
+INFO:Security:53 - The LM_LICENSE_FILE environment variable is not set.
+INFO:Security:54 - 'xc6slx16' is a WebPack part.
+INFO:Security:68a - user is reedj, on host unknown.
