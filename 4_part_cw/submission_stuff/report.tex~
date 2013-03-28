@@ -1,0 +1,11 @@
+\documentclass[12pt]{article}
+\title{DSA Coursework - Part 4}
+\author{James Reed}		% used by \maketitle
+\date{\today}					% used by \maketitle
+
+\begin{document}
+\maketitle
+
+
+
+\end{document}

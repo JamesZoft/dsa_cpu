@@ -222,20 +222,20 @@
 0B7C003A -- DD
 0B7D003B -- DE -- end of cathode values
 138A0009 -- DF -- end of 0-9 values
-13900032 -- E1 -- Put value of start address of cathode values
-04010007 -- E2 -- set anode 3
-0D919070 -- E3 -- put cathode value for onesDigit in reg 91
-11029100 -- E4 -- set cathodes for onesDigit ------------
-0401000B -- F5 -- set anode 2
-0D919071 -- F6 -- put cathode value for tensDigit in reg 91
-11029100 -- F7 -- set cathodes for tensDigit --------
-0401000D -- F8 -- set anode 1
-0D919072 -- F9 -- put cathode value for 100sDigit in reg 91
-11029100 -- FA -- set cathodes for 100sDigit ----------
-0401000E -- FB -- set anode 0
-0D919073 -- FC -- put cathode value for 1000sDigit in reg 91
-11029100 -- FD -- set cathodes for 1000sDigit
-07000000 -- FE -- RSR
+13900032 -- E0 -- Put value of start address of cathode values
+0401000E -- E1 -- set anode 0
+0D919073 -- E2 -- put cathode value for 1000sDigit in reg 91
+11029100 -- E3 -- set cathodes for 1000sDigit
+0401000D -- E4 -- set anode 1
+0D919072 -- E5 -- put cathode value for 100sDigit in reg 91
+11029100 -- E6 -- set cathodes for 100sDigit ----------
+0401000B -- E7 -- set anode 2
+0D919071 -- E8 -- put cathode value for tensDigit in reg 91
+11029100 -- E9 -- set cathodes for tensDigit --------
+04010007 -- EA -- set anode 3
+0D919070 -- EB -- put cathode value for onesDigit in reg 91
+11029100 -- EC -- set cathodes for onesDigit ------------
+07000000 -- ED -- RSR
 00000000 
 00000000 
 00000000 

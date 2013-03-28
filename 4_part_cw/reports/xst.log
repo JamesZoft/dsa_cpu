@@ -4,15 +4,15 @@ Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
 Parameter TMPDIR set to tmp
 
 
-Total REAL time to Xst completion: 1.00 secs
-Total CPU time to Xst completion: 0.10 secs
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.08 secs
  
 --> 
 Parameter xsthdpdir set to tmp
 
 
-Total REAL time to Xst completion: 1.00 secs
-Total CPU time to Xst completion: 0.10 secs
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> 
 WARNING:Xst:1583 - You are using an internal switch '-infer_ramb8'.
@@ -1248,12 +1248,12 @@ clk            |    9.750|         |         |         |
 
 
 Total REAL time to Xst completion: 62.00 secs
-Total CPU time to Xst completion: 60.52 secs
+Total CPU time to Xst completion: 61.09 secs
  
 --> 
 
 
-Total memory usage is 144364 kilobytes
+Total memory usage is 147336 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   14 (   0 filtered)
