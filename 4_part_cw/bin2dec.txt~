@@ -1,7 +1,7 @@
 def remainder(numerator, denominator):
         divide = 0
-        num = numerator (2)
-        while num >= denominator: (2 >= A)
+        num = numerator
+        while num >= denominator:
                 num -= denominator
                 divide += 1
         return numerator - (divide * denominator)

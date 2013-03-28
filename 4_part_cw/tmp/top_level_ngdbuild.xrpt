@@ -5,14 +5,14 @@
     The structure and the elements are likely to change over the next few releases.
     This means code written to parse this file will need to be revisited each subsequent release.-->
 
-  <application stringID="NgdBuild" timeStamp="Wed Mar 27 13:37:37 2013">
+  <application stringID="NgdBuild" timeStamp="Thu Mar 28 13:09:29 2013">
     <section stringID="User_Env">
       <table stringID="User_EnvVar">
         <column stringID="variable"/>
         <column stringID="value"/>
         <row stringID="row" value="0">
           <item stringID="variable" value="XILINXD_LICENSE_FILE"/>
-          <item stringID="value" value="2100@ee-blackadder;1717@ee-blackadder"/>
+          <item stringID="value" value="2100@ee-blackadder:1717@ee-blackadder"/>
         </row>
         <row stringID="row" value="1">
           <item stringID="variable" value="PATH"/>
@@ -29,15 +29,15 @@
       </table>
       <item stringID="User_EnvOs" value="OS Information">
         <item stringID="User_EnvOsname" value="Ubuntu"/>
-        <item stringID="User_EnvOsrelease" value="Ubuntu 12.04.1 LTS"/>
+        <item stringID="User_EnvOsrelease" value="Ubuntu 12.04 LTS"/>
       </item>
-      <item stringID="User_EnvHost" value="mbn-104-11105.campus"/>
+      <item stringID="User_EnvHost" value="eas-n508pc23.campus"/>
       <table stringID="User_EnvCpu">
         <column stringID="arch"/>
         <column stringID="speed"/>
         <row stringID="row" value="0">
-          <item stringID="arch" value="Intel(R) Core(TM) i5-2500 CPU @ 3.30GHz"/>
-          <item stringID="speed" value="1600.000 MHz"/>
+          <item stringID="arch" value="Intel(R) Core(TM)2 Quad CPU    Q6600  @ 2.40GHz"/>
+          <item stringID="speed" value="1596.000 MHz"/>
         </row>
       </table>
     </section>
